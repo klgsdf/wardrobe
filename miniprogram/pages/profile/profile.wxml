@@ -1,0 +1,6 @@
+<!-- pages/profile/profile.wxml - 占位页 -->
+<view class="placeholder">
+  <view class="placeholder__emoji">👤</view>
+  <view class="placeholder__title">我的</view>
+  <view class="placeholder__desc">敬请期待</view>
+</view>

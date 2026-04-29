@@ -1,0 +1,225 @@
+/**app.wxss - 智能衣柜全局样式（焦糖米黄风 / Virtual Wardrobe）**/
+
+page {
+  /* ===== 色彩系统 - Virtual Wardrobe Tokens ===== */
+  --color-primary: #D4A373;            /* 焦糖主色 */
+  --color-primary-light: #E6C29A;
+  --color-primary-deep: #B88855;
+  --color-primary-gradient: linear-gradient(135deg, #E6C29A, #D4A373);
+
+  --color-cream: #FAEDCD;              /* 辅助米色（今日穿搭大卡） */
+  --color-cream-soft: #FEFAE0;         /* 页面背景顶部米黄 */
+
+  --bg-start: #FEFAE0;
+  --bg-end: #FFFFFF;
+  --bg-page: linear-gradient(180deg, #FEFAE0 0%, #FFFFFF 100%);
+
+  --card-bg: rgba(255, 255, 255, 0.70);
+  --card-border: rgba(212, 163, 115, 0.15);
+  --card-bg-strong: rgba(255, 255, 255, 0.92);
+  --card-bg-solid: #FFFFFF;
+
+  /* 表面层级（深色模式下统一走变量） */
+  --surface-elevated: #FFFFFF;         /* 衣柜卡/欢迎卡等主表面 */
+  --surface-inner:    #FFFDF5;         /* 衣柜内框 */
+  --stats-bg:         #FAEDCD;         /* 统计条背景 */
+  --ai-card-bg:       linear-gradient(160deg, #FAEDCD 0%, #E6C29A 100%);
+  --ai-card-border:   rgba(212, 163, 115, 0.30);
+  --ai-halo:          rgba(255, 255, 255, 0.45);
+
+  /* 图标线条专用颜色（方便深/浅切换） */
+  --icon-stroke:      #B88855;         /* 主线条色（同衣服/太阳） */
+  --icon-stroke-soft: rgba(184, 136, 85, 0.55);
+  --icon-fill:        #FFFDF5;         /* 线条内填充 */
+
+  --shadow-soft: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 20rpx 80rpx -20rpx rgba(212, 163, 115, 0.18);
+  --shadow-hover: 0 24rpx 60rpx -16rpx rgba(212, 163, 115, 0.28);
+
+  --text-main: #4A403A;                /* 深棕褐主文字 */
+  --text-sub: #9C8C84;                 /* 浅棕褐次文字 */
+  --text-assist: #C4B8B0;
+
+  --nav-bg: rgba(255, 255, 255, 0.90);
+  --line-soft: rgba(212, 163, 115, 0.20);
+  --line-grid: #F3F4F6;
+
+  /* ===== 场景盒 Token（首页衣柜主卡 / 衣柜 DIY 画布） ===== */
+  --scene-wall-top:    #F5E8D1;     /* 墙面顶部（奶油米黄） */
+  --scene-wall-bottom: #EFE0C4;     /* 墙面底部 */
+  --scene-floor-top:   #E8D5B8;     /* 地板上沿 */
+  --scene-floor-bottom:#DFC8A6;     /* 地板下沿 */
+  --scene-skirting:    rgba(184, 136, 85, 0.35); /* 踢脚线 */
+  --glass-panel:       rgba(255, 255, 255, 0.42);
+  --glass-edge:        rgba(255, 255, 255, 0.80);
+  --glass-outline:     rgba(184, 136, 85, 0.55);
+  --led-glow:          rgba(255, 220, 160, 0.75);
+  --led-line:          #F5D89A;
+  --bridge-top:        #F7EBD4;     /* 主卡下方渐变桥 */
+
+  /* 圆角规范（Virtual Wardrobe） */
+  --radius-tag: 16rpx;
+  --radius-card: 48rpx;                /* 24px → 48rpx */
+  --radius-card-lg: 64rpx;             /* 32px → 64rpx */
+  --radius-btn: 9999rpx;               /* 胶囊 */
+
+  background: var(--bg-page);
+  min-height: 100vh;
+  /* 全局优雅无衬线字体（Inter + 苹方 + 鸿蒙） */
+  font-family: "Inter", "HarmonyOS Sans SC", "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+  color: var(--text-main);
+  font-size: 28rpx;
+  line-height: 1.5;
+  letter-spacing: 0.5rpx;
+}
+
+/* 字体工具类（统一无衬线，保留 class 名向后兼容） */
+.font-serif { font-family: inherit; font-weight: 600; letter-spacing: 1rpx; }
+.font-sans  { font-family: inherit; }
+
+/* ===== 深色主题（暖棕咖啡调 / Figma Dark Virtual Wardrobe） ===== */
+.theme-dark {
+  /* 背景：暖海豹褐，上深下浅给出层次 */
+  --bg-start: #1F1711;
+  --bg-end:   #2A1F18;
+  --bg-page:  radial-gradient(120% 80% at 50% 0%, #2E241D 0%, #1C140F 70%);
+
+  /* 主色在暗色下提亮一档，让焦糖保持警觉度 */
+  --color-primary:       #E6B888;
+  --color-primary-light: #F2CFA5;
+  --color-primary-deep:  #C9A077;
+  --color-primary-gradient: linear-gradient(135deg, #F2CFA5, #E6B888);
+
+  --color-cream:      #4A3828;
+  --color-cream-soft: #3A2B20;
+
+  /* 表面：暖棕不发灰，和背景拉开约 8% 亮度 */
+  --card-bg:          rgba(58, 44, 34, 0.72);
+  --card-bg-strong:   rgba(58, 44, 34, 0.92);
+  --card-bg-solid:    #2E241D;
+  --card-border:      rgba(230, 184, 136, 0.18);
+
+  --surface-elevated: #2E241D;
+  --surface-inner:    #3A2B20;
+  --stats-bg:         rgba(212, 163, 115, 0.10);
+  --ai-card-bg:       linear-gradient(160deg, #4A3828 0%, #2E221A 100%);
+  --ai-card-border:   rgba(230, 184, 136, 0.35);
+  --ai-halo:          rgba(230, 184, 136, 0.18);
+
+  /* 图标在暗色下用亮焦糖替换深棕线 */
+  --icon-stroke:      #E6B888;
+  --icon-stroke-soft: rgba(230, 184, 136, 0.55);
+  --icon-fill:        transparent;
+
+  --shadow-soft:  0 8rpx 24rpx rgba(0, 0, 0, 0.40);
+  --shadow-card:  0 24rpx 60rpx -20rpx rgba(0, 0, 0, 0.70);
+  --shadow-hover: 0 28rpx 70rpx -18rpx rgba(0, 0, 0, 0.75);
+
+  --text-main:   #F5E6D3;
+  --text-sub:    #B8A492;
+  --text-assist: #7A6A5A;
+
+  --nav-bg:   rgba(28, 20, 15, 0.85);
+  --line-soft: rgba(230, 184, 136, 0.22);
+  --line-grid: rgba(255, 255, 255, 0.06);
+
+  /* 场景盒 - 深色 */
+  --scene-wall-top:    #2E241D;
+  --scene-wall-bottom: #241A13;
+  --scene-floor-top:   #1F1610;
+  --scene-floor-bottom:#1C140F;
+  --scene-skirting:    rgba(230, 184, 136, 0.25);
+  --glass-panel:       rgba(230, 184, 136, 0.08);
+  --glass-edge:        rgba(255, 236, 204, 0.35);
+  --glass-outline:     rgba(230, 184, 136, 0.55);
+  --led-glow:          rgba(242, 207, 165, 0.55);
+  --led-line:          #E6B888;
+  --bridge-top:        #2A1F18;
+
+  background: var(--bg-page);
+  color: var(--text-main);
+}
+
+/* 通用容器 */
+.container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* 玻璃态卡片 - Virtual Wardrobe */
+.glass-card {
+  background: var(--card-bg);
+  border: 1rpx solid var(--card-border);
+  backdrop-filter: blur(24rpx);
+  -webkit-backdrop-filter: blur(24rpx);
+  box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-card);
+  box-sizing: border-box;
+}
+
+/* 主按钮 - 焦糖色实心 + 大圆角 + 柔和投影 */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 48rpx;
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border-radius: var(--radius-btn);
+  font-size: 30rpx;
+  font-weight: 500;
+  box-shadow: 0 8rpx 16rpx -4rpx rgba(212, 163, 115, 0.40);
+  transition: transform 0.15s ease;
+}
+
+/* 次级按钮 - 玻璃态 */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 48rpx;
+  background: var(--card-bg);
+  color: var(--color-primary);
+  border: 1rpx solid var(--card-border);
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  box-shadow: var(--shadow-soft);
+}
+
+/* 按压反馈 */
+.tap-scale {
+  transition: transform 0.15s ease;
+}
+.tap-scale:active {
+  transform: scale(0.97);
+}
+
+/* 文字层级工具类 */
+.text-main {
+  color: var(--text-main);
+}
+.text-sub {
+  color: var(--text-sub);
+}
+.text-assist {
+  color: var(--text-assist);
+}
+.text-primary {
+  color: var(--color-primary);
+}
+
+/* 覆盖默认 button 样式 */
+button {
+  background: initial;
+  padding: 0;
+  line-height: inherit;
+}
+button:focus {
+  outline: 0;
+}
+button::after {
+  border: none;
+}

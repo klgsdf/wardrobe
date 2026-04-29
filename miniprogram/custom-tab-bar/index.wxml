@@ -1,0 +1,79 @@
+<!--custom-tab-bar/index.wxml - 手绘线条风 + 中间 Add 凸起按钮-->
+<view class="tabbar {{isDark ? 'theme-dark' : ''}}">
+  <!-- 底部米色条 -->
+  <view class="tabbar__bg"></view>
+
+  <!-- 4 个 tab + 中间占位 -->
+  <view class="tabbar__inner">
+
+    <!-- home -->
+    <view class="tab-item tap-scale {{selected === 0 ? 'is-active' : ''}}"
+          data-index="0" data-path="/pages/index/index" bindtap="switchTab">
+      <view class="tab-item__icon">
+        <!-- 线条小屋 -->
+        <view class="ic-home">
+          <view class="ic-home__roof"></view>
+          <view class="ic-home__body"></view>
+          <view class="ic-home__door"></view>
+        </view>
+      </view>
+      <view class="tabbar-label">home</view>
+    </view>
+
+    <!-- 衣柜 -->
+    <view class="tab-item tap-scale {{selected === 1 ? 'is-active' : ''}}"
+          data-index="1" data-path="/pages/wardrobe/wardrobe" bindtap="switchTab">
+      <view class="tab-item__icon">
+        <!-- 线条衣柜 -->
+        <view class="ic-closet">
+          <view class="ic-closet__box"></view>
+          <view class="ic-closet__split"></view>
+          <view class="ic-closet__handle ic-closet__handle--l"></view>
+          <view class="ic-closet__handle ic-closet__handle--r"></view>
+        </view>
+      </view>
+      <view class="tabbar-label">衣柜</view>
+    </view>
+
+    <!-- 中间 Add 占位 -->
+    <view class="tab-item tab-item--placeholder"></view>
+
+    <!-- 衣服 -->
+    <view class="tab-item tap-scale {{selected === 2 ? 'is-active' : ''}}"
+          data-index="2" data-path="/pages/outfit/outfit" bindtap="switchTab">
+      <view class="tab-item__icon">
+        <!-- 线条 T 恤 -->
+        <view class="ic-tee">
+          <view class="ic-tee__body"></view>
+          <view class="ic-tee__shoulder ic-tee__shoulder--l"></view>
+          <view class="ic-tee__shoulder ic-tee__shoulder--r"></view>
+          <view class="ic-tee__neck"></view>
+        </view>
+      </view>
+      <view class="tabbar-label">衣服</view>
+    </view>
+
+    <!-- 个人 -->
+    <view class="tab-item tap-scale {{selected === 3 ? 'is-active' : ''}}"
+          data-index="3" data-path="/pages/profile/profile" bindtap="switchTab">
+      <view class="tab-item__icon">
+        <!-- 线条头像 -->
+        <view class="ic-person">
+          <view class="ic-person__head"></view>
+          <view class="ic-person__body"></view>
+        </view>
+      </view>
+      <view class="tabbar-label">个人</view>
+    </view>
+
+  </view>
+
+  <!-- 中间 Add 凸起按钮 -->
+  <view class="tabbar__add tap-scale" bindtap="onAdd">
+    <view class="tabbar__add-ring">
+      <view class="tabbar__add-plus-h"></view>
+      <view class="tabbar__add-plus-v"></view>
+    </view>
+    <view class="tabbar-label tabbar-label--add">Add</view>
+  </view>
+</view>

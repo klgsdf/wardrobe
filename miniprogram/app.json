@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/wardrobe/wardrobe",
+    "pages/outfit/outfit",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundColor": "#FEFAE0",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FEFAE0",
+    "navigationBarTitleText": "智能衣柜",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#9C8C84",
+    "selectedColor": "#4A403A",
+    "backgroundColor": "#FFFDF5",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "home"
+      },
+      {
+        "pagePath": "pages/wardrobe/wardrobe",
+        "text": "衣柜"
+      },
+      {
+        "pagePath": "pages/outfit/outfit",
+        "text": "衣服"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "个人"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

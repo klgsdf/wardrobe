@@ -1,0 +1,732 @@
+/* pages/index/index.wxss - 首页（焦糖米黄风 · 悬浮玻璃衣柜 · 场景盒渐变） */
+
+/* ============ 页面根 ============ */
+.page-root {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(180deg,
+    var(--bg-start) 0%,
+    var(--bridge-top) 55%,
+    var(--bg-end) 100%);
+  transition: background 0.4s ease;
+}
+.nav-pad { width: 100%; }
+
+/* ============ 胶囊同行导航行 ============ */
+.nav-actions {
+  position: fixed;
+  left: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  z-index: 100;
+  pointer-events: none;
+}
+.nav-actions > .wardrobe-name,
+.nav-actions > .icon-btn { pointer-events: auto; }
+.nav-actions__spacer { flex: 1; }
+
+.page-body {
+  box-sizing: border-box;
+  padding: 0 28rpx 32rpx;
+}
+
+/* ============ 衣柜名字胶囊 ============ */
+.wardrobe-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 0 26rpx;
+  background: var(--surface-elevated);
+  border: 1rpx solid var(--card-border);
+  border-radius: 9999rpx;
+  box-shadow: var(--shadow-soft);
+  box-sizing: border-box;
+}
+.wardrobe-name__text {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 0.5rpx;
+  line-height: 1;
+}
+.wardrobe-name__chev {
+  width: 10rpx;
+  height: 10rpx;
+  border-right: 2.5rpx solid var(--text-sub);
+  border-bottom: 2.5rpx solid var(--text-sub);
+  transform: rotate(45deg);
+  margin-top: -4rpx;
+}
+
+.icon-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-elevated);
+  border: 1rpx solid var(--card-border);
+  border-radius: 50%;
+  box-shadow: var(--shadow-soft);
+  box-sizing: border-box;
+}
+
+/* ============ 主卡：房间场景盒 ============ */
+.wardrobe-card {
+  position: relative;
+  width: 100%;
+  padding-top: 115%;
+  border-radius: var(--radius-card-lg);
+  overflow: hidden;
+  margin-top: 4rpx;
+  box-shadow:
+    0 24rpx 60rpx -20rpx rgba(184, 136, 85, 0.28),
+    0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 场景层：墙 + 地板 + 踢脚线 + 光晕 */
+.scene { position: absolute; inset: 0; }
+.scene__wall {
+  position: absolute; top: 0; left: 0; right: 0; height: 75%;
+  background: linear-gradient(180deg, var(--scene-wall-top) 0%, var(--scene-wall-bottom) 100%);
+}
+.scene__floor {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 25%;
+  background: linear-gradient(180deg, var(--scene-floor-top) 0%, var(--scene-floor-bottom) 100%);
+}
+.scene__skirting {
+  position: absolute; left: 0; right: 0; top: 75%;
+  height: 2rpx; background: var(--scene-skirting);
+}
+.scene__light-halo {
+  position: absolute; top: -10%; left: 50%;
+  width: 140%; height: 70%;
+  margin-left: -70%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 60%);
+  pointer-events: none;
+}
+.page-root.theme-dark .scene__light-halo {
+  background: radial-gradient(ellipse at center, rgba(230, 184, 136, 0.18) 0%, rgba(230, 184, 136, 0) 60%);
+}
+
+/* 侧边装饰点阵（模拟参考图侧面按钮） */
+.closet-side {
+  position: absolute;
+  top: 28%; bottom: 35%;
+  width: 16rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 3;
+}
+.closet-side--l { left: 28rpx; }
+.closet-side--r { right: 28rpx; }
+.closet-side__dot {
+  width: 10rpx; height: 10rpx;
+  border-radius: 50%;
+  background: rgba(184, 136, 85, 0.35);
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
+}
+.page-root.theme-dark .closet-side__dot {
+  background: rgba(230, 184, 136, 0.35);
+  border-color: rgba(230, 184, 136, 0.2);
+}
+
+/* ============ 悬浮玻璃衣柜 ============ */
+.closet-art {
+  position: absolute;
+  top: 8%;
+  bottom: 10%;
+  left: 14%;
+  right: 14%;
+  z-index: 4;
+}
+
+/* 底部椭圆投影 */
+.closet-art__shadow {
+  position: absolute;
+  left: 8%; right: 8%;
+  bottom: -16rpx;
+  height: 40rpx;
+  background: radial-gradient(ellipse at center, rgba(58, 40, 24, 0.35) 0%, rgba(58, 40, 24, 0) 70%);
+  filter: blur(6rpx);
+}
+
+/* 玻璃框体 */
+.closet-art__frame {
+  position: relative;
+  width: 100%; height: 100%;
+  background: var(--glass-panel);
+  border: 2rpx solid var(--glass-edge);
+  border-radius: 20rpx;
+  box-shadow:
+    0 20rpx 50rpx -10rpx rgba(184, 136, 85, 0.32),
+    0 0 0 1rpx rgba(255, 255, 255, 0.6) inset,
+    0 2rpx 8rpx rgba(255, 255, 255, 0.8) inset;
+  box-sizing: border-box;
+  transform: translateY(-6rpx);
+  backdrop-filter: blur(6rpx);
+  -webkit-backdrop-filter: blur(6rpx);
+  overflow: hidden;
+}
+
+.page-root.theme-dark .closet-art__frame {
+  box-shadow:
+    0 20rpx 50rpx -10rpx rgba(230, 184, 136, 0.35),
+    0 0 0 1rpx rgba(230, 184, 136, 0.25) inset;
+}
+
+/* 玻璃高光 */
+.closet-art__gloss {
+  position: absolute;
+  top: 0; left: 0; right: 40%;
+  height: 40%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 55%);
+  pointer-events: none;
+  border-top-left-radius: 20rpx;
+}
+
+/* ---- LED 灯带 ---- */
+.closet-art__led {
+  position: absolute;
+  top: 6rpx; left: 10rpx; right: 10rpx;
+  height: 4rpx;
+  background: var(--led-line);
+  border-radius: 4rpx;
+  box-shadow:
+    0 6rpx 18rpx 2rpx var(--led-glow),
+    0 0 8rpx 0 var(--led-glow);
+}
+.closet-art__led.led--sensor { opacity: 0.7; }
+.closet-art__led.led--strip { height: 6rpx; }
+
+/* ---- 隔板 ---- */
+.closet-art__shelf {
+  position: absolute;
+  left: 8rpx; right: 8rpx;
+  height: 2rpx;
+  background: var(--glass-outline);
+  box-shadow: 0 1rpx 0 rgba(255, 255, 255, 0.5);
+}
+.closet-art__shelf--top { top: 22%; }
+.closet-art__shelf--mid { top: 24%; opacity: 0.4; }
+
+/* ---- 顶部折叠物 ---- */
+.closet-art__folds {
+  position: absolute;
+  top: 10%; left: 18%; right: 18%; height: 11%;
+  display: flex; align-items: flex-end; justify-content: space-around;
+  gap: 6rpx;
+}
+.fold {
+  flex: 1;
+  background: #FFFDF5;
+  border: 1rpx solid var(--glass-outline);
+  border-radius: 2rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.06);
+}
+.fold--a { height: 70%; }
+.fold--b { height: 85%; }
+.fold--c { height: 60%; }
+.page-root.theme-dark .fold { background: #3A2B20; border-color: rgba(230, 184, 136, 0.4); }
+
+/* ---- 左半柜体：挂衣区 ---- */
+.closet-art__left {
+  position: absolute;
+  top: 28%; bottom: 30%;
+  left: 0; width: 52%;
+  padding: 0 12rpx;
+  box-sizing: border-box;
+}
+.hang-rod {
+  position: absolute;
+  left: 12rpx; right: 12rpx;
+  top: 14rpx;
+  height: 3rpx;
+  background: var(--glass-outline);
+  border-radius: 2rpx;
+}
+.hang-rod--double,
+.hang-rod--extendable { top: 10rpx; }
+.hang-rod--lower { top: 55%; }
+.hang-rod--extendable::after {
+  content: ''; position: absolute; right: -2rpx; top: -2rpx;
+  width: 6rpx; height: 7rpx;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+.closet-art__hang {
+  position: absolute;
+  top: 24rpx; left: 0; right: 0; bottom: 6rpx;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding: 0 6rpx;
+}
+/* 缩小挂衣图标到 60% */
+.closet-art__hang .ic-shirt,
+.closet-art__hang .ic-dress,
+.closet-art__hang .ic-coat {
+  transform: scale(0.55);
+  transform-origin: top center;
+}
+
+/* ---- 右半柜体：推拉门 ---- */
+.closet-art__right {
+  position: absolute;
+  top: 28%; bottom: 30%;
+  right: 0; width: 48%;
+  padding: 0 10rpx;
+  box-sizing: border-box;
+}
+.door-panel {
+  position: relative;
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 253, 245, 0.75) 100%);
+  border: 2rpx solid var(--glass-outline);
+  border-radius: 8rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05) inset;
+}
+.page-root.theme-dark .door-panel {
+  background: linear-gradient(160deg, rgba(58, 43, 32, 0.9) 0%, rgba(46, 36, 29, 0.85) 100%);
+}
+.door-handle {
+  position: absolute;
+  top: 50%; left: -4rpx;
+  width: 6rpx; height: 36rpx;
+  margin-top: -18rpx;
+  background: var(--color-primary-deep);
+  border-radius: 4rpx;
+  box-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.2);
+}
+
+/* 门款：推拉门圆点 */
+.door-dots {
+  position: absolute;
+  inset: 14rpx 10rpx;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 4rpx;
+  place-items: center;
+}
+.door-dots__dot {
+  width: 6rpx; height: 6rpx;
+  border-radius: 50%;
+  background: rgba(184, 136, 85, 0.45);
+}
+.page-root.theme-dark .door-dots__dot { background: rgba(230, 184, 136, 0.55); }
+
+/* 门款：百叶门 */
+.door-louvers {
+  position: absolute;
+  inset: 14rpx 8rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.door-louvers__bar {
+  height: 3rpx;
+  background: var(--glass-outline);
+  border-radius: 2rpx;
+  opacity: 0.55;
+}
+
+/* 门款：平开门（一条竖向中缝） */
+.door-swing {
+  position: absolute;
+  top: 10%; bottom: 10%; left: 50%;
+  width: 1rpx;
+  background: var(--glass-outline);
+  opacity: 0.5;
+}
+
+/* 门款：镜面门 */
+.door-mirror {
+  position: absolute;
+  inset: 8rpx;
+  background: linear-gradient(135deg, rgba(230, 220, 200, 0.9) 0%, rgba(255, 255, 255, 0.7) 35%, rgba(230, 220, 200, 0.9) 100%);
+  border-radius: 4rpx;
+}
+.page-root.theme-dark .door-mirror {
+  background: linear-gradient(135deg, rgba(74, 56, 40, 0.9) 0%, rgba(230, 184, 136, 0.3) 35%, rgba(74, 56, 40, 0.9) 100%);
+}
+
+/* 无门开放式：隐藏门板 */
+.closet-art__right.door--open .door-panel { background: transparent; border: none; }
+.closet-art__right.door--open .door-handle { display: none; }
+
+/* ---- 底部抽屉 ---- */
+.closet-art__drawers {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 28%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 8rpx 8rpx;
+  gap: 4rpx;
+  box-sizing: border-box;
+}
+.drawer {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 253, 245, 0.4) 100%);
+  border: 1.5rpx solid var(--glass-outline);
+  border-radius: 4rpx;
+}
+.page-root.theme-dark .drawer {
+  background: linear-gradient(180deg, rgba(58, 43, 32, 0.6) 0%, rgba(46, 36, 29, 0.4) 100%);
+}
+.drawer__notch {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 40rpx; height: 4rpx;
+  margin-left: -20rpx;
+  margin-top: -2rpx;
+  background: var(--glass-outline);
+  border-radius: 3rpx;
+  opacity: 0.7;
+}
+
+/* 4 抽：第一抽更矮 */
+.drawers--4 .drawer:first-child { flex: 0.6; }
+
+/* ============ 右下角 DIY 提示 ============ */
+.closet-tip {
+  position: absolute;
+  right: 24rpx; bottom: 24rpx;
+  z-index: 6;
+  display: flex; align-items: center; gap: 8rpx;
+  padding: 8rpx 18rpx;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1rpx solid var(--card-border);
+  border-radius: 9999rpx;
+  backdrop-filter: blur(8rpx);
+  -webkit-backdrop-filter: blur(8rpx);
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.08);
+}
+.page-root.theme-dark .closet-tip {
+  background: rgba(46, 36, 29, 0.75);
+}
+.closet-tip__dot {
+  width: 10rpx; height: 10rpx;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 4rpx rgba(212, 163, 115, 0.25);
+}
+.closet-tip__text {
+  font-size: 22rpx;
+  color: var(--text-main);
+  letter-spacing: 1rpx;
+  line-height: 1;
+}
+
+/* ============ 渐变桥：主卡 → 统计条 ============ */
+.bridge {
+  height: 32rpx;
+  margin: -8rpx -8rpx 0;
+  background: linear-gradient(180deg,
+    rgba(239, 224, 196, 0.6) 0%,
+    rgba(223, 200, 166, 0.15) 60%,
+    transparent 100%);
+  border-radius: 0 0 40rpx 40rpx;
+}
+.page-root.theme-dark .bridge {
+  background: linear-gradient(180deg,
+    rgba(36, 26, 19, 0.6) 0%,
+    rgba(36, 26, 19, 0.15) 60%,
+    transparent 100%);
+}
+
+/* ============ 统计条 ============ */
+.stats-row {
+  display: flex;
+  align-items: center;
+  margin-top: 8rpx;
+  padding: 24rpx 16rpx;
+  background: rgba(250, 237, 205, 0.55);
+  border: 1rpx solid var(--card-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10rpx);
+  -webkit-backdrop-filter: blur(10rpx);
+}
+.page-root.theme-dark .stats-row {
+  background: rgba(212, 163, 115, 0.10);
+}
+.stats-cell { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10rpx; }
+.stats-cell__num {
+  font-size: 52rpx;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1rpx;
+  line-height: 1;
+  font-feature-settings: "tnum";
+}
+.stats-cell__label {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  letter-spacing: 2rpx;
+  font-weight: 500;
+}
+.stats-cell__divider { width: 1rpx; height: 56rpx; background: var(--line-soft); }
+
+/* ============ 双列卡 ============ */
+.duo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+  margin-top: 16rpx;
+}
+.duo-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 220rpx;
+  padding: 24rpx 22rpx;
+  border: 1rpx solid var(--card-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.duo-cell--welcome { background: var(--surface-elevated); }
+.duo-cell__row { display: flex; align-items: center; gap: 12rpx; margin-bottom: 16rpx; }
+.duo-cell__temp {
+  font-size: 40rpx; font-weight: 700;
+  color: var(--text-main); line-height: 1; letter-spacing: 0.5rpx;
+}
+.duo-cell__title { font-size: 28rpx; font-weight: 600; color: var(--text-main); letter-spacing: 1rpx; }
+.duo-cell__sub   { margin-top: 6rpx; font-size: 22rpx; color: var(--text-sub); letter-spacing: 1rpx; }
+
+.duo-cell--ai {
+  background: var(--ai-card-bg);
+  border-color: var(--ai-card-border);
+  justify-content: space-between;
+}
+.duo-cell__ai-halo {
+  position: absolute; top: -40rpx; right: -40rpx;
+  width: 180rpx; height: 180rpx;
+  background: var(--ai-halo);
+  border-radius: 50%;
+  filter: blur(6rpx);
+}
+.duo-cell__ai-title {
+  position: relative; z-index: 1;
+  margin-top: 16rpx;
+  font-size: 36rpx; font-weight: 700;
+  color: var(--text-main); letter-spacing: 1rpx;
+}
+.duo-cell__ai-sub {
+  position: relative; z-index: 1;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: var(--text-main); opacity: 0.72; letter-spacing: 1rpx;
+}
+.duo-cell__ai-arrow {
+  position: absolute; right: 20rpx; bottom: 20rpx;
+  width: 56rpx; height: 56rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-primary);
+  border-radius: 50%;
+  box-shadow: 0 6rpx 12rpx -2rpx rgba(212, 163, 115, 0.5);
+  z-index: 2;
+}
+
+/* ============ 标准化 CSS 线条图标库 ============ */
+.ic { position: relative; display: inline-block; vertical-align: middle; }
+
+/* 太阳 */
+.ic-sun { width: 40rpx; height: 40rpx; display: inline-flex; align-items: center; justify-content: center; }
+.ic-sun__core {
+  width: 18rpx; height: 18rpx;
+  border-radius: 50%;
+  border: 3rpx solid var(--icon-stroke);
+  background: transparent;
+  box-sizing: border-box;
+  box-shadow:
+     0      -16rpx 0 -6rpx var(--icon-stroke),
+     0       16rpx 0 -6rpx var(--icon-stroke),
+    -16rpx   0     0 -6rpx var(--icon-stroke),
+     16rpx   0     0 -6rpx var(--icon-stroke),
+    -11rpx -11rpx  0 -7rpx var(--icon-stroke),
+     11rpx -11rpx  0 -7rpx var(--icon-stroke),
+    -11rpx  11rpx  0 -7rpx var(--icon-stroke),
+     11rpx  11rpx  0 -7rpx var(--icon-stroke);
+}
+.ic-sun--sm { width: 36rpx; height: 36rpx; }
+.ic-sun--sm .ic-sun__core {
+  width: 14rpx; height: 14rpx;
+  border-width: 2.5rpx;
+  box-shadow:
+     0      -14rpx 0 -5rpx var(--icon-stroke),
+     0       14rpx 0 -5rpx var(--icon-stroke),
+    -14rpx   0     0 -5rpx var(--icon-stroke),
+     14rpx   0     0 -5rpx var(--icon-stroke),
+    -10rpx -10rpx  0 -6rpx var(--icon-stroke),
+     10rpx -10rpx  0 -6rpx var(--icon-stroke),
+    -10rpx  10rpx  0 -6rpx var(--icon-stroke),
+     10rpx  10rpx  0 -6rpx var(--icon-stroke);
+}
+
+/* 月亮 */
+.ic-moon { width: 36rpx; height: 36rpx; position: relative; display: inline-block; }
+.ic-moon__shape {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: var(--icon-stroke);
+  overflow: hidden;
+}
+.ic-moon__shape::after {
+  content: ''; position: absolute;
+  top: -4rpx; right: -10rpx;
+  width: 30rpx; height: 30rpx;
+  border-radius: 50%;
+  background: var(--surface-elevated);
+}
+
+/* 火花 */
+.ic-sparkle { width: 44rpx; height: 44rpx; position: relative; display: inline-block; }
+.ic-sparkle__big,
+.ic-sparkle__small {
+  position: absolute;
+  background: var(--text-main);
+  clip-path: polygon(50% 0, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0 50%, 42% 42%);
+}
+.ic-sparkle__big   { top: 4rpx;  left: 0;     width: 30rpx; height: 30rpx; }
+.ic-sparkle__small { bottom: 2rpx; right: 2rpx; width: 16rpx; height: 16rpx; opacity: 0.75; }
+
+/* 右箭头 */
+.ic-arrow-right { width: 22rpx; height: 22rpx; position: relative; }
+.ic-arrow-right::before {
+  content: ''; position: absolute;
+  top: 50%; left: 0;
+  width: 18rpx; height: 3rpx;
+  background: #FFFFFF;
+  margin-top: -1.5rpx;
+  border-radius: 2rpx;
+}
+.ic-arrow-right::after {
+  content: ''; position: absolute;
+  top: 50%; right: 2rpx;
+  width: 10rpx; height: 10rpx;
+  border-top: 3rpx solid #FFFFFF;
+  border-right: 3rpx solid #FFFFFF;
+  transform: rotate(45deg);
+  margin-top: -5rpx;
+  border-radius: 1rpx;
+}
+
+/* 连衣裙 */
+.ic-dress { position: relative; width: 72rpx; height: 100rpx; }
+.ic-dress__hanger {
+  position: absolute; top: 0; left: 50%;
+  width: 30rpx; height: 14rpx;
+  margin-left: -15rpx;
+  border: 2rpx solid var(--icon-stroke);
+  border-bottom: 0;
+  border-top-left-radius: 14rpx;
+  border-top-right-radius: 14rpx;
+}
+.ic-dress__hanger::after {
+  content: ''; position: absolute; top: 100%; left: 50%;
+  width: 2rpx; height: 8rpx; background: var(--icon-stroke);
+  margin-left: -1rpx;
+}
+.ic-dress__body {
+  position: absolute; top: 20rpx; left: 50%;
+  width: 60rpx; height: 70rpx;
+  margin-left: -30rpx;
+  border: 2rpx solid var(--icon-stroke);
+  background: var(--icon-fill);
+  clip-path: polygon(28% 0, 72% 0, 100% 100%, 0 100%);
+  border-radius: 6rpx;
+}
+
+/* 外套 */
+.ic-coat { position: relative; width: 72rpx; height: 100rpx; }
+.ic-coat__hanger {
+  position: absolute; top: 0; left: 50%;
+  width: 30rpx; height: 14rpx;
+  margin-left: -15rpx;
+  border: 2rpx solid var(--icon-stroke);
+  border-bottom: 0;
+  border-top-left-radius: 14rpx;
+  border-top-right-radius: 14rpx;
+}
+.ic-coat__body {
+  position: absolute; top: 18rpx; left: 50%;
+  width: 60rpx; height: 78rpx;
+  margin-left: -30rpx;
+  border: 2rpx solid var(--icon-stroke);
+  background: var(--icon-fill);
+  border-radius: 8rpx 8rpx 4rpx 4rpx;
+}
+.ic-coat__lapel-l,
+.ic-coat__lapel-r {
+  position: absolute; top: 20rpx;
+  width: 2rpx; height: 48rpx;
+  background: var(--icon-stroke);
+}
+.ic-coat__lapel-l { left: 50%; margin-left: -8rpx; transform: rotate(-6deg); transform-origin: top; }
+.ic-coat__lapel-r { left: 50%; margin-left:  6rpx; transform: rotate( 6deg); transform-origin: top; }
+.ic-coat__belt {
+  position: absolute; top: 62rpx; left: 50%;
+  width: 40rpx; height: 3rpx;
+  margin-left: -20rpx;
+  background: var(--icon-stroke);
+}
+
+/* 衬衫 */
+.ic-shirt { position: relative; width: 72rpx; height: 100rpx; }
+.ic-shirt__hanger {
+  position: absolute; top: 0; left: 50%;
+  width: 30rpx; height: 14rpx;
+  margin-left: -15rpx;
+  border: 2rpx solid var(--icon-stroke);
+  border-bottom: 0;
+  border-top-left-radius: 14rpx;
+  border-top-right-radius: 14rpx;
+}
+.ic-shirt__body {
+  position: absolute; top: 18rpx; left: 50%;
+  width: 60rpx; height: 70rpx;
+  margin-left: -30rpx;
+  border: 2rpx solid var(--icon-stroke);
+  background: var(--icon-fill);
+  border-radius: 6rpx;
+}
+.ic-shirt__collar-l,
+.ic-shirt__collar-r {
+  position: absolute; top: 18rpx;
+  width: 0; height: 0;
+  border-top: 14rpx solid var(--icon-stroke);
+}
+.ic-shirt__collar-l { left: 50%; margin-left: -12rpx; border-right: 8rpx solid transparent; }
+.ic-shirt__collar-r { left: 50%; margin-left:  4rpx;  border-left:  8rpx solid transparent; }
+.ic-shirt__tie {
+  position: absolute; top: 30rpx; left: 50%;
+  width: 8rpx; height: 36rpx;
+  margin-left: -4rpx;
+  background: var(--icon-stroke);
+  clip-path: polygon(30% 0, 70% 0, 100% 100%, 50% 100%, 0 100%);
+}
+
+/* ============ 深色主题覆盖 ============ */
+.page-root.theme-dark .duo-cell__ai-arrow {
+  background: var(--color-primary-deep);
+  box-shadow: 0 6rpx 18rpx -2rpx rgba(0, 0, 0, 0.5);
+}
+.page-root.theme-dark .ic-arrow-right::before { background: #2E241D; }
+.page-root.theme-dark .ic-arrow-right::after {
+  border-top-color: #2E241D;
+  border-right-color: #2E241D;
+}
+.page-root.theme-dark .ic-moon__shape::after { background: var(--bg-start); }
+
+.safe-bottom { height: calc(env(safe-area-inset-bottom) + 100rpx); }
+
+.tap-scale:active { transform: scale(0.97); transition: transform 0.15s ease; }

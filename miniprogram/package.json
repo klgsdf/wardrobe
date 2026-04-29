@@ -1,0 +1,9 @@
+{
+  "name": "wardrobe-miniprogram",
+  "version": "1.0.0",
+  "description": "智能衣柜微信小程序 - 前端依赖",
+  "private": true,
+  "dependencies": {
+    "lin-ui": "latest"
+  }
+}

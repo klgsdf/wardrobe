@@ -1,0 +1,207 @@
+<!--pages/wardrobe/wardrobe.wxml - 衣柜 DIY 页-->
+<view class="page-root {{isDark ? 'theme-dark' : ''}}">
+
+  <!-- 自定义顶栏 -->
+  <view class="nav-pad" style="height: {{navPadHeight}}px;"></view>
+  <view class="diy-header"
+        style="top: {{menuBtnTop}}px; height: {{menuBtnHeight}}px;">
+    <view class="diy-header__btn tap-scale" bindtap="onReset" style="height: {{menuBtnHeight}}px;">
+      <text class="diy-header__btn-text">重置</text>
+    </view>
+    <view class="diy-header__spacer"></view>
+    <view class="diy-header__btn diy-header__btn--primary tap-scale" bindtap="onDone" style="height: {{menuBtnHeight}}px;">
+      <text class="diy-header__btn-text">完成</text>
+    </view>
+  </view>
+
+  <!-- 标题区 -->
+  <view class="diy-title">
+    <view class="diy-title__main">衣柜 DIY</view>
+    <view class="diy-title__sub">点击任意模块，切换你喜欢的组件</view>
+  </view>
+
+  <!-- ========== 画布区：场景盒 + 悬浮玻璃衣柜 ========== -->
+  <view class="canvas-area">
+    <view class="scene">
+      <view class="scene__wall"></view>
+      <view class="scene__floor"></view>
+      <view class="scene__skirting"></view>
+      <view class="scene__light-halo"></view>
+    </view>
+
+    <view class="canvas-closet">
+      <view class="canvas-closet__shadow"></view>
+      <view class="canvas-closet__frame">
+
+        <!-- 热区：LED 灯光 -->
+        <view class="zone zone--lighting {{activeZone === 'lighting' ? 'is-active' : ''}}"
+              data-zone="lighting" bindtap="onZoneTap">
+          <view wx:if="{{layout.lighting !== 'off'}}" class="c-led led--{{layout.lighting}}"></view>
+        </view>
+
+        <!-- 热区：置物架 + 折叠物 -->
+        <view class="zone zone--topshelf {{activeZone === 'top-shelf' ? 'is-active' : ''}}"
+              data-zone="top-shelf" bindtap="onZoneTap">
+          <view class="c-shelf c-shelf--top"></view>
+          <view wx:if="{{layout.topShelf === 'divided'}}" class="c-shelf__divider c-shelf__divider--a"></view>
+          <view wx:if="{{layout.topShelf === 'divided'}}" class="c-shelf__divider c-shelf__divider--b"></view>
+          <view class="c-folds">
+            <view class="c-fold c-fold--a"></view>
+            <view class="c-fold c-fold--b"></view>
+            <view class="c-fold c-fold--c"></view>
+          </view>
+        </view>
+
+        <!-- 热区：挂衣杆（左半柜体） -->
+        <view class="zone zone--hanger {{activeZone === 'hanger' ? 'is-active' : ''}}"
+              data-zone="hanger" bindtap="onZoneTap">
+          <view class="c-rod c-rod--{{layout.hanger}}"></view>
+          <view wx:if="{{layout.hanger === 'double'}}" class="c-rod c-rod--lower"></view>
+          <view class="c-hang">
+            <view class="ic-shirt">
+              <view class="ic-shirt__hanger"></view>
+              <view class="ic-shirt__body"></view>
+              <view class="ic-shirt__collar-l"></view>
+              <view class="ic-shirt__collar-r"></view>
+              <view class="ic-shirt__tie"></view>
+            </view>
+            <view class="ic-dress">
+              <view class="ic-dress__hanger"></view>
+              <view class="ic-dress__body"></view>
+            </view>
+            <view class="ic-coat">
+              <view class="ic-coat__hanger"></view>
+              <view class="ic-coat__body"></view>
+              <view class="ic-coat__lapel-l"></view>
+              <view class="ic-coat__lapel-r"></view>
+              <view class="ic-coat__belt"></view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 热区：门（右半柜体） -->
+        <view class="zone zone--doors door--{{layout.doors}} {{activeZone === 'doors' ? 'is-active' : ''}}"
+              data-zone="doors" bindtap="onZoneTap">
+          <view class="c-door-panel">
+            <view wx:if="{{layout.doors === 'sliding'}}" class="c-door-dots">
+              <view wx:for="{{dots24}}" wx:key="*this" class="c-door-dots__dot"></view>
+            </view>
+            <view wx:if="{{layout.doors === 'louver'}}" class="c-door-louvers">
+              <view wx:for="{{bars10}}" wx:key="*this" class="c-door-louvers__bar"></view>
+            </view>
+            <view wx:if="{{layout.doors === 'swing'}}" class="c-door-swing"></view>
+            <view wx:if="{{layout.doors === 'mirror'}}" class="c-door-mirror"></view>
+          </view>
+          <view class="c-door-handle"></view>
+        </view>
+
+        <!-- 热区：抽屉 -->
+        <view class="zone zone--drawers drawers--{{layout.drawers}} {{activeZone === 'drawers' ? 'is-active' : ''}}"
+              data-zone="drawers" bindtap="onZoneTap">
+          <view class="c-drawer"><view class="c-drawer__notch"></view></view>
+          <view class="c-drawer"><view class="c-drawer__notch"></view></view>
+          <view wx:if="{{layout.drawers >= 3}}" class="c-drawer"><view class="c-drawer__notch"></view></view>
+          <view wx:if="{{layout.drawers >= 4}}" class="c-drawer"><view class="c-drawer__notch"></view></view>
+        </view>
+
+        <!-- 热区：鞋架（悬浮左下） -->
+        <view class="zone zone--accessories {{activeZone === 'accessories' ? 'is-active' : ''}}"
+              data-zone="accessories" bindtap="onZoneTap">
+          <view wx:if="{{layout.accessories !== 'none'}}" class="c-shoe c-shoe--{{layout.accessories}}">
+            <view class="c-shoe__level"></view>
+            <view class="c-shoe__level"></view>
+            <view wx:if="{{layout.accessories === 'shoe-rack-3'}}" class="c-shoe__level"></view>
+          </view>
+        </view>
+
+        <view class="canvas-closet__gloss"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 底部工具抽屉：Tabs + 组件列表 ========== -->
+  <view class="tool-drawer">
+    <scroll-view class="tool-drawer__tabs" scroll-x scroll-with-animation>
+      <view wx:for="{{tabs}}" wx:key="key"
+            class="tool-tab tap-scale {{activeTab === item.key ? 'is-active' : ''}}"
+            data-key="{{item.key}}" bindtap="onTabTap">
+        <text>{{item.label}}</text>
+      </view>
+    </scroll-view>
+
+    <scroll-view class="tool-drawer__list" scroll-x scroll-with-animation>
+      <view wx:for="{{componentList}}" wx:key="key"
+            class="tool-card tap-scale {{layout[activeTab] === item.key ? 'is-picked' : ''}}"
+            data-key="{{item.key}}" bindtap="onComponentPick">
+        <view class="tool-card__preview preview--{{activeTab}}-{{item.key}}">
+          <!-- 门款预览 -->
+          <block wx:if="{{activeTab === 'doors'}}">
+            <view wx:if="{{item.key === 'sliding'}}" class="pv-sliding">
+              <view wx:for="{{dots9}}" wx:key="*this" class="pv-sliding__dot"></view>
+            </view>
+            <view wx:elif="{{item.key === 'swing'}}" class="pv-swing"></view>
+            <view wx:elif="{{item.key === 'louver'}}" class="pv-louver">
+              <view wx:for="{{bars5}}" wx:key="*this" class="pv-louver__bar"></view>
+            </view>
+            <view wx:elif="{{item.key === 'mirror'}}" class="pv-mirror"></view>
+            <view wx:elif="{{item.key === 'open'}}" class="pv-open"></view>
+          </block>
+
+          <!-- 抽屉预览 -->
+          <block wx:elif="{{activeTab === 'drawers'}}">
+            <view class="pv-drawers pv-drawers--{{item.key}}">
+              <view class="pv-drawer"></view>
+              <view class="pv-drawer"></view>
+              <view wx:if="{{item.key >= 3}}" class="pv-drawer"></view>
+              <view wx:if="{{item.key >= 4}}" class="pv-drawer"></view>
+            </view>
+          </block>
+
+          <!-- 挂衣杆预览 -->
+          <block wx:elif="{{activeTab === 'hanger'}}">
+            <view class="pv-hanger">
+              <view class="pv-hanger__rod"></view>
+              <view wx:if="{{item.key === 'double'}}" class="pv-hanger__rod pv-hanger__rod--low"></view>
+              <view wx:if="{{item.key === 'extendable'}}" class="pv-hanger__knob"></view>
+            </view>
+          </block>
+
+          <!-- 置物架预览 -->
+          <block wx:elif="{{activeTab === 'topShelf'}}">
+            <view class="pv-shelf">
+              <view class="pv-shelf__line"></view>
+              <view wx:if="{{item.key === 'with-light'}}" class="pv-shelf__light"></view>
+              <view wx:if="{{item.key === 'divided'}}" class="pv-shelf__grid">
+                <view></view><view></view><view></view>
+              </view>
+            </view>
+          </block>
+
+          <!-- 鞋架预览 -->
+          <block wx:elif="{{activeTab === 'accessories'}}">
+            <view class="pv-shoe pv-shoe--{{item.key}}">
+              <view wx:if="{{item.key !== 'none'}}" class="pv-shoe__level"></view>
+              <view wx:if="{{item.key !== 'none'}}" class="pv-shoe__level"></view>
+              <view wx:if="{{item.key === 'shoe-rack-3'}}" class="pv-shoe__level"></view>
+              <view wx:if="{{item.key === 'none'}}" class="pv-shoe__x"></view>
+            </view>
+          </block>
+
+          <!-- 灯光预览 -->
+          <block wx:elif="{{activeTab === 'lighting'}}">
+            <view class="pv-light pv-light--{{item.key}}">
+              <view wx:if="{{item.key !== 'off'}}" class="pv-light__strip"></view>
+              <view wx:if="{{item.key !== 'off'}}" class="pv-light__glow"></view>
+              <view wx:if="{{item.key === 'off'}}" class="pv-light__x"></view>
+            </view>
+          </block>
+        </view>
+        <view class="tool-card__label">{{item.label}}</view>
+        <view class="tool-card__desc">{{item.desc}}</view>
+        <view wx:if="{{layout[activeTab] === item.key}}" class="tool-card__check">✓</view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>
