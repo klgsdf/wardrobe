@@ -1,9 +1,9 @@
-/* custom-tab-bar/index.wxss - Ins 极简风 tabBar */
+/* custom-tab-bar/index.wxss - Ins 极简风 tabBar（白·粉·蓝配色） */
 
 /* ============ 色板变量：浅色（默认） ============ */
 .tabbar {
-  --tb-stroke:      #3D3D3D;                    /* 图标线条 + 激活 label */
-  --tb-label-sub:   #9E9E9E;                    /* 未选中 label */
+  --tb-stroke:      #333333;                    /* 图标线条 + 激活 label */
+  --tb-label-sub:   #999999;                    /* 未选中 label */
   --tb-surface:     #FFFFFF;                    /* 底条背景 */
   --tb-border:      rgba(0, 0, 0, 0.06);
   --tb-shadow-bar:  none;
@@ -13,7 +13,7 @@
 /* ============ 色板变量：深色 ============ */
 .tabbar.theme-dark {
   --tb-stroke:      #E8E8E8;
-  --tb-label-sub:   #666666;
+  --tb-label-sub:   #888888;
   --tb-surface:     #1A1A1A;
   --tb-border:      rgba(255, 255, 255, 0.06);
   --tb-shadow-bar:  none;

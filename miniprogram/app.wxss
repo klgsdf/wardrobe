@@ -1,17 +1,17 @@
-/**app.wxss - Ins 极简风电子衣柜（莫兰迪低饱和色系）**/
+/**app.wxss - Ins 极简风电子衣柜（白·粉·蓝配色）**/
 
 page {
-  /* ===== Ins 极简风 · 莫兰迪色系 ===== */
-  /* 主色：低饱和奶咖 */
-  --color-primary: #C4A882;
-  --color-primary-light: #D9C4A8;
-  --color-primary-deep: #A68B6A;
-  --color-primary-gradient: linear-gradient(135deg, #D9C4A8, #C4A882);
+  /* ===== Ins 极简风 · 白/粉/蓝配色 ===== */
+  /* 主色：清新浅蓝 */
+  --color-primary: #A3CFFF;
+  --color-primary-light: #C2E0FF;
+  --color-primary-deep: #7AB8FF;
+  --color-primary-gradient: linear-gradient(135deg, #C2E0FF, #A3CFFF);
 
-  /* 背景：浅米白 → 纯白，干净通透 */
-  --bg-start: #FAFAF8;
+  /* 背景：纯净白色 */
+  --bg-start: #FFFFFF;
   --bg-end: #FFFFFF;
-  --bg-page: #FAFAF8;
+  --bg-page: #FFFFFF;
 
   /* 卡片：纯白 + 极淡灰边框，无阴影 */
   --card-bg: #FFFFFF;
@@ -21,15 +21,15 @@ page {
 
   /* 表面层级：极简 */
   --surface-elevated: #FFFFFF;
-  --surface-inner: #F7F5F2;
+  --surface-inner: #FAF7F9;
   --stats-bg: #FFFFFF;
-  --ai-card-bg: #F5F0EB;
+  --ai-card-bg: #FFF5FA;
   --ai-card-border: rgba(0, 0, 0, 0.06);
   --ai-halo: transparent;
 
   /* 图标：浅灰线条 */
-  --icon-stroke: #B8B0A8;
-  --icon-stroke-soft: rgba(184, 176, 168, 0.50);
+  --icon-stroke: #B0A8B4;
+  --icon-stroke-soft: rgba(176, 168, 180, 0.50);
   --icon-fill: transparent;
 
   /* 阴影：极简，几乎无阴影 */
@@ -38,27 +38,27 @@ page {
   --shadow-hover: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
   --shadow-ios: none;
 
-  /* 文字：深灰，非纯黑，低饱和 */
-  --text-main: #3D3D3D;
-  --text-sub: #9E9E9E;
-  --text-assist: #BDBDBD;
+  /* 文字：深灰/浅灰 */
+  --text-main: #333333;
+  --text-sub: #999999;
+  --text-assist: #BBBBBB;
 
-  --nav-bg: rgba(250, 250, 248, 0.95);
+  --nav-bg: rgba(255, 255, 255, 0.95);
   --line-soft: rgba(0, 0, 0, 0.06);
-  --line-grid: #F0EEEC;
+  --line-grid: #F2F0F4;
 
-  /* ===== 极简场景 Token（去玻璃态） ===== */
-  --scene-wall-top: #F5F0EB;
-  --scene-wall-bottom: #EDE8E2;
-  --scene-floor-top: #E8E2DA;
-  --scene-floor-bottom: #E0DAD2;
-  --scene-skirting: rgba(180, 170, 158, 0.25);
-  --glass-panel: #F7F5F2;
-  --glass-edge: rgba(0, 0, 0, 0.08);
-  --glass-outline: rgba(180, 170, 158, 0.35);
+  /* ===== 极简场景 Token（白/粉/蓝） ===== */
+  --scene-wall-top: #FFF8FB;
+  --scene-wall-bottom: #FFF0F6;
+  --scene-floor-top: #F5F0F7;
+  --scene-floor-bottom: #EDE8F0;
+  --scene-skirting: rgba(200, 180, 200, 0.20);
+  --glass-panel: #FAF7F9;
+  --glass-edge: rgba(0, 0, 0, 0.06);
+  --glass-outline: rgba(200, 180, 200, 0.30);
   --led-glow: transparent;
   --led-line: transparent;
-  --bridge-top: #F5F0EB;
+  --bridge-top: #FFF8FB;
 
   /* 圆角：极简小圆角 */
   --radius-xs: 8rpx;
@@ -83,18 +83,18 @@ page {
 .font-serif { font-family: inherit; font-weight: 600; letter-spacing: 1rpx; }
 .font-sans  { font-family: inherit; }
 
-/* ===== 深色主题（Ins 极简暗色模式） ===== */
+/* ===== 深色主题（白/粉/蓝 暗色模式） ===== */
 .theme-dark {
   /* 背景：深灰，非纯黑 */
   --bg-start: #1A1A1A;
   --bg-end:   #1A1A1A;
   --bg-page:  #1A1A1A;
 
-  /* 主色：暗色下 muted */
-  --color-primary:       #A68B6A;
-  --color-primary-light: #B8A08A;
-  --color-primary-deep:  #8A7358;
-  --color-primary-gradient: linear-gradient(135deg, #B8A08A, #A68B6A);
+  /* 主色：暗色下 muted 浅蓝 */
+  --color-primary:       #7AB8FF;
+  --color-primary-light: #A3CFFF;
+  --color-primary-deep:  #5A9FE8;
+  --color-primary-gradient: linear-gradient(135deg, #A3CFFF, #7AB8FF);
 
   /* 卡片：深灰 */
   --card-bg:          #242424;
@@ -105,7 +105,7 @@ page {
   --surface-elevated: #242424;
   --surface-inner:    #2A2A2A;
   --stats-bg:         #242424;
-  --ai-card-bg:       #2A2A2A;
+  --ai-card-bg:       #2A2028;
   --ai-card-border:   rgba(255, 255, 255, 0.06);
   --ai-halo:          transparent;
 
@@ -129,18 +129,18 @@ page {
   --line-soft: rgba(255, 255, 255, 0.06);
   --line-grid: rgba(255, 255, 255, 0.04);
 
-  /* 场景盒 - 深色极简 */
-  --scene-wall-top:    #242424;
-  --scene-wall-bottom: #1E1E1E;
-  --scene-floor-top:   #1E1E1E;
-  --scene-floor-bottom:#1A1A1A;
-  --scene-skirting:    rgba(136, 136, 136, 0.15);
-  --glass-panel:       #2A2A2A;
-  --glass-edge:        rgba(255, 255, 255, 0.08);
-  --glass-outline:     rgba(136, 136, 136, 0.25);
+  /* 场景盒 - 深色极简（粉蓝暗调） */
+  --scene-wall-top:    #242024;
+  --scene-wall-bottom: #1E1A1E;
+  --scene-floor-top:   #1E1A1E;
+  --scene-floor-bottom:#1A161A;
+  --scene-skirting:    rgba(136, 120, 136, 0.15);
+  --glass-panel:       #2A262A;
+  --glass-edge:        rgba(255, 255, 255, 0.06);
+  --glass-outline:     rgba(136, 120, 136, 0.20);
   --led-glow:          transparent;
   --led-line:          transparent;
-  --bridge-top:        #242424;
+  --bridge-top:        #242024;
 
   background: var(--bg-page);
   color: var(--text-main);
