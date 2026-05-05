@@ -1,96 +1,81 @@
-/**app.wxss - 智能衣柜全局样式（iOS 15 设计系统融合焦糖米黄风）**/
+/**app.wxss - Ins 极简风电子衣柜（莫兰迪低饱和色系）**/
 
 page {
-  /* ===== iOS 15 系统色彩 ===== */
-  --ios-blue: #007AFF;
-  --ios-blue-dark: #0A84FF;
-  --ios-green: #34C759;
-  --ios-red: #FF3B30;
-  --ios-orange: #FF9500;
-  --ios-gray: #8E8E93;
-  --ios-gray-2: #AEAEB2;
-  --ios-gray-3: #C7C7CC;
-  --ios-gray-4: #D1D1D6;
-  --ios-gray-5: #E5E5EA;
-  --ios-gray-6: #F2F2F7;
+  /* ===== Ins 极简风 · 莫兰迪色系 ===== */
+  /* 主色：低饱和奶咖 */
+  --color-primary: #C4A882;
+  --color-primary-light: #D9C4A8;
+  --color-primary-deep: #A68B6A;
+  --color-primary-gradient: linear-gradient(135deg, #D9C4A8, #C4A882);
 
-  /* ===== 色彩系统 - iOS + 焦糖融合 ===== */
-  --color-primary: #D4A373;            /* 焦糖主色 */
-  --color-primary-light: #E6C29A;
-  --color-primary-deep: #B88855;
-  --color-primary-gradient: linear-gradient(135deg, #E6C29A, #D4A373);
-
-  --color-cream: #FAEDCD;              /* 辅助米色 */
-  --color-cream-soft: #FEFAE0;         /* 页面背景顶部米黄 */
-
-  /* iOS 风格背景：更干净的白色系 */
-  --bg-start: #FEFAE0;
+  /* 背景：浅米白 → 纯白，干净通透 */
+  --bg-start: #FAFAF8;
   --bg-end: #FFFFFF;
-  --bg-page: linear-gradient(180deg, #FEFAE0 0%, #FFFFFF 100%);
+  --bg-page: #FAFAF8;
 
-  /* iOS 风格卡片背景：更高透明度，更柔和 */
-  --card-bg: rgba(255, 255, 255, 0.80);
-  --card-border: rgba(120, 120, 128, 0.16);
-  --card-bg-strong: rgba(255, 255, 255, 0.95);
+  /* 卡片：纯白 + 极淡灰边框，无阴影 */
+  --card-bg: #FFFFFF;
+  --card-border: rgba(0, 0, 0, 0.06);
+  --card-bg-strong: #FFFFFF;
   --card-bg-solid: #FFFFFF;
 
-  /* 表面层级 */
+  /* 表面层级：极简 */
   --surface-elevated: #FFFFFF;
-  --surface-inner:    #FFFDF5;
-  --stats-bg:         rgba(250, 237, 205, 0.55);
-  --ai-card-bg:       linear-gradient(160deg, #FAEDCD 0%, #E6C29A 100%);
-  --ai-card-border:   rgba(212, 163, 115, 0.24);
-  --ai-halo:          rgba(255, 255, 255, 0.50);
+  --surface-inner: #F7F5F2;
+  --stats-bg: #FFFFFF;
+  --ai-card-bg: #F5F0EB;
+  --ai-card-border: rgba(0, 0, 0, 0.06);
+  --ai-halo: transparent;
 
-  /* 图标线条专用颜色 */
-  --icon-stroke:      #B88855;
-  --icon-stroke-soft: rgba(184, 136, 85, 0.55);
-  --icon-fill:        #FFFDF5;
+  /* 图标：浅灰线条 */
+  --icon-stroke: #B8B0A8;
+  --icon-stroke-soft: rgba(184, 176, 168, 0.50);
+  --icon-fill: transparent;
 
-  /* iOS 风格阴影：更柔和、更自然 */
-  --shadow-soft: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 8rpx 40rpx -8rpx rgba(0, 0, 0, 0.08);
-  --shadow-hover: 0 16rpx 48rpx -12rpx rgba(0, 0, 0, 0.12);
-  --shadow-ios: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  /* 阴影：极简，几乎无阴影 */
+  --shadow-soft: none;
+  --shadow-card: none;
+  --shadow-hover: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
+  --shadow-ios: none;
 
-  /* iOS 风格文字色 */
-  --text-main: #4A403A;                /* 保持焦糖深棕 */
-  --text-sub: rgba(60, 60, 67, 0.55);  /* iOS 风格次级文字 */
-  --text-assist: rgba(60, 60, 67, 0.35);
+  /* 文字：深灰，非纯黑，低饱和 */
+  --text-main: #3D3D3D;
+  --text-sub: #9E9E9E;
+  --text-assist: #BDBDBD;
 
-  --nav-bg: rgba(255, 255, 255, 0.85);
-  --line-soft: rgba(120, 120, 128, 0.15);
-  --line-grid: #F2F2F7;
+  --nav-bg: rgba(250, 250, 248, 0.95);
+  --line-soft: rgba(0, 0, 0, 0.06);
+  --line-grid: #F0EEEC;
 
-  /* ===== 场景盒 Token ===== */
-  --scene-wall-top:    #F5E8D1;
-  --scene-wall-bottom: #EFE0C4;
-  --scene-floor-top:   #E8D5B8;
-  --scene-floor-bottom:#DFC8A6;
-  --scene-skirting:    rgba(184, 136, 85, 0.35);
-  --glass-panel:       rgba(255, 255, 255, 0.45);
-  --glass-edge:        rgba(255, 255, 255, 0.85);
-  --glass-outline:     rgba(184, 136, 85, 0.50);
-  --led-glow:          rgba(255, 220, 160, 0.75);
-  --led-line:          #F5D89A;
-  --bridge-top:        #F7EBD4;
+  /* ===== 极简场景 Token（去玻璃态） ===== */
+  --scene-wall-top: #F5F0EB;
+  --scene-wall-bottom: #EDE8E2;
+  --scene-floor-top: #E8E2DA;
+  --scene-floor-bottom: #E0DAD2;
+  --scene-skirting: rgba(180, 170, 158, 0.25);
+  --glass-panel: #F7F5F2;
+  --glass-edge: rgba(0, 0, 0, 0.08);
+  --glass-outline: rgba(180, 170, 158, 0.35);
+  --led-glow: transparent;
+  --led-line: transparent;
+  --bridge-top: #F5F0EB;
 
-  /* iOS 圆角规范 */
-  --radius-xs: 8rpx;                   /* 4px - 小组件 */
-  --radius-sm: 16rpx;                  /* 8px - 内部元素 */
-  --radius-tag: 16rpx;
-  --radius-card: 24rpx;                /* 12px - 标准卡片 */
-  --radius-card-lg: 36rpx;             /* 18px - 大卡片 */
-  --radius-btn: 9999rpx;               /* 胶囊 */
+  /* 圆角：极简小圆角 */
+  --radius-xs: 8rpx;
+  --radius-sm: 12rpx;
+  --radius-tag: 12rpx;
+  --radius-card: 16rpx;
+  --radius-card-lg: 20rpx;
+  --radius-btn: 9999rpx;
 
   background: var(--bg-page);
   min-height: 100vh;
-  /* iOS 优先字体栈 */
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "HarmonyOS Sans SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  /* 极简无衬线细字体 */
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "HarmonyOS Sans SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
   color: var(--text-main);
   font-size: 28rpx;
   line-height: 1.5;
-  letter-spacing: 0.5rpx;
+  letter-spacing: 0.3rpx;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -98,79 +83,64 @@ page {
 .font-serif { font-family: inherit; font-weight: 600; letter-spacing: 1rpx; }
 .font-sans  { font-family: inherit; }
 
-/* ===== 深色主题（iOS Dark Mode + 焦糖暖调） ===== */
+/* ===== 深色主题（Ins 极简暗色模式） ===== */
 .theme-dark {
-  /* 背景：iOS 深色风格 + 暖棕调 */
-  --bg-start: #1C140F;
-  --bg-end:   #241A13;
-  --bg-page:  radial-gradient(120% 80% at 50% 0%, #2E241D 0%, #1C140F 70%);
+  /* 背景：深灰，非纯黑 */
+  --bg-start: #1A1A1A;
+  --bg-end:   #1A1A1A;
+  --bg-page:  #1A1A1A;
 
-  /* iOS 深色系统色 */
-  --ios-blue: #0A84FF;
-  --ios-green: #32D74B;
-  --ios-red: #FF453A;
-  --ios-orange: #FF9F0A;
-  --ios-gray: #8E8E93;
-  --ios-gray-2: #636366;
-  --ios-gray-3: #48484A;
-  --ios-gray-4: #3A3A3C;
-  --ios-gray-5: #2C2C2E;
-  --ios-gray-6: #1C1C1E;
+  /* 主色：暗色下 muted */
+  --color-primary:       #A68B6A;
+  --color-primary-light: #B8A08A;
+  --color-primary-deep:  #8A7358;
+  --color-primary-gradient: linear-gradient(135deg, #B8A08A, #A68B6A);
 
-  /* 主色在暗色下提亮 */
-  --color-primary:       #E6B888;
-  --color-primary-light: #F2CFA5;
-  --color-primary-deep:  #C9A077;
-  --color-primary-gradient: linear-gradient(135deg, #F2CFA5, #E6B888);
+  /* 卡片：深灰 */
+  --card-bg:          #242424;
+  --card-bg-strong:   #2A2A2A;
+  --card-bg-solid:    #1E1E1E;
+  --card-border:      rgba(255, 255, 255, 0.06);
 
-  --color-cream:      #4A3828;
-  --color-cream-soft: #3A2B20;
+  --surface-elevated: #242424;
+  --surface-inner:    #2A2A2A;
+  --stats-bg:         #242424;
+  --ai-card-bg:       #2A2A2A;
+  --ai-card-border:   rgba(255, 255, 255, 0.06);
+  --ai-halo:          transparent;
 
-  /* iOS 深色卡片背景 */
-  --card-bg:          rgba(44, 44, 46, 0.72);
-  --card-bg-strong:   rgba(44, 44, 46, 0.92);
-  --card-bg-solid:    #1C1C1E;
-  --card-border:      rgba(120, 120, 128, 0.24);
-
-  --surface-elevated: #2C2C2E;
-  --surface-inner:    #3A2B20;
-  --stats-bg:         rgba(212, 163, 115, 0.10);
-  --ai-card-bg:       linear-gradient(160deg, #4A3828 0%, #2E221A 100%);
-  --ai-card-border:   rgba(230, 184, 136, 0.30);
-  --ai-halo:          rgba(230, 184, 136, 0.18);
-
-  /* 图标在暗色下用亮焦糖替换深棕线 */
-  --icon-stroke:      #E6B888;
-  --icon-stroke-soft: rgba(230, 184, 136, 0.55);
+  /* 图标：浅灰 */
+  --icon-stroke:      #888888;
+  --icon-stroke-soft: rgba(136, 136, 136, 0.50);
   --icon-fill:        transparent;
 
-  /* iOS 深色阴影 */
-  --shadow-soft:  0 4rpx 12rpx rgba(0, 0, 0, 0.40);
-  --shadow-card:  0 16rpx 48rpx -12rpx rgba(0, 0, 0, 0.60);
-  --shadow-hover: 0 24rpx 64rpx -16rpx rgba(0, 0, 0, 0.70);
-  --shadow-ios: 0 4rpx 20rpx rgba(0, 0, 0, 0.30);
+  /* 阴影：极简 */
+  --shadow-soft:  none;
+  --shadow-card:  none;
+  --shadow-hover: 0 8rpx 24rpx rgba(0, 0, 0, 0.20);
+  --shadow-ios: none;
 
-  /* iOS 深色文字 */
-  --text-main:   #F5E6D3;
-  --text-sub:    rgba(235, 235, 245, 0.55);
-  --text-assist: rgba(235, 235, 245, 0.35);
+  /* 文字：浅灰 */
+  --text-main:   #E8E8E8;
+  --text-sub:    #888888;
+  --text-assist: #666666;
 
-  --nav-bg:   rgba(28, 20, 15, 0.85);
-  --line-soft: rgba(120, 120, 128, 0.24);
-  --line-grid: rgba(255, 255, 255, 0.06);
+  --nav-bg:   rgba(26, 26, 26, 0.95);
+  --line-soft: rgba(255, 255, 255, 0.06);
+  --line-grid: rgba(255, 255, 255, 0.04);
 
-  /* 场景盒 - 深色 */
-  --scene-wall-top:    #2E241D;
-  --scene-wall-bottom: #241A13;
-  --scene-floor-top:   #1F1610;
-  --scene-floor-bottom:#1C140F;
-  --scene-skirting:    rgba(230, 184, 136, 0.25);
-  --glass-panel:       rgba(230, 184, 136, 0.08);
-  --glass-edge:        rgba(255, 236, 204, 0.35);
-  --glass-outline:     rgba(230, 184, 136, 0.50);
-  --led-glow:          rgba(242, 207, 165, 0.55);
-  --led-line:          #E6B888;
-  --bridge-top:        #2A1F18;
+  /* 场景盒 - 深色极简 */
+  --scene-wall-top:    #242424;
+  --scene-wall-bottom: #1E1E1E;
+  --scene-floor-top:   #1E1E1E;
+  --scene-floor-bottom:#1A1A1A;
+  --scene-skirting:    rgba(136, 136, 136, 0.15);
+  --glass-panel:       #2A2A2A;
+  --glass-edge:        rgba(255, 255, 255, 0.08);
+  --glass-outline:     rgba(136, 136, 136, 0.25);
+  --led-glow:          transparent;
+  --led-line:          transparent;
+  --bridge-top:        #242424;
 
   background: var(--bg-page);
   color: var(--text-main);
