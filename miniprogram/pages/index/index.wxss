@@ -1,4 +1,4 @@
-/* pages/index/index.wxss - 首页（焦糖米黄风 · 悬浮玻璃衣柜 · 场景盒渐变） */
+/* pages/index/index.wxss - 首页（iOS 15 设计系统 · 焦糖米黄风） */
 
 /* ============ 页面根 ============ */
 .page-root {
@@ -12,7 +12,7 @@
 }
 .nav-pad { width: 100%; }
 
-/* ============ 胶囊同行导航行 ============ */
+/* ============ 胶囊同行导航行（iOS 风格） ============ */
 .nav-actions {
   position: fixed;
   left: 24rpx;
@@ -31,7 +31,7 @@
   padding: 0 28rpx 32rpx;
 }
 
-/* ============ 衣柜名字胶囊 ============ */
+/* ============ 衣柜名字胶囊（iOS 风格大圆角） ============ */
 .wardrobe-name {
   display: inline-flex;
   align-items: center;
@@ -39,7 +39,7 @@
   padding: 0 26rpx;
   background: var(--surface-elevated);
   border: 1rpx solid var(--card-border);
-  border-radius: 9999rpx;
+  border-radius: var(--radius-btn);
   box-shadow: var(--shadow-soft);
   box-sizing: border-box;
 }
@@ -72,17 +72,15 @@
   box-sizing: border-box;
 }
 
-/* ============ 主卡：房间场景盒 ============ */
+/* ============ 主卡：房间场景盒（iOS 16px 圆角） ============ */
 .wardrobe-card {
   position: relative;
   width: 100%;
   padding-top: 115%;
-  border-radius: var(--radius-card-lg);
+  border-radius: var(--radius-card);
   overflow: hidden;
   margin-top: 4rpx;
-  box-shadow:
-    0 24rpx 60rpx -20rpx rgba(184, 136, 85, 0.28),
-    0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-card);
 }
 
 /* 场景层：墙 + 地板 + 踢脚线 + 光晕 */
@@ -154,28 +152,28 @@
   filter: blur(6rpx);
 }
 
-/* 玻璃框体 */
+/* 玻璃框体（iOS 风格 backdrop-blur） */
 .closet-art__frame {
   position: relative;
   width: 100%; height: 100%;
   background: var(--glass-panel);
   border: 2rpx solid var(--glass-edge);
-  border-radius: 20rpx;
+  border-radius: var(--radius-sm);
   box-shadow:
-    0 20rpx 50rpx -10rpx rgba(184, 136, 85, 0.32),
-    0 0 0 1rpx rgba(255, 255, 255, 0.6) inset,
-    0 2rpx 8rpx rgba(255, 255, 255, 0.8) inset;
+    0 16rpx 48rpx -12rpx rgba(184, 136, 85, 0.25),
+    0 0 0 1rpx rgba(255, 255, 255, 0.5) inset,
+    0 2rpx 8rpx rgba(255, 255, 255, 0.6) inset;
   box-sizing: border-box;
   transform: translateY(-6rpx);
-  backdrop-filter: blur(6rpx);
-  -webkit-backdrop-filter: blur(6rpx);
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
   overflow: hidden;
 }
 
 .page-root.theme-dark .closet-art__frame {
   box-shadow:
-    0 20rpx 50rpx -10rpx rgba(230, 184, 136, 0.35),
-    0 0 0 1rpx rgba(230, 184, 136, 0.25) inset;
+    0 16rpx 48rpx -12rpx rgba(230, 184, 136, 0.30),
+    0 0 0 1rpx rgba(230, 184, 136, 0.20) inset;
 }
 
 /* 玻璃高光 */
@@ -224,7 +222,7 @@
   flex: 1;
   background: #FFFDF5;
   border: 1rpx solid var(--glass-outline);
-  border-radius: 2rpx;
+  border-radius: var(--radius-xs);
   box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.06);
 }
 .fold--a { height: 70%; }
@@ -286,7 +284,7 @@
   width: 100%; height: 100%;
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 253, 245, 0.75) 100%);
   border: 2rpx solid var(--glass-outline);
-  border-radius: 8rpx;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05) inset;
 }
@@ -349,7 +347,7 @@
   position: absolute;
   inset: 8rpx;
   background: linear-gradient(135deg, rgba(230, 220, 200, 0.9) 0%, rgba(255, 255, 255, 0.7) 35%, rgba(230, 220, 200, 0.9) 100%);
-  border-radius: 4rpx;
+  border-radius: var(--radius-xs);
 }
 .page-root.theme-dark .door-mirror {
   background: linear-gradient(135deg, rgba(74, 56, 40, 0.9) 0%, rgba(230, 184, 136, 0.3) 35%, rgba(74, 56, 40, 0.9) 100%);
@@ -375,7 +373,7 @@
   position: relative;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 253, 245, 0.4) 100%);
   border: 1.5rpx solid var(--glass-outline);
-  border-radius: 4rpx;
+  border-radius: var(--radius-xs);
 }
 .page-root.theme-dark .drawer {
   background: linear-gradient(180deg, rgba(58, 43, 32, 0.6) 0%, rgba(46, 36, 29, 0.4) 100%);
@@ -394,22 +392,22 @@
 /* 4 抽：第一抽更矮 */
 .drawers--4 .drawer:first-child { flex: 0.6; }
 
-/* ============ 右下角 DIY 提示 ============ */
+/* ============ 右下角 DIY 提示（iOS 风格 pill） ============ */
 .closet-tip {
   position: absolute;
   right: 24rpx; bottom: 24rpx;
   z-index: 6;
   display: flex; align-items: center; gap: 8rpx;
   padding: 8rpx 18rpx;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   border: 1rpx solid var(--card-border);
-  border-radius: 9999rpx;
-  backdrop-filter: blur(8rpx);
-  -webkit-backdrop-filter: blur(8rpx);
-  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-btn);
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
+  box-shadow: var(--shadow-ios);
 }
 .page-root.theme-dark .closet-tip {
-  background: rgba(46, 36, 29, 0.75);
+  background: rgba(44, 44, 46, 0.75);
 }
 .closet-tip__dot {
   width: 10rpx; height: 10rpx;
@@ -441,21 +439,21 @@
     transparent 100%);
 }
 
-/* ============ 统计条 ============ */
+/* ============ 统计条（iOS Table View 风格） ============ */
 .stats-row {
   display: flex;
   align-items: center;
   margin-top: 8rpx;
   padding: 24rpx 16rpx;
-  background: rgba(250, 237, 205, 0.55);
+  background: var(--card-bg-strong);
   border: 1rpx solid var(--card-border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(10rpx);
-  -webkit-backdrop-filter: blur(10rpx);
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
 }
 .page-root.theme-dark .stats-row {
-  background: rgba(212, 163, 115, 0.10);
+  background: rgba(44, 44, 46, 0.80);
 }
 .stats-cell { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10rpx; }
 .stats-cell__num {
@@ -474,7 +472,7 @@
 }
 .stats-cell__divider { width: 1rpx; height: 56rpx; background: var(--line-soft); }
 
-/* ============ 双列卡 ============ */
+/* ============ 双列卡（iOS Widget 风格） ============ */
 .duo-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -512,7 +510,7 @@
   width: 180rpx; height: 180rpx;
   background: var(--ai-halo);
   border-radius: 50%;
-  filter: blur(6rpx);
+  filter: blur(20rpx);
 }
 .duo-cell__ai-title {
   position: relative; z-index: 1;
@@ -532,7 +530,7 @@
   display: flex; align-items: center; justify-content: center;
   background: var(--color-primary);
   border-radius: 50%;
-  box-shadow: 0 6rpx 12rpx -2rpx rgba(212, 163, 115, 0.5);
+  box-shadow: var(--shadow-ios);
   z-index: 2;
 }
 
