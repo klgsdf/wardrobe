@@ -79,8 +79,8 @@ page {
   --radius-xs: 8rpx;                   /* 4px - 小组件 */
   --radius-sm: 16rpx;                  /* 8px - 内部元素 */
   --radius-tag: 16rpx;
-  --radius-card: 32rpx;                /* 16px - iOS 卡片标准 */
-  --radius-card-lg: 40rpx;             /* 20px - 大卡片 */
+  --radius-card: 24rpx;                /* 12px - 标准卡片 */
+  --radius-card-lg: 36rpx;             /* 18px - 大卡片 */
   --radius-btn: 9999rpx;               /* 胶囊 */
 
   background: var(--bg-page);

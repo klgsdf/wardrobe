@@ -28,7 +28,7 @@
 
 .page-body {
   box-sizing: border-box;
-  padding: 0 28rpx 32rpx;
+  padding: 0 32rpx 32rpx;
 }
 
 /* ============ 衣柜名字胶囊（iOS 风格大圆角） ============ */
@@ -77,7 +77,7 @@
   position: relative;
   width: 100%;
   padding-top: 115%;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-card-lg);
   overflow: hidden;
   margin-top: 4rpx;
   box-shadow: var(--shadow-card);
@@ -160,13 +160,13 @@
   border: 2rpx solid var(--glass-edge);
   border-radius: var(--radius-sm);
   box-shadow:
-    0 16rpx 48rpx -12rpx rgba(184, 136, 85, 0.25),
-    0 0 0 1rpx rgba(255, 255, 255, 0.5) inset,
-    0 2rpx 8rpx rgba(255, 255, 255, 0.6) inset;
+    0 20rpx 60rpx -16rpx rgba(184, 136, 85, 0.30),
+    0 0 0 1rpx rgba(255, 255, 255, 0.55) inset,
+    0 2rpx 10rpx rgba(255, 255, 255, 0.65) inset;
   box-sizing: border-box;
-  transform: translateY(-6rpx);
-  backdrop-filter: blur(20rpx);
-  -webkit-backdrop-filter: blur(20rpx);
+  transform: translateY(-8rpx);
+  backdrop-filter: blur(24rpx);
+  -webkit-backdrop-filter: blur(24rpx);
   overflow: hidden;
 }
 
@@ -397,13 +397,13 @@
   position: absolute;
   right: 24rpx; bottom: 24rpx;
   z-index: 6;
-  display: flex; align-items: center; gap: 8rpx;
-  padding: 8rpx 18rpx;
-  background: rgba(255, 255, 255, 0.85);
+  display: flex; align-items: center; gap: 10rpx;
+  padding: 10rpx 22rpx;
+  background: rgba(255, 255, 255, 0.88);
   border: 1rpx solid var(--card-border);
   border-radius: var(--radius-btn);
-  backdrop-filter: blur(20rpx);
-  -webkit-backdrop-filter: blur(20rpx);
+  backdrop-filter: blur(24rpx);
+  -webkit-backdrop-filter: blur(24rpx);
   box-shadow: var(--shadow-ios);
 }
 .page-root.theme-dark .closet-tip {
@@ -416,9 +416,9 @@
   box-shadow: 0 0 0 4rpx rgba(212, 163, 115, 0.25);
 }
 .closet-tip__text {
-  font-size: 22rpx;
+  font-size: 24rpx;
   color: var(--text-main);
-  letter-spacing: 1rpx;
+  letter-spacing: 0.5rpx;
   line-height: 1;
 }
 
@@ -443,8 +443,8 @@
 .stats-row {
   display: flex;
   align-items: center;
-  margin-top: 8rpx;
-  padding: 24rpx 16rpx;
+  margin-top: 12rpx;
+  padding: 28rpx 20rpx;
   background: var(--card-bg-strong);
   border: 1rpx solid var(--card-border);
   border-radius: var(--radius-card);
@@ -457,17 +457,17 @@
 }
 .stats-cell { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10rpx; }
 .stats-cell__num {
-  font-size: 52rpx;
+  font-size: 56rpx;
   font-weight: 700;
   color: var(--text-main);
-  letter-spacing: 1rpx;
+  letter-spacing: 0.5rpx;
   line-height: 1;
   font-feature-settings: "tnum";
 }
 .stats-cell__label {
-  font-size: 22rpx;
+  font-size: 24rpx;
   color: var(--text-sub);
-  letter-spacing: 2rpx;
+  letter-spacing: 1rpx;
   font-weight: 500;
 }
 .stats-cell__divider { width: 1rpx; height: 56rpx; background: var(--line-soft); }
@@ -476,15 +476,15 @@
 .duo-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20rpx;
+  gap: 16rpx;
   margin-top: 16rpx;
 }
 .duo-cell {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 220rpx;
-  padding: 24rpx 22rpx;
+  min-height: 240rpx;
+  padding: 28rpx 24rpx;
   border: 1rpx solid var(--card-border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
@@ -497,8 +497,8 @@
   font-size: 40rpx; font-weight: 700;
   color: var(--text-main); line-height: 1; letter-spacing: 0.5rpx;
 }
-.duo-cell__title { font-size: 28rpx; font-weight: 600; color: var(--text-main); letter-spacing: 1rpx; }
-.duo-cell__sub   { margin-top: 6rpx; font-size: 22rpx; color: var(--text-sub); letter-spacing: 1rpx; }
+.duo-cell__title { font-size: 30rpx; font-weight: 600; color: var(--text-main); letter-spacing: 0.5rpx; }
+.duo-cell__sub   { margin-top: 8rpx; font-size: 24rpx; color: var(--text-sub); letter-spacing: 0.5rpx; }
 
 .duo-cell--ai {
   background: var(--ai-card-bg);
@@ -514,15 +514,15 @@
 }
 .duo-cell__ai-title {
   position: relative; z-index: 1;
-  margin-top: 16rpx;
-  font-size: 36rpx; font-weight: 700;
-  color: var(--text-main); letter-spacing: 1rpx;
+  margin-top: 20rpx;
+  font-size: 38rpx; font-weight: 700;
+  color: var(--text-main); letter-spacing: 0.5rpx;
 }
 .duo-cell__ai-sub {
   position: relative; z-index: 1;
-  margin-top: 8rpx;
-  font-size: 22rpx;
-  color: var(--text-main); opacity: 0.72; letter-spacing: 1rpx;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: var(--text-main); opacity: 0.72; letter-spacing: 0.5rpx;
 }
 .duo-cell__ai-arrow {
   position: absolute; right: 20rpx; bottom: 20rpx;
