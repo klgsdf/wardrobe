@@ -2,22 +2,24 @@
 
 /* ============ 色板变量：浅色（默认） ============ */
 .tabbar {
-  --tb-stroke:      #333333;                    /* 图标线条 + 激活 label */
+  --tb-stroke:      #4A90E2;                    /* 图标线条 + 激活 label（蓝色） */
   --tb-label-sub:   #999999;                    /* 未选中 label */
   --tb-surface:     #FFFFFF;                    /* 底条背景 */
   --tb-border:      rgba(0, 0, 0, 0.06);
   --tb-shadow-bar:  none;
   --tb-shadow-add:  none;
+  --tb-pink:        #F8BBD9;                    /* 粉色点缀 */
 }
 
 /* ============ 色板变量：深色 ============ */
 .tabbar.theme-dark {
-  --tb-stroke:      #E8E8E8;
+  --tb-stroke:      #5A9FE8;
   --tb-label-sub:   #888888;
   --tb-surface:     #1A1A1A;
   --tb-border:      rgba(255, 255, 255, 0.06);
   --tb-shadow-bar:  none;
   --tb-shadow-add:  none;
+  --tb-pink:        #C48BA8;
 }
 
 /* ============ 容器 ============ */
@@ -96,12 +98,12 @@
 
 .tab-item.is-active .tabbar-label {
   color: var(--tb-stroke);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* Add 按钮 label */
 .tabbar-label--add {
-  color: var(--tb-stroke);
+  color: var(--tb-label-sub);
   font-weight: 500;
   margin-top: 8rpx;
 }
@@ -208,10 +210,10 @@
   position: relative;
   width: 84rpx;
   height: 84rpx;
-  border: 2rpx solid var(--tb-stroke);
-  background: var(--tb-surface);
+  border: none;
+  background: var(--color-primary, #4A90E2);
   border-radius: 50%;
-  box-shadow: none;
+  box-shadow: 0 4rpx 12rpx rgba(74, 144, 226, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -222,7 +224,7 @@
 .tabbar__add-plus-h,
 .tabbar__add-plus-v {
   position: absolute; top: 50%; left: 50%;
-  background: var(--tb-stroke);
+  background: #FFFFFF;
   border-radius: 2rpx;
   transform: translate(-50%, -50%);
 }

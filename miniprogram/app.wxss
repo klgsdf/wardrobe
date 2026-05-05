@@ -2,11 +2,16 @@
 
 page {
   /* ===== Ins 极简风 · 白/粉/蓝配色 ===== */
-  /* 主色：清新浅蓝 */
-  --color-primary: #A3CFFF;
-  --color-primary-light: #C2E0FF;
-  --color-primary-deep: #7AB8FF;
-  --color-primary-gradient: linear-gradient(135deg, #C2E0FF, #A3CFFF);
+  /* 主色：清新功能蓝 */
+  --color-primary: #4A90E2;
+  --color-primary-light: #6BA5E7;
+  --color-primary-deep: #3A7BD5;
+  --color-primary-gradient: linear-gradient(135deg, #5CA0E6, #4A90E2);
+
+  /* 辅助色：柔和莫兰迪粉 */
+  --color-pink: #F8BBD9;
+  --color-pink-light: #FCE4EC;
+  --color-pink-deep: #F48FB1;
 
   /* 背景：纯净白色 */
   --bg-start: #FFFFFF;
@@ -21,15 +26,15 @@ page {
 
   /* 表面层级：极简 */
   --surface-elevated: #FFFFFF;
-  --surface-inner: #FAF7F9;
+  --surface-inner: #F8F9FA;
   --stats-bg: #FFFFFF;
   --ai-card-bg: #FFF5FA;
   --ai-card-border: rgba(0, 0, 0, 0.06);
   --ai-halo: transparent;
 
-  /* 图标：浅灰线条 */
-  --icon-stroke: #B0A8B4;
-  --icon-stroke-soft: rgba(176, 168, 180, 0.50);
+  /* 图标：蓝灰线条 */
+  --icon-stroke: #8FA8C8;
+  --icon-stroke-soft: rgba(143, 168, 200, 0.50);
   --icon-fill: transparent;
 
   /* 阴影：极简，几乎无阴影 */
@@ -45,20 +50,20 @@ page {
 
   --nav-bg: rgba(255, 255, 255, 0.95);
   --line-soft: rgba(0, 0, 0, 0.06);
-  --line-grid: #F2F0F4;
+  --line-grid: #F0F2F5;
 
   /* ===== 极简场景 Token（白/粉/蓝） ===== */
-  --scene-wall-top: #FFF8FB;
-  --scene-wall-bottom: #FFF0F6;
+  --scene-wall-top: #EDF2FA;
+  --scene-wall-bottom: #E3EBF7;
   --scene-floor-top: #F5F0F7;
   --scene-floor-bottom: #EDE8F0;
-  --scene-skirting: rgba(200, 180, 200, 0.20);
-  --glass-panel: #FAF7F9;
+  --scene-skirting: rgba(143, 168, 200, 0.20);
+  --glass-panel: #F8FAFC;
   --glass-edge: rgba(0, 0, 0, 0.06);
-  --glass-outline: rgba(200, 180, 200, 0.30);
+  --glass-outline: rgba(143, 168, 200, 0.30);
   --led-glow: transparent;
   --led-line: transparent;
-  --bridge-top: #FFF8FB;
+  --bridge-top: #EDF2FA;
 
   /* 圆角：极简小圆角 */
   --radius-xs: 8rpx;
@@ -90,11 +95,16 @@ page {
   --bg-end:   #1A1A1A;
   --bg-page:  #1A1A1A;
 
-  /* 主色：暗色下 muted 浅蓝 */
-  --color-primary:       #7AB8FF;
-  --color-primary-light: #A3CFFF;
-  --color-primary-deep:  #5A9FE8;
-  --color-primary-gradient: linear-gradient(135deg, #A3CFFF, #7AB8FF);
+  /* 主色：暗色下 muted 蓝 */
+  --color-primary:       #5A9FE8;
+  --color-primary-light: #7AB8FF;
+  --color-primary-deep:  #4A8BD6;
+  --color-primary-gradient: linear-gradient(135deg, #6BA5E7, #5A9FE8);
+
+  /* 辅助色：暗色下 muted 粉 */
+  --color-pink: #C48BA8;
+  --color-pink-light: #A87B94;
+  --color-pink-deep: #D48AA8;
 
   /* 卡片：深灰 */
   --card-bg:          #242424;
@@ -130,17 +140,17 @@ page {
   --line-grid: rgba(255, 255, 255, 0.04);
 
   /* 场景盒 - 深色极简（粉蓝暗调） */
-  --scene-wall-top:    #242024;
-  --scene-wall-bottom: #1E1A1E;
+  --scene-wall-top:    #20242E;
+  --scene-wall-bottom: #1A1E28;
   --scene-floor-top:   #1E1A1E;
   --scene-floor-bottom:#1A161A;
-  --scene-skirting:    rgba(136, 120, 136, 0.15);
-  --glass-panel:       #2A262A;
+  --scene-skirting:    rgba(100, 130, 180, 0.15);
+  --glass-panel:       #262A34;
   --glass-edge:        rgba(255, 255, 255, 0.06);
-  --glass-outline:     rgba(136, 120, 136, 0.20);
+  --glass-outline:     rgba(100, 130, 180, 0.20);
   --led-glow:          transparent;
   --led-line:          transparent;
-  --bridge-top:        #242024;
+  --bridge-top:        #20242E;
 
   background: var(--bg-page);
   color: var(--text-main);
@@ -165,7 +175,7 @@ page {
   box-sizing: border-box;
 }
 
-/* 主按钮 - 焦糖色实心 + 大圆角 + 柔和投影 */
+/* 主按钮 - 蓝色实心 + 大圆角 + 柔和投影 */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -176,7 +186,7 @@ page {
   border-radius: var(--radius-btn);
   font-size: 30rpx;
   font-weight: 500;
-  box-shadow: 0 8rpx 16rpx -4rpx rgba(212, 163, 115, 0.40);
+  box-shadow: 0 8rpx 16rpx -4rpx rgba(74, 144, 226, 0.35);
   transition: transform 0.15s ease;
 }
 

@@ -473,6 +473,41 @@
   z-index: 2;
 }
 
+/* 粉色点缀元素 */
+.duo-cell__pink-dot {
+  width: 8rpx; height: 8rpx;
+  border-radius: 50%;
+  background: var(--color-pink, #F8BBD9);
+}
+
+/* 蓝色大卡片风格（参考图顶部横幅） */
+.card-blue {
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border: none;
+}
+.card-blue .duo-cell__title,
+.card-blue .duo-cell__temp,
+.card-blue .duo-cell__sub {
+  color: #FFFFFF;
+}
+
+/* 粉色图标背景 */
+.icon-pink-bg {
+  width: 80rpx; height: 80rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-pink-light, #FCE4EC);
+  border-radius: 50%;
+}
+
+/* 蓝色图标背景 */
+.icon-blue-bg {
+  width: 80rpx; height: 80rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-primary-light, #6BA5E7);
+  border-radius: 50%;
+}
+
 /* ============ 标准化 CSS 线条图标库（极简细线） ============ */
 .ic { position: relative; display: inline-block; vertical-align: middle; }
 
