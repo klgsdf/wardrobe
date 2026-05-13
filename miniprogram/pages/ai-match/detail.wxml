@@ -1,0 +1,114 @@
+<!--pages/ai-match/detail.wxml - 搭配详情（焦糖米黄风）-->
+<view class="page-root {{isDark ? 'theme-dark' : ''}}">
+
+  <!-- 状态栏占位 -->
+  <view class="nav-pad" style="height: {{navPadHeight}}px;"></view>
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-back tap-scale" bindtap="onBack">
+      <view class="ic-arrow-left"></view>
+    </view>
+    <view class="nav-title">{{pageTitle}}</view>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <view class="page-body">
+
+    <!-- ===== 详情内容视图 ===== -->
+    <view wx:if="{{pageState === 'detail'}}" class="detail-view">
+      <!-- 头部卡片 -->
+      <view class="detail-header">
+        <view class="detail-header__title">{{outfit.name}}</view>
+        <view class="detail-header__sub">AI为你匹配了以下衣柜单品</view>
+      </view>
+
+      <!-- 单品列表（含智能匹配推荐） -->
+      <view class="item-list">
+        <view
+          wx:for="{{matchResults}}"
+          wx:key="category"
+          class="item-section"
+        >
+          <!-- AI推荐单品信息 -->
+          <view class="item-row">
+            <view class="item-icon" style="background: {{item.iconBg}};">
+              <text class="item-icon__text">{{item.iconText}}</text>
+            </view>
+            <view class="item-info">
+              <view class="item-info__category">{{item.category}}</view>
+              <view class="item-info__name">{{item.name}}</view>
+            </view>
+          </view>
+
+          <!-- 用户衣柜匹配推荐（横向滚动） -->
+          <view wx:if="{{item.hasMatches}}" class="match-scroll-wrap">
+            <view class="match-scroll-label">从你的衣柜推荐</view>
+            <scroll-view class="match-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+              <view class="match-scroll-inner">
+                <view
+                  wx:for="{{item.matches}}"
+                  wx:for-item="matchItem"
+                  wx:key="id"
+                  class="match-card"
+                >
+                  <view class="match-card__img-wrap">
+                    <image
+                      wx:if="{{matchItem.images && matchItem.images.length > 0}}"
+                      class="match-card__img"
+                      src="{{matchItem.images[0]}}"
+                      mode="aspectFill"
+                      lazy-load
+                    />
+                    <view wx:else class="match-card__img-placeholder">
+                      <text class="match-card__img-placeholder-text">👔</text>
+                    </view>
+                  </view>
+                  <view class="match-card__info">
+                    <view class="match-card__name">{{matchItem.name}}</view>
+                    <view class="match-card__score-wrap">
+                      <view class="match-card__score-bar">
+                        <view class="match-card__score-fill" style="width: {{matchItem.matchScore}}%;"></view>
+                      </view>
+                      <text class="match-card__score-text">{{matchItem.matchScore}}%</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+
+          <!-- 无匹配提示 -->
+          <view wx:if="{{!item.hasMatches}}" class="match-empty">
+            <text class="match-empty__text">暂无匹配衣物</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 保存按钮 -->
+      <view class="save-btn-wrap">
+        <view class="save-btn tap-scale" bindtap="onSaveOutfit">
+          <text class="save-btn__icon">🔖</text>
+          <text class="save-btn__text">保存搭配</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 保存成功视图 ===== -->
+    <view wx:if="{{pageState === 'success'}}" class="success-view">
+      <view class="success-card">
+        <view class="success-icon">
+          <view class="success-check"></view>
+        </view>
+        <view class="success-title">搭配已保存！</view>
+        <view class="success-sub">让穿搭更简单</view>
+        <view class="success-desc">每天少烦恼，多美丽 ✨</view>
+        <view class="success-btn tap-scale" bindtap="onBackToHome">
+          <text class="success-btn__text">返回首页</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="safe-bottom"></view>
+  </view>
+</view>

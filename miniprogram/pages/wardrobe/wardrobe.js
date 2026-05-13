@@ -1,72 +1,62 @@
-// pages/wardrobe/wardrobe.js - 衣柜 DIY 页
-const THEME_KEY = 'wardrobe_theme';
-const LAYOUT_KEY = 'wardrobe_layout';
+// pages/wardrobe/wardrobe.js - 衣柜管理列表页
+var THEME_KEY = 'wardrobe_theme';
+var WARDROBE_LIST_KEY = 'wardrobe_list';
 
-const DEFAULT_LAYOUT = {
-  topShelf: 'with-light',
-  hanger:   'single',
-  doors:    'sliding',
-  drawers:  3,
-  accessories: 'shoe-rack-2',
-  lighting: 'top',
-};
-
-// 每个模块的可选组件
-const COMPONENTS = {
-  doors: [
-    { key: 'sliding', label: '推拉门', desc: '圆点装饰面板' },
-    { key: 'swing',   label: '平开门', desc: '经典双开' },
-    { key: 'louver',  label: '百叶门', desc: '通风条纹' },
-    { key: 'mirror',  label: '镜面门', desc: '反光镜面' },
-    { key: 'open',    label: '开放式', desc: '无门设计' },
-  ],
-  drawers: [
-    { key: 2, label: '2 抽', desc: '等高双屉' },
-    { key: 3, label: '3 抽', desc: '中等容量' },
-    { key: 4, label: '4 抽组合', desc: '大中小混搭' },
-  ],
-  hanger: [
-    { key: 'single',     label: '单杆',   desc: '通用挂衣' },
-    { key: 'double',     label: '双杆',   desc: '高低分区' },
-    { key: 'extendable', label: '伸缩杆', desc: '可调长度' },
-  ],
-  topShelf: [
-    { key: 'plain',      label: '平板',   desc: '基础一层' },
-    { key: 'with-light', label: '带灯带', desc: '氛围照明' },
-    { key: 'divided',    label: '分隔',   desc: '三格收纳' },
-  ],
-  accessories: [
-    { key: 'shoe-rack-2', label: '2 层鞋架', desc: '标准款' },
-    { key: 'shoe-rack-3', label: '3 层鞋架', desc: '大容量' },
-    { key: 'shoe-slant',  label: '斜插式',   desc: '省空间' },
-    { key: 'none',        label: '无',       desc: '移除鞋架' },
-  ],
-  lighting: [
-    { key: 'top',    label: '顶光',    desc: '顶部柔光' },
-    { key: 'strip',  label: '层间灯带', desc: '加粗灯带' },
-    { key: 'sensor', label: '感应灯',   desc: '人来即亮' },
-    { key: 'off',    label: '关闭',     desc: '无照明' },
-  ],
-};
-
-const TABS = [
-  { key: 'doors',       label: '门款',   zone: 'doors' },
-  { key: 'drawers',     label: '抽屉',   zone: 'drawers' },
-  { key: 'hanger',      label: '挂衣杆', zone: 'hanger' },
-  { key: 'topShelf',    label: '置物架', zone: 'topShelf' },
-  { key: 'accessories', label: '鞋架',   zone: 'accessories' },
-  { key: 'lighting',    label: '灯光',   zone: 'lighting' },
+// 衣柜类型预设
+var WARDROBE_TYPES = [
+  { type: 'closet',     label: '衣柜', icon: 'closet' },
+  { type: 'drawer',     label: '抽屉柜', icon: 'drawer' },
+  { type: 'shoe-rack',  label: '鞋柜', icon: 'shoe' },
+  { type: 'shelf',      label: '置物架', icon: 'shelf' },
+  { type: 'seasonal',   label: '换季收纳', icon: 'box' },
 ];
 
-// 画布热区 → Tab 映射
-const ZONE_TO_TAB = {
-  'top-shelf':   'topShelf',
-  'hanger':      'hanger',
-  'doors':       'doors',
-  'drawers':     'drawers',
-  'accessories': 'accessories',
-  'lighting':    'lighting',
-};
+// 生成唯一ID
+function genId() {
+  return 'w_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+}
+
+// 默认衣柜列表（首次使用）
+var DEFAULT_WARDROBES = [
+  {
+    id: 'w_default_1',
+    name: '主柜',
+    type: 'closet',
+    desc: '日常衣物存放',
+    itemCount: 0,
+    zones: [
+      { id: 'z_1', name: '上层隔板', type: 'shelf', count: 0 },
+      { id: 'z_2', name: '挂衣区', type: 'hanger', count: 0 },
+      { id: 'z_3', name: '下层抽屉', type: 'drawer', count: 0 },
+    ],
+    createdAt: Date.now(),
+  },
+  {
+    id: 'w_default_2',
+    name: '鞋柜',
+    type: 'shoe-rack',
+    desc: '鞋子收纳',
+    itemCount: 0,
+    zones: [
+      { id: 'z_1', name: '常用区', type: 'shelf', count: 0 },
+      { id: 'z_2', name: '换季区', type: 'shelf', count: 0 },
+    ],
+    createdAt: Date.now() - 86400000,
+  },
+  {
+    id: 'w_default_3',
+    name: '配饰抽屉',
+    type: 'drawer',
+    desc: '围巾、帽子、腰带',
+    itemCount: 0,
+    zones: [
+      { id: 'z_1', name: '第一层', type: 'drawer', count: 0 },
+      { id: 'z_2', name: '第二层', type: 'drawer', count: 0 },
+      { id: 'z_3', name: '第三层', type: 'drawer', count: 0 },
+    ],
+    createdAt: Date.now() - 172800000,
+  },
+];
 
 Page({
   data: {
@@ -76,116 +66,258 @@ Page({
     menuBtnHeight: 32,
     isDark: false,
 
-    activeTab: 'doors',
-    activeZone: 'doors',
-    layout: DEFAULT_LAYOUT,
+    // 衣柜列表
+    wardrobes: [],
+    totalItems: 0,
+    totalZones: 0,
 
-    tabs: TABS,
-    componentList: COMPONENTS.doors,
+    // 添加弹窗
+    showAddSheet: false,
+    addForm: {
+      name: '',
+      type: 'closet',
+      desc: '',
+    },
 
-    // 预生成的次数数组（兼容旧版 wx:for）
-    dots24: Array.from({ length: 24 }, function (_, i) { return i; }),
-    bars10: Array.from({ length: 10 }, function (_, i) { return i; }),
-    dots9:  Array.from({ length: 9 },  function (_, i) { return i; }),
-    bars5:  Array.from({ length: 5 },  function (_, i) { return i; }),
+    // 衣柜类型选项
+    typeOptions: WARDROBE_TYPES,
   },
 
-  onLoad() {
-    const sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
-    const menuBtn = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null;
-    const statusBarHeight = sysInfo.statusBarHeight || 44;
-    const navPadHeight   = menuBtn ? (menuBtn.bottom + 8) : (statusBarHeight + 44);
-    const menuBtnTop     = menuBtn ? menuBtn.top    : (statusBarHeight + 4);
-    const menuBtnHeight  = menuBtn ? menuBtn.height : 32;
-
-    const theme = wx.getStorageSync(THEME_KEY) || 'light';
-    const storedLayout = wx.getStorageSync(LAYOUT_KEY);
-    const layout = Object.assign({}, DEFAULT_LAYOUT, storedLayout || {});
+  onLoad: function () {
+    var sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : (wx.getSystemInfoSync ? wx.getSystemInfoSync() : { statusBarHeight: 44 });
+    var menuBtn = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null;
+    var statusBarHeight = sysInfo.statusBarHeight || 44;
+    var navPadHeight = menuBtn ? (menuBtn.bottom + 8) : (statusBarHeight + 44);
+    var menuBtnTop = menuBtn ? menuBtn.top : (statusBarHeight + 4);
+    var menuBtnHeight = menuBtn ? menuBtn.height : 32;
+    var theme = wx.getStorageSync(THEME_KEY) || 'light';
 
     this.setData({
-      statusBarHeight,
-      navPadHeight,
-      menuBtnTop,
-      menuBtnHeight,
+      statusBarHeight: statusBarHeight,
+      navPadHeight: navPadHeight,
+      menuBtnTop: menuBtnTop,
+      menuBtnHeight: menuBtnHeight,
       isDark: theme === 'dark',
-      layout,
     });
+
+    this._loadWardrobes();
   },
 
-  onShow() {
-    const theme = wx.getStorageSync(THEME_KEY) || 'light';
+  onShow: function () {
+    var theme = wx.getStorageSync(THEME_KEY) || 'light';
     if ((theme === 'dark') !== this.data.isDark) {
       this.setData({ isDark: theme === 'dark' });
     }
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1, isDark: theme === 'dark' });
     }
+    // 每次显示时重新加载列表（从详情页返回可能数据变了）
+    this._loadWardrobes();
   },
 
-  // 点击画布某模块：高亮 + Tab 联动
-  onZoneTap(e) {
-    const zone = e.currentTarget.dataset.zone;
-    const tabKey = ZONE_TO_TAB[zone];
-    if (!tabKey) return;
+  // 加载衣柜列表
+  _loadWardrobes: function () {
+    var list = wx.getStorageSync(WARDROBE_LIST_KEY);
+    if (!list || !list.length) {
+      list = DEFAULT_WARDROBES;
+      wx.setStorageSync(WARDROBE_LIST_KEY, list);
+    }
+    var totalItems = 0;
+    var totalZones = 0;
+    for (var i = 0; i < list.length; i++) {
+      totalItems += list[i].itemCount || 0;
+      totalZones += (list[i].zones || []).length;
+    }
+    this.setData({ wardrobes: list, totalItems: totalItems, totalZones: totalZones });
+  },
+
+  // 保存衣柜列表
+  _saveWardrobes: function () {
+    wx.setStorageSync(WARDROBE_LIST_KEY, this.data.wardrobes);
+  },
+
+  // ===== 添加衣柜 =====
+  onShowAddSheet: function () {
+    wx.vibrateShort({ type: 'light' });
     this.setData({
-      activeZone: zone,
-      activeTab: tabKey,
-      componentList: COMPONENTS[tabKey],
+      showAddSheet: true,
+      addForm: { name: '', type: 'closet', desc: '' },
     });
+  },
+
+  onHideAddSheet: function () {
+    this.setData({ showAddSheet: false });
+  },
+
+  onAddFormNameInput: function (e) {
+    this.setData({ 'addForm.name': e.detail.value });
+  },
+
+  onAddFormDescInput: function (e) {
+    this.setData({ 'addForm.desc': e.detail.value });
+  },
+
+  onTypeSelect: function (e) {
+    var type = e.currentTarget.dataset.type;
+    this.setData({ 'addForm.type': type });
     wx.vibrateShort({ type: 'light' });
   },
 
-  // 点击底部 Tab
-  onTabTap(e) {
-    const tabKey = e.currentTarget.dataset.key;
-    const tab = TABS.find((t) => t.key === tabKey);
-    if (!tab) return;
-    this.setData({
-      activeTab: tabKey,
-      activeZone: tab.zone,
-      componentList: COMPONENTS[tabKey],
-    });
+  onConfirmAdd: function () {
+    var form = this.data.addForm;
+    var name = (form.name || '').trim();
+    if (!name) {
+      wx.showToast({ title: '请输入衣柜名称', icon: 'none' });
+      return;
+    }
+
+    // 根据类型生成默认分区
+    var defaultZones = this._getDefaultZones(form.type);
+
+    var newWardrobe = {
+      id: genId(),
+      name: name,
+      type: form.type,
+      desc: form.desc || this._getTypeLabel(form.type),
+      itemCount: 0,
+      zones: defaultZones,
+      createdAt: Date.now(),
+    };
+
+    var list = this.data.wardrobes.slice();
+    list.unshift(newWardrobe);
+    this.setData({ wardrobes: list, showAddSheet: false });
+    this._saveWardrobes();
+    wx.vibrateShort({ type: 'medium' });
+    wx.showToast({ title: '已添加「' + name + '」', icon: 'none', duration: 1200 });
   },
 
-  // 点击组件卡：切换布局
-  onComponentPick(e) {
-    const { key } = e.currentTarget.dataset;
-    const activeTab = this.data.activeTab;
-    const newLayout = Object.assign({}, this.data.layout, { [activeTab]: key });
-    this.setData({ layout: newLayout });
+  // 根据类型返回默认分区
+  _getDefaultZones: function (type) {
+    var zonesMap = {
+      'closet': [
+        { id: 'z_1', name: '上层隔板', type: 'shelf', count: 0 },
+        { id: 'z_2', name: '挂衣区', type: 'hanger', count: 0 },
+        { id: 'z_3', name: '下层抽屉', type: 'drawer', count: 0 },
+      ],
+      'drawer': [
+        { id: 'z_1', name: '第一层', type: 'drawer', count: 0 },
+        { id: 'z_2', name: '第二层', type: 'drawer', count: 0 },
+        { id: 'z_3', name: '第三层', type: 'drawer', count: 0 },
+      ],
+      'shoe-rack': [
+        { id: 'z_1', name: '常用区', type: 'shelf', count: 0 },
+        { id: 'z_2', name: '换季区', type: 'shelf', count: 0 },
+      ],
+      'shelf': [
+        { id: 'z_1', name: '上层', type: 'shelf', count: 0 },
+        { id: 'z_2', name: '中层', type: 'shelf', count: 0 },
+        { id: 'z_3', name: '下层', type: 'shelf', count: 0 },
+      ],
+      'seasonal': [
+        { id: 'z_1', name: '夏季衣物', type: 'box', count: 0 },
+        { id: 'z_2', name: '冬季衣物', type: 'box', count: 0 },
+      ],
+    };
+    return zonesMap[type] || zonesMap['closet'];
+  },
+
+  _getTypeLabel: function (type) {
+    for (var i = 0; i < WARDROBE_TYPES.length; i++) {
+      if (WARDROBE_TYPES[i].type === type) return WARDROBE_TYPES[i].label;
+    }
+    return '衣柜';
+  },
+
+  // ===== 点击衣柜条目 → 进入详情 =====
+  onWardrobeTap: function (e) {
+    var id = e.currentTarget.dataset.id;
     wx.vibrateShort({ type: 'light' });
+    wx.navigateTo({ url: '/pages/wardrobe-detail/wardrobe-detail?id=' + id });
   },
 
-  // 重置
-  onReset() {
-    const self = this;
-    wx.showModal({
-      title: '重置设计',
-      content: '确定要恢复默认衣柜布局吗？',
-      confirmText: '重置',
-      confirmColor: '#B88855',
-      success(res) {
-        if (res.confirm) {
-          self.setData({ layout: DEFAULT_LAYOUT });
-          wx.vibrateShort({ type: 'medium' });
+  // ===== 长按衣柜条目 → 删除 =====
+  onWardrobeLongPress: function (e) {
+    var id = e.currentTarget.dataset.id;
+    var self = this;
+    var wardrobe = null;
+    for (var i = 0; i < this.data.wardrobes.length; i++) {
+      if (this.data.wardrobes[i].id === id) {
+        wardrobe = this.data.wardrobes[i];
+        break;
+      }
+    }
+    if (!wardrobe) return;
+
+    wx.showActionSheet({
+      itemList: ['重命名', '删除'],
+      success: function (res) {
+        if (res.tapIndex === 0) {
+          self._renameWardrobe(id);
+        } else if (res.tapIndex === 1) {
+          self._deleteWardrobe(id, wardrobe.name);
         }
       },
     });
   },
 
-  // 完成 / 保存
-  onDone() {
-    wx.setStorageSync(LAYOUT_KEY, this.data.layout);
-    wx.vibrateShort({ type: 'medium' });
-    wx.showToast({ title: '已保存你的衣柜设计', icon: 'none', duration: 1200 });
-    setTimeout(() => {
-      wx.switchTab({ url: '/pages/index/index' });
-    }, 400);
+  _renameWardrobe: function (id) {
+    var self = this;
+    var currentName = '';
+    for (var i = 0; i < this.data.wardrobes.length; i++) {
+      if (this.data.wardrobes[i].id === id) {
+        currentName = this.data.wardrobes[i].name;
+        break;
+      }
+    }
+    wx.showModal({
+      title: '重命名衣柜',
+      editable: true,
+      placeholderText: '输入新名称',
+      content: currentName,
+      success: function (res) {
+        if (res.confirm && res.content) {
+          var name = res.content.trim();
+          if (!name) return;
+          var list = self.data.wardrobes.slice();
+          for (var i = 0; i < list.length; i++) {
+            if (list[i].id === id) {
+              list[i].name = name;
+              break;
+            }
+          }
+          self.setData({ wardrobes: list });
+          self._saveWardrobes();
+          wx.vibrateShort({ type: 'light' });
+        }
+      },
+    });
+  },
+
+  _deleteWardrobe: function (id, name) {
+    var self = this;
+    wx.showModal({
+      title: '删除「' + name + '」',
+      content: '删除后不可恢复，确定要删除吗？',
+      confirmText: '删除',
+      confirmColor: '#E74C3C',
+      success: function (res) {
+        if (res.confirm) {
+          var list = self.data.wardrobes.filter(function (w) {
+            return w.id !== id;
+          });
+          self.setData({ wardrobes: list });
+          self._saveWardrobes();
+          wx.vibrateShort({ type: 'medium' });
+          wx.showToast({ title: '已删除', icon: 'none', duration: 1000 });
+        }
+      },
+    });
   },
 
   // 切换主题
-  onToggleTheme() {
-    const next = this.data.isDark ? 'light' : 'dark';
+  onToggleTheme: function () {
+    var next = this.data.isDark ? 'light' : 'dark';
     wx.setStorageSync(THEME_KEY, next);
     this.setData({ isDark: next === 'dark' });
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {

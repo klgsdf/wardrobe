@@ -10,20 +10,28 @@
  */
 async function callCloud(name, action, data = {}) {
   try {
+    console.log('[callCloud] 调用:', name + '.' + action);
     const res = await wx.cloud.callFunction({
       name,
       data: { action, ...data },
+      timeout: 60000,
     });
     const result = res && res.result;
+    console.log('[callCloud] ' + name + '.' + action + ' 返回:', JSON.stringify(result));
     if (result && result.success === false) {
       const msg = (result && result.message) || '服务异常';
+      console.error('[callCloud] 业务错误:', msg);
       wx.showToast({ title: msg, icon: 'none' });
       return null;
     }
     return (result && result.data !== undefined) ? result.data : result;
   } catch (err) {
     // 云函数未部署或网络错误 - 静默降级，便于 UI 独立调试
-    console.warn(`[callCloud] ${name}.${action} 调用失败:`, err);
+    console.error('[callCloud] ' + name + '.' + action + ' 调用失败:', err);
+    // 超时错误特殊提示
+    if (err && err.errCode === -501000) {
+      console.error('[callCloud] 云函数超时，请检查：1)云函数是否已部署 2)云开发环境是否关联');
+    }
     return null;
   }
 }
@@ -66,6 +74,37 @@ const clothApi = {
   getClothDetail: (id) => callCloud('cloth', 'getClothDetail', { id }),
 };
 
+/**
+ * 腾讯云 AI 图像识别 - 通用图像标签
+ * @param {string} imageUrl 图片 URL（云存储 fileID 或 http 地址）
+ * @returns {Promise<object|null>} 识别结果
+ */
+async function recognizeImage(imageUrl) {
+  try {
+    const res = await callCloud('ai', 'recognizeImage', { imageUrl });
+    return res;
+  } catch (err) {
+    console.warn('[recognizeImage] 识别失败:', err);
+    return null;
+  }
+}
+
+/**
+ * AI 智能搭配推荐
+ * @param {string} styleInput 用户输入的风格描述
+ * @param {string} clothesContext 衣柜衣物上下文描述（可选）
+ * @returns {Promise<object|null>} 推荐结果 { outfits: [...] }
+ */
+async function recommendOutfit(styleInput, clothesContext) {
+  try {
+    const res = await callCloud('ai', 'recommendOutfit', { styleInput, clothesContext });
+    return res;
+  } catch (err) {
+    console.warn('[recommendOutfit] 搭配推荐失败:', err);
+    return null;
+  }
+}
+
 const outfitApi = {
   createOutfit: (data) => callCloud('outfit', 'createOutfit', data),
   getOutfitList: (params) => callCloud('outfit', 'getOutfitList', params),
@@ -86,6 +125,8 @@ const familyApi = {
 module.exports = {
   callCloud,
   uploadImage,
+  recognizeImage,
+  recommendOutfit,
   commonApi,
   clothApi,
   outfitApi,

@@ -3,7 +3,12 @@
     "pages/index/index",
     "pages/wardrobe/wardrobe",
     "pages/outfit/outfit",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/wardrobe-detail/wardrobe-detail",
+    "pages/zone-clothes/zone-clothes",
+    "pages/add-cloth/add-cloth",
+    "pages/ai-match/ai-match",
+    "pages/ai-match/detail"
   ],
   "window": {
     "backgroundColor": "#FEFAE0",
@@ -39,5 +44,11 @@
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "requiredPrivateInfos": ["getLocation"],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于获取你所在位置的实时天气并提供穿搭建议"
+    }
+  }
 }

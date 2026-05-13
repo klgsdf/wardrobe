@@ -1,194 +1,369 @@
-// pages/outfit/outfit.js - 智能搭配推荐页
-const THEME_KEY = 'wardrobe_theme';
+// pages/outfit/outfit.js - 衣服浏览页（侧边栏 + 瀑布流）
+var THEME_KEY = 'wardrobe_theme';
+var CLOTHES_LIST_KEY = 'clothes_list';
+var FAVORITE_KEY = 'outfit_favorites';
+
+var { CATEGORIES, SEASONS } = require('../../config.js');
+
+// 构建映射表
+function buildMap(options) {
+  var map = {};
+  for (var i = 0; i < options.length; i++) {
+    map[options[i].key] = options[i].label;
+  }
+  return map;
+}
+
+var categoryMap = buildMap(CATEGORIES);
+var seasonMap = buildMap(SEASONS);
+
+// 每页加载数量
+var PAGE_SIZE = 10;
 
 Page({
   data: {
-    // 状态栏
+    // 系统信息
     statusBarHeight: 44,
-    navBarHeight: 44,
+    navPadHeight: 88,
 
-    // 主题（与首页共享 storage）
+    // 主题
     isDark: false,
 
-    // 统计数据（仅用于 hero 文案占位，后续接真实衣物总数）
-    stats: { total: 40 },
-
-    // 天气（TODO：接入和风/腾讯定位）
-    weather: {
-      icon: '🌤',
-      city: '北京',
-      temp: '18℃',
-      desc: '多云',
-      suggestion: '建议穿薄外套 + 长裤',
-    },
-
-    // 今日推荐搭配
-    todayOutfit: {
-      match: 92,
-      title: '通勤极简 · 蓝白配色',
-      chips: ['☀️ 适合 18℃', '🏢 通勤场景', '🧺 已洗净'],
-      items: [
-        { icon: '👔', name: '白衬衫' },  // 左上（大）
-        { icon: '👖', name: '深蓝长裤' }, // 左下（中）
-        { icon: '🧥', name: '薄风衣' },  // 右上（大）
-        { icon: '👟', name: '小白鞋' },  // 右中（小）
-        { icon: '👜', name: '托特包' },  // 右下（小）
-      ],
-    },
-
-    // 交互状态
-    liked: false,
-    saved: false,
-
-    // 风格标签
-    styles: [
-      { id: 'all',    name: '# 全部',   active: true  },
-      { id: 'work',   name: '# 通勤',   active: false },
-      { id: 'date',   name: '# 约会',   active: false },
-      { id: 'casual', name: '# 休闲',   active: false },
-      { id: 'sport',  name: '# 运动',   active: false },
-      { id: 'home',   name: '# 居家',   active: false },
+    // 左侧分类导航（按设计图顺序：全部→上装→连衣裙→下装→鞋靴→外套→配饰）
+    categories: [
+      { key: 'all', label: '全部' },
+      { key: 'top', label: '上装' },
+      { key: 'dress', label: '连衣裙' },
+      { key: 'bottom', label: '下装' },
+      { key: 'shoes', label: '鞋靴' },
+      { key: 'outer', label: '外套' },
+      { key: 'accessory', label: '配饰' },
     ],
+    selectedCategory: 'all',
 
-    // 更多推荐（双列）
-    morePicks: [
-      { id: 'p1', title: '周末休闲', match: 87, emoji: '👕',
-        cover: 'linear-gradient(135deg, #FEF3C7, #FDE68A)', liked: false },
-      { id: 'p2', title: '户外探索', match: 83, emoji: '🧥',
-        cover: 'linear-gradient(135deg, #D1FAE5, #A7F3D0)', liked: true  },
-      { id: 'p3', title: '约会甜美', match: 90, emoji: '👗',
-        cover: 'linear-gradient(135deg, #FCE7F3, #FBCFE8)', liked: false },
-      { id: 'p4', title: '运动活力', match: 78, emoji: '🏃',
-        cover: 'linear-gradient(135deg, #DBEAFE, #BFDBFE)', liked: false },
+    // 顶部分类标签
+    typeTags: [
+      { key: 'all', label: '全部' },
+      { key: 'spring', label: '春装' },
+      { key: 'summer', label: '夏装' },
+      { key: 'autumn', label: '秋装' },
+      { key: 'winter', label: '冬装' },
+      { key: 'new', label: '最近添加' },
     ],
+    selectedTypeTag: 'all',
 
-    // 最近搭配（横滑）
-    recent: [
-      { id: 'r1', date: '昨天',    title: '通勤极简', emoji: '👔',
-        cover: 'linear-gradient(135deg, #E0E7FF, #C7D2FE)' },
-      { id: 'r2', date: '3 天前',  title: '周末户外', emoji: '🧥',
-        cover: 'linear-gradient(135deg, #D1FAE5, #A7F3D0)' },
-      { id: 'r3', date: '5 天前',  title: '居家舒适', emoji: '👚',
-        cover: 'linear-gradient(135deg, #FEF3C7, #FDE68A)' },
-      { id: 'r4', date: '一周前',  title: '运动清爽', emoji: '🏃',
-        cover: 'linear-gradient(135deg, #DBEAFE, #BFDBFE)' },
-    ],
+    // 搜索
+    searchKeyword: '',
+
+    // 衣物数据
+    allItems: [],
+    filteredItems: [],
+    leftColumn: [],
+    rightColumn: [],
+    pageIndex: 0,
+    hasMore: true,
+    loading: false,
+
+    // 空状态
+    isEmpty: false,
+
+    // 收藏
+    favoriteIds: [],
+    favoriteCount: 0,
+    favoritePreviews: [],
+
+    // 标签映射
+    categoryMap: categoryMap,
+    seasonMap: seasonMap,
   },
 
-  onLoad() {
-    this.initSystemInfo();
-    this.initTheme();
+  onLoad: function () {
+    var sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : (wx.getSystemInfoSync ? wx.getSystemInfoSync() : { statusBarHeight: 44 });
+    var statusBarHeight = sysInfo.statusBarHeight || 44;
+    var navPadHeight = statusBarHeight + 44;
+    var theme = wx.getStorageSync(THEME_KEY) || 'light';
+    var favoriteIds = wx.getStorageSync(FAVORITE_KEY) || [];
+
+    this.setData({
+      statusBarHeight: statusBarHeight,
+      navPadHeight: navPadHeight,
+      isDark: theme === 'dark',
+      favoriteIds: favoriteIds,
+    });
+
+    this._loadItems();
   },
 
-  onShow() {
+  onShow: function () {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
     }
+
+    // 主题同步
+    var theme = wx.getStorageSync(THEME_KEY) || 'light';
+    if ((theme === 'dark') !== this.data.isDark) {
+      this.setData({ isDark: theme === 'dark' });
+    }
+
+    // 收藏同步
+    var favoriteIds = wx.getStorageSync(FAVORITE_KEY) || [];
+    if (JSON.stringify(favoriteIds) !== JSON.stringify(this.data.favoriteIds)) {
+      this.setData({ favoriteIds: favoriteIds });
+      this._applyFavoritesAndFilter();
+    }
   },
 
-  onPullDownRefresh() {
-    // TODO: 接入真实 AI 推荐接口
-    setTimeout(() => {
-      wx.stopPullDownRefresh();
-      wx.showToast({ title: '已为你刷新推荐', icon: 'none' });
-    }, 600);
-  },
+  /* ============ 加载衣物数据 ============ */
+  _loadItems: function () {
+    var self = this;
+    var allClothes = wx.getStorageSync(CLOTHES_LIST_KEY) || [];
 
-  /* ============ 初始化 ============ */
-  initSystemInfo() {
-    const app = getApp();
-    const sys = (app && app.globalData && app.globalData.systemInfo) || wx.getSystemInfoSync();
-    this.setData({
-      statusBarHeight: sys.statusBarHeight || 20,
-      navBarHeight: 44,
+    // 格式化衣物数据
+    var items = [];
+    for (var i = 0; i < allClothes.length; i++) {
+      var c = allClothes[i];
+      var item = self._formatItem(c);
+      items.push(item);
+    }
+
+    // 按创建时间倒序
+    items.sort(function (a, b) {
+      return (b.createdAt || 0) - (a.createdAt || 0);
+    });
+
+    self.setData({
+      allItems: items,
+    }, function () {
+      self._applyFavoritesAndFilter();
     });
   },
 
-  initTheme() {
-    let isDark = false;
-    try {
-      const v = wx.getStorageSync(THEME_KEY);
-      isDark = v === 'dark';
-    } catch (_) {}
-    this.setData({ isDark });
+  // 格式化单个衣物
+  _formatItem: function (c) {
+    var name = '';
+    if (c.tags && c.tags.category) {
+      name = categoryMap[c.tags.category] || c.tags.category;
+    }
+    if (c.note) {
+      name = c.note.length > 10 ? c.note.substring(0, 10) + '...' : c.note;
+    }
+
+    // 季节标签
+    var seasonLabel = '';
+    if (c.tags && c.tags.season && c.tags.season.length > 0) {
+      seasonLabel = seasonMap[c.tags.season[0]] || c.tags.season[0];
+    }
+
+    return {
+      id: c.id,
+      images: c.images && c.images.length > 0 ? c.images : ['/images/default-goods-image.png'],
+      name: name,
+      tags: c.tags || {},
+      category: c.tags && c.tags.category ? c.tags.category : '',
+      categoryLabel: c.tags && c.tags.category ? (categoryMap[c.tags.category] || c.tags.category) : '',
+      seasonLabel: seasonLabel,
+      createdAt: c.createdAt || 0,
+      favorite: false,
+    };
   },
 
-  /* ============ 顶部按钮 ============ */
-  onOpenHistory() {
-    wx.showToast({ title: '搭配历史即将上线', icon: 'none' });
+  // 应用收藏状态并过滤
+  _applyFavoritesAndFilter: function () {
+    var self = this;
+    var allItems = self.data.allItems;
+    var favoriteIds = self.data.favoriteIds;
+    var selectedCategory = self.data.selectedCategory;
+    var selectedTypeTag = self.data.selectedTypeTag;
+    var searchKeyword = self.data.searchKeyword;
+
+    // 标记收藏状态
+    var items = [];
+    for (var i = 0; i < allItems.length; i++) {
+      var item = allItems[i];
+      item.favorite = favoriteIds.indexOf(item.id) >= 0;
+      items.push(item);
+    }
+
+    // 分类过滤
+    var filtered = [];
+    for (var j = 0; j < items.length; j++) {
+      var it = items[j];
+
+      // 左侧分类过滤
+      if (selectedCategory !== 'all' && it.category !== selectedCategory) {
+        continue;
+      }
+
+      // 顶部标签过滤
+      if (selectedTypeTag !== 'all') {
+        if (selectedTypeTag === 'new') {
+          // 最近添加（7天内）
+          var weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+          if (it.createdAt < weekAgo) continue;
+        } else if (!it.tags.season || it.tags.season.indexOf(selectedTypeTag) < 0) {
+          continue;
+        }
+      }
+
+      // 搜索过滤
+      if (searchKeyword) {
+        var kw = searchKeyword.toLowerCase();
+        var match = false;
+        if (it.name && it.name.toLowerCase().indexOf(kw) >= 0) match = true;
+        if (it.categoryLabel && it.categoryLabel.toLowerCase().indexOf(kw) >= 0) match = true;
+        if (it.seasonLabel && it.seasonLabel.toLowerCase().indexOf(kw) >= 0) match = true;
+        if (!match) continue;
+      }
+
+      filtered.push(it);
+    }
+
+    // 更新收藏统计
+    var favItems = [];
+    for (var k = 0; k < items.length; k++) {
+      if (items[k].favorite) favItems.push(items[k]);
+    }
+    var favoritePreviews = [];
+    for (var p = 0; p < Math.min(favItems.length, 2); p++) {
+      favoritePreviews.push(favItems[p].images[0]);
+    }
+
+    self.setData({
+      filteredItems: filtered,
+      isEmpty: filtered.length === 0,
+      pageIndex: 0,
+      hasMore: filtered.length > 0,
+      leftColumn: [],
+      rightColumn: [],
+      favoriteCount: favItems.length,
+      favoritePreviews: favoritePreviews,
+    }, function () {
+      if (filtered.length > 0) {
+        self._loadMore();
+      }
+    });
   },
 
-  /* ============ Hero / 再来一套 ============ */
-  onRegenerate() {
-    wx.vibrateShort({ type: 'medium' });
-    wx.showLoading({ title: 'AI 生成中...', mask: true });
-    // TODO: 调用云函数生成新搭配
-    setTimeout(() => {
-      wx.hideLoading();
-      const newMatch = 85 + Math.floor(Math.random() * 14);
-      this.setData({
-        'todayOutfit.match': newMatch,
-        liked: false,
+  // 瀑布流分页加载
+  _loadMore: function () {
+    var self = this;
+    if (self.data.loading || !self.data.hasMore) return;
+
+    self.setData({ loading: true });
+
+    var start = self.data.pageIndex * PAGE_SIZE;
+    var end = start + PAGE_SIZE;
+    var pageItems = self.data.filteredItems.slice(start, end);
+
+    // 分配到左右列（简单轮询分配）
+    var left = self.data.leftColumn.slice();
+    var right = self.data.rightColumn.slice();
+
+    for (var i = 0; i < pageItems.length; i++) {
+      if (left.length <= right.length) {
+        left.push(pageItems[i]);
+      } else {
+        right.push(pageItems[i]);
+      }
+    }
+
+    var nextPageIndex = self.data.pageIndex + 1;
+    var hasMore = end < self.data.filteredItems.length;
+
+    setTimeout(function () {
+      self.setData({
+        leftColumn: left,
+        rightColumn: right,
+        pageIndex: nextPageIndex,
+        hasMore: hasMore,
+        loading: false,
       });
-      wx.showToast({ title: '搭配已更新', icon: 'success' });
-    }, 800);
+    }, 200);
   },
 
-  /* ============ 天气 ============ */
-  onWeatherTap() {
-    wx.showToast({ title: '天气详情即将上线', icon: 'none' });
+  // 滚动到底部触发加载
+  onScrollToLower: function () {
+    this._loadMore();
   },
 
-  /* ============ 反馈互动 ============ */
-  onLike() {
+  /* ============ 左侧分类导航 ============ */
+  onCategoryTap: function (e) {
+    var key = e.currentTarget.dataset.key;
+    this.setData({ selectedCategory: key });
+    this._applyFavoritesAndFilter();
     wx.vibrateShort({ type: 'light' });
-    this.setData({ liked: !this.data.liked });
   },
 
-  onDislike() {
+  /* ============ 顶部分类标签 ============ */
+  onTypeTagTap: function (e) {
+    var key = e.currentTarget.dataset.key;
+    this.setData({ selectedTypeTag: key });
+    this._applyFavoritesAndFilter();
     wx.vibrateShort({ type: 'light' });
-    wx.showToast({ title: '已收到反馈，将调整风格', icon: 'none' });
   },
 
-  onSave() {
-    wx.vibrateShort({ type: 'light' });
-    const saved = !this.data.saved;
-    this.setData({ saved });
-    wx.showToast({ title: saved ? '已加入收藏' : '已取消收藏', icon: 'none' });
+  onMoreTypes: function () {
+    wx.showToast({ title: '更多筛选即将上线', icon: 'none' });
   },
 
-  /* ============ 风格标签 ============ */
-  onStyleTap(e) {
-    const id = e.currentTarget.dataset.id;
-    const styles = this.data.styles.map(function (s) {
-      return { id: s.id, label: s.label, icon: s.icon, active: s.id === id };
+  /* ============ 搜索 ============ */
+  onSearchInput: function (e) {
+    var keyword = e.detail.value;
+    this.setData({ searchKeyword: keyword });
+    this._applyFavoritesAndFilter();
+  },
+
+  onClearSearch: function () {
+    this.setData({ searchKeyword: '' });
+    this._applyFavoritesAndFilter();
+  },
+
+  onFocusSearch: function () {
+    // 点击 sidebar 搜索图标，滚动到顶部并聚焦搜索框
+    // 小程序无法直接聚焦 input，这里仅做提示
+    wx.showToast({ title: '请在上方搜索框输入', icon: 'none' });
+  },
+
+  /* ============ 跳转到收藏列表 ============ */
+  onShowFavorites: function () {
+    wx.navigateTo({
+      url: '/pages/favorites/favorites',
+      fail: function () {
+        wx.showToast({ title: '收藏列表开发中', icon: 'none' });
+      }
     });
-    this.setData({ styles });
+  },
+
+  /* ============ 收藏 ============ */
+  onToggleFavorite: function (e) {
+    var id = e.currentTarget.dataset.id;
+    var favoriteIds = this.data.favoriteIds.slice();
+    var idx = favoriteIds.indexOf(id);
+
+    if (idx >= 0) {
+      favoriteIds.splice(idx, 1);
+    } else {
+      favoriteIds.push(id);
+    }
+
+    wx.setStorageSync(FAVORITE_KEY, favoriteIds);
+    this.setData({ favoriteIds: favoriteIds });
+    this._applyFavoritesAndFilter();
     wx.vibrateShort({ type: 'light' });
   },
 
-  /* ============ 更多推荐 ============ */
-  onPickTap(e) {
-    const id = e.currentTarget.dataset.id;
-    const p = this.data.morePicks.find(x => x.id === id);
-    if (!p) return;
-    wx.showToast({ title: `查看：${p.title}`, icon: 'none' });
+  /* ============ 点击衣物卡片 ============ */
+  onItemTap: function (e) {
+    var itemId = e.currentTarget.dataset.id;
+    wx.vibrateShort({ type: 'light' });
+    wx.showToast({ title: '衣物详情开发中', icon: 'none' });
   },
 
-  onPickLike(e) {
-    const id = e.currentTarget.dataset.id;
-    const morePicks = this.data.morePicks.map(function (p) {
-      if (p.id !== id) return p;
-      return {
-        id: p.id,
-        title: p.title,
-        tag: p.tag,
-        emoji: p.emoji,
-        match: p.match,
-        liked: !p.liked
-      };
-    });
-    this.setData({ morePicks });
+  /* ============ 切换主题 ============ */
+  onToggleTheme: function () {
+    var next = this.data.isDark ? 'light' : 'dark';
+    wx.setStorageSync(THEME_KEY, next);
+    this.setData({ isDark: next === 'dark' });
     wx.vibrateShort({ type: 'light' });
   },
 });

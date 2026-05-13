@@ -43,14 +43,14 @@ Component({
       wx.vibrateShort({ type: 'medium' });
       const self = this;
       wx.showActionSheet({
-        itemList: ['📷 拍照添加', '🖼️ 从相册选择', '✍️ 手动录入'],
+        itemList: ['拍照添加', '从相册选择', '手动录入'],
         success: function (res) {
           if (res.tapIndex === 0) {
             self.chooseWithCamera();
           } else if (res.tapIndex === 1) {
             self.chooseFromAlbum();
           } else if (res.tapIndex === 2) {
-            wx.switchTab({ url: '/pages/wardrobe/wardrobe' });
+            wx.navigateTo({ url: '/pages/add-cloth/add-cloth' });
           }
         },
       });
@@ -61,8 +61,11 @@ Component({
         count: 1,
         mediaType: ['image'],
         sourceType: ['camera'],
-        success: function () {
-          wx.switchTab({ url: '/pages/wardrobe/wardrobe' });
+        success: function (res) {
+          var tempFilePath = res.tempFiles && res.tempFiles[0] && res.tempFiles[0].tempFilePath;
+          if (tempFilePath) {
+            wx.navigateTo({ url: '/pages/add-cloth/add-cloth?tempFilePath=' + tempFilePath });
+          }
         },
       });
     },
@@ -72,8 +75,11 @@ Component({
         count: 9,
         mediaType: ['image'],
         sourceType: ['album'],
-        success: function () {
-          wx.switchTab({ url: '/pages/wardrobe/wardrobe' });
+        success: function (res) {
+          var tempFilePath = res.tempFiles && res.tempFiles[0] && res.tempFiles[0].tempFilePath;
+          if (tempFilePath) {
+            wx.navigateTo({ url: '/pages/add-cloth/add-cloth?tempFilePath=' + tempFilePath });
+          }
         },
       });
     },

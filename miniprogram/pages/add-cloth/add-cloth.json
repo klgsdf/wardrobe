@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "我的衣柜",
+  "navigationBarTitleText": "添加衣物",
   "navigationStyle": "custom",
   "enablePullDownRefresh": false,
   "usingComponents": {}

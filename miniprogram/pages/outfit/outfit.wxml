@@ -1,188 +1,216 @@
-<!-- pages/outfit/outfit.wxml - 智能搭配推荐页 -->
+<!-- pages/outfit/outfit.wxml - 参考图风格：莫兰迪低饱和 -->
 <view class="page-root {{isDark ? 'theme-dark' : ''}}">
 
-  <!-- ===== 自定义磨砂导航栏 ===== -->
-  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px;">
-    <view class="nav-bar__row" style="height: {{navBarHeight}}px;">
-      <view class="nav-title">智能搭配</view>
-      <view class="nav-btn tap-scale" bindtap="onOpenHistory">
-        <text class="nav-btn__icon">🕘</text>
-      </view>
-    </view>
+  <!-- 渐变装饰背景层 -->
+  <view class="page-bg"></view>
+
+  <!-- 状态栏 + 自定义导航栏 -->
+  <view class="nav-bar" style="height: {{navPadHeight}}px; padding-top: {{statusBarHeight}}px;">
+    <view class="nav-bar__title">我的衣服</view>
   </view>
 
-  <!-- ===== 滚动内容 ===== -->
-  <scroll-view
-    class="scroll-wrap"
-    scroll-y="{{true}}"
-    enhanced="{{true}}"
-    show-scrollbar="{{false}}"
-    style="padding-top: {{statusBarHeight + navBarHeight}}px;"
-  >
+  <!-- 页面主体：左侧图标栏 + 右侧内容卡 -->
+  <view class="main-layout" style="padding-top: {{navPadHeight}}px; --nav-pad: {{navPadHeight}}px;">
 
-    <!-- A. AI 推荐主横幅 -->
-    <view class="hero tap-scale" bindtap="onRegenerate">
-      <view class="hero__halo hero__halo--1"></view>
-      <view class="hero__halo hero__halo--2"></view>
-      <view class="hero__halo hero__halo--3"></view>
-      <view class="hero__emoji">✨</view>
-      <view class="hero__content">
-        <view class="hero__tag">AI 搭配</view>
-        <view class="hero__title">今天穿这套，自信出门</view>
-        <view class="hero__sub">基于你的 {{stats.total}} 件衣物 · 实时天气 · 今日日程</view>
-        <view class="hero__btn">
-          <text>立即生成</text>
-          <text class="hero__btn-arrow">›</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- B. 天气适配条 -->
-    <view class="weather glass-card tap-scale" bindtap="onWeatherTap">
-      <text class="weather__icon">{{weather.icon}}</text>
-      <view class="weather__info">
-        <view class="weather__line1">{{weather.city}} · {{weather.temp}} {{weather.desc}}</view>
-        <view class="weather__line2 text-sub">{{weather.suggestion}}</view>
-      </view>
-      <text class="weather__arrow text-assist">›</text>
-    </view>
-
-    <!-- C. 今日推荐搭配 -->
-    <view class="outfit-card glass-card">
-      <view class="outfit-card__head">
-        <view class="outfit-card__tag">今日推荐</view>
-        <view class="outfit-card__match">
-          <text class="outfit-card__match-num">{{todayOutfit.match}}%</text>
-          <text class="outfit-card__match-text">匹配</text>
-        </view>
-      </view>
-
-      <!-- 服饰网格：左 2 格 + 右 3 格 -->
-      <view class="outfit-card__grid">
-        <view class="outfit-card__col outfit-card__col--left">
-          <view class="outfit-slot outfit-slot--lg">
-            <text class="outfit-slot__icon">{{todayOutfit.items[0].icon}}</text>
-            <text class="outfit-slot__label text-sub">{{todayOutfit.items[0].name}}</text>
-          </view>
-          <view class="outfit-slot outfit-slot--md">
-            <text class="outfit-slot__icon">{{todayOutfit.items[1].icon}}</text>
-            <text class="outfit-slot__label text-sub">{{todayOutfit.items[1].name}}</text>
-          </view>
-        </view>
-        <view class="outfit-card__col outfit-card__col--right">
-          <view class="outfit-slot outfit-slot--lg">
-            <text class="outfit-slot__icon">{{todayOutfit.items[2].icon}}</text>
-            <text class="outfit-slot__label text-sub">{{todayOutfit.items[2].name}}</text>
-          </view>
-          <view class="outfit-slot outfit-slot--sm">
-            <text class="outfit-slot__icon">{{todayOutfit.items[3].icon}}</text>
-          </view>
-          <view class="outfit-slot outfit-slot--sm">
-            <text class="outfit-slot__icon">{{todayOutfit.items[4].icon}}</text>
+    <!-- ===== 左侧分类图标栏 ===== -->
+    <view class="sidebar">
+      <view class="sidebar__menu">
+        <view
+          wx:for="{{categories}}"
+          wx:key="key"
+          class="sidebar__item sidebar__item--{{item.key}} tap-scale {{selectedCategory === item.key ? 'is-active' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="onCategoryTap"
+        >
+          <view class="sidebar__icon">
+            <!-- 全部（四宫格） -->
+            <view wx:if="{{item.key === 'all'}}" class="ic-sidebar-all">
+              <view class="ic-sidebar-all__dot ic-sidebar-all__dot--1"></view>
+              <view class="ic-sidebar-all__dot ic-sidebar-all__dot--2"></view>
+              <view class="ic-sidebar-all__dot ic-sidebar-all__dot--3"></view>
+              <view class="ic-sidebar-all__dot ic-sidebar-all__dot--4"></view>
+            </view>
+            <!-- 上装 T 恤 -->
+            <view wx:if="{{item.key === 'top'}}" class="ic-sidebar-top">
+              <view class="ic-sidebar-top__body"></view>
+              <view class="ic-sidebar-top__sleeve-l"></view>
+              <view class="ic-sidebar-top__sleeve-r"></view>
+              <view class="ic-sidebar-top__neck"></view>
+            </view>
+            <!-- 连衣裙 -->
+            <view wx:if="{{item.key === 'dress'}}" class="ic-sidebar-dress">
+              <view class="ic-sidebar-dress__body"></view>
+              <view class="ic-sidebar-dress__strap-l"></view>
+              <view class="ic-sidebar-dress__strap-r"></view>
+            </view>
+            <!-- 下装 -->
+            <view wx:if="{{item.key === 'bottom'}}" class="ic-sidebar-bottom">
+              <view class="ic-sidebar-bottom__body"></view>
+              <view class="ic-sidebar-bottom__split"></view>
+            </view>
+            <!-- 鞋靴 -->
+            <view wx:if="{{item.key === 'shoes'}}" class="ic-sidebar-shoes">
+              <view class="ic-sidebar-shoes__body"></view>
+              <view class="ic-sidebar-shoes__sole"></view>
+            </view>
+            <!-- 外套 -->
+            <view wx:if="{{item.key === 'outer'}}" class="ic-sidebar-outer">
+              <view class="ic-sidebar-outer__body"></view>
+              <view class="ic-sidebar-outer__collar"></view>
+            </view>
+            <!-- 配饰 -->
+            <view wx:if="{{item.key === 'accessory'}}" class="ic-sidebar-acc">
+              <view class="ic-sidebar-acc__ring"></view>
+              <view class="ic-sidebar-acc__dot"></view>
+            </view>
           </view>
         </view>
       </view>
 
-      <view class="outfit-card__info">
-        <view class="outfit-card__title">{{todayOutfit.title}}</view>
-      </view>
-
-      <view class="outfit-card__chips">
-        <view class="chip" wx:for="{{todayOutfit.chips}}" wx:key="*this">{{item}}</view>
-      </view>
-    </view>
-
-    <!-- D. 反馈互动条 -->
-    <view class="feedback glass-card">
-      <view class="fb-btn tap-scale {{liked ? 'is-liked' : ''}}" bindtap="onLike">
-        <view class="fb-btn__circle"><text class="fb-btn__icon">👍</text></view>
-        <text class="fb-btn__label">喜欢</text>
-      </view>
-      <view class="fb-btn tap-scale" bindtap="onDislike">
-        <view class="fb-btn__circle"><text class="fb-btn__icon">👎</text></view>
-        <text class="fb-btn__label">换风格</text>
-      </view>
-      <view class="fb-btn tap-scale {{saved ? 'is-saved' : ''}}" bindtap="onSave">
-        <view class="fb-btn__circle"><text class="fb-btn__icon">{{saved ? '⭐' : '☆'}}</text></view>
-        <text class="fb-btn__label">{{saved ? '已收藏' : '收藏'}}</text>
-      </view>
-      <view class="fb-btn fb-btn--primary tap-scale" bindtap="onRegenerate">
-        <view class="fb-btn__circle fb-btn__circle--primary"><text class="fb-btn__icon">🔄</text></view>
-        <text class="fb-btn__label text-primary">再来一套</text>
+      <!-- 底部搜索入口 -->
+      <view class="sidebar__foot tap-scale" bindtap="onFocusSearch">
+        <view class="sidebar__foot-icon">
+          <view class="ic-search-lg">
+            <view class="ic-search-lg__circle"></view>
+            <view class="ic-search-lg__handle"></view>
+          </view>
+        </view>
       </view>
     </view>
 
-    <!-- E. 风格标签横滑 -->
-    <view class="section-head">
-      <view class="section-head__title">风格偏好</view>
-    </view>
-    <scroll-view
-      class="style-scroll"
-      scroll-x="{{true}}"
-      enhanced="{{true}}"
-      show-scrollbar="{{false}}"
-    >
-      <view
-        wx:for="{{styles}}"
-        wx:key="id"
-        class="style-chip tap-scale {{item.active ? 'is-active' : ''}}"
-        data-id="{{item.id}}"
-        bindtap="onStyleTap"
-      >{{item.name}}</view>
-    </scroll-view>
+    <!-- ===== 右侧内容卡 ===== -->
+    <scroll-view class="content" scroll-y bindscrolltolower="onScrollToLower">
 
-    <!-- F. 更多推荐 -->
-    <view class="section-head">
-      <view class="section-head__title">更多推荐</view>
-      <view class="section-head__more text-assist">查看全部 ›</view>
-    </view>
-    <view class="picks-grid">
-      <view
-        class="pick-card tap-scale"
-        wx:for="{{morePicks}}"
-        wx:key="id"
-        data-id="{{item.id}}"
-        bindtap="onPickTap"
-      >
-        <view class="pick-card__cover" style="background: {{item.cover}};">
-          <text class="pick-card__emoji">{{item.emoji}}</text>
+      <!-- 搜索栏 + 季节标签 -->
+      <view class="content__header">
+        <!-- 搜索栏 -->
+        <view class="search-bar">
+          <view class="ic-search-sm">
+            <view class="ic-search-sm__circle"></view>
+            <view class="ic-search-sm__handle"></view>
+          </view>
+          <input
+            class="search-bar__input"
+            placeholder="搜索衣服名称/风格"
+            placeholder-class="search-bar__placeholder"
+            value="{{searchKeyword}}"
+            bindinput="onSearchInput"
+            confirm-type="search"
+          />
+          <view wx:if="{{searchKeyword}}" class="search-bar__clear tap-scale" bindtap="onClearSearch">
+            <view class="ic-close-xs">
+              <view class="ic-close-xs__l1"></view>
+              <view class="ic-close-xs__l2"></view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 横向季节标签 -->
+        <scroll-view class="type-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+          <view class="type-list">
+            <view
+              wx:for="{{typeTags}}"
+              wx:key="key"
+              class="type-tag type-tag--{{item.key}} tap-scale {{selectedTypeTag === item.key ? 'is-active' : ''}}"
+              data-key="{{item.key}}"
+              bindtap="onTypeTagTap"
+            >
+              <text class="type-tag__text">{{item.label}}</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 衣物瀑布流 -->
+      <view wx:if="{{!isEmpty}}" class="waterfall">
+        <!-- 左列 -->
+        <view class="waterfall__col waterfall__col--left">
           <view
-            class="pick-card__heart {{item.liked ? 'is-liked' : ''}}"
+            wx:for="{{leftColumn}}"
+            wx:key="id"
+            class="cloth-card tap-scale"
             data-id="{{item.id}}"
-            catchtap="onPickLike"
+            bindtap="onItemTap"
           >
-            <text>{{item.liked ? '❤️' : '🤍'}}</text>
+            <view class="cloth-card__frame">
+              <image class="cloth-card__img" src="{{item.images[0]}}" mode="widthFix" lazy-load />
+              <!-- 心形收藏 -->
+              <view
+                class="cloth-card__check {{item.favorite ? 'is-checked' : ''}} tap-scale"
+                data-id="{{item.id}}"
+                catchtap="onToggleFavorite"
+              >
+                <view class="ic-heart">
+                  <view class="ic-heart__l"></view>
+                  <view class="ic-heart__r"></view>
+                </view>
+              </view>
+            </view>
+            <view class="cloth-card__info">
+              <view class="cloth-card__name">{{item.name || item.categoryLabel}}</view>
+              <view class="cloth-card__meta">
+                <text wx:if="{{item.categoryLabel}}" class="cloth-card__tag cloth-card__tag--cat">{{item.categoryLabel}}</text>
+                <text wx:if="{{item.seasonLabel}}" class="cloth-card__tag">{{item.seasonLabel}}</text>
+              </view>
+            </view>
           </view>
         </view>
-        <view class="pick-card__info">
-          <view class="pick-card__title">{{item.title}}</view>
-          <view class="pick-card__match text-primary">{{item.match}}% 匹配</view>
-        </view>
-      </view>
-    </view>
 
-    <!-- G. 最近搭配 -->
-    <view class="section-head">
-      <view class="section-head__title">最近搭配</view>
-      <view class="section-head__more text-assist">全部历史 ›</view>
-    </view>
-    <scroll-view
-      class="recent-scroll"
-      scroll-x="{{true}}"
-      enhanced="{{true}}"
-      show-scrollbar="{{false}}"
-    >
-      <view class="recent-card tap-scale" wx:for="{{recent}}" wx:key="id">
-        <view class="recent-card__cover" style="background: {{item.cover}};">
-          <text class="recent-card__emoji">{{item.emoji}}</text>
-        </view>
-        <view class="recent-card__info">
-          <view class="recent-card__date">{{item.date}}</view>
-          <view class="recent-card__title">{{item.title}}</view>
+        <!-- 右列 -->
+        <view class="waterfall__col waterfall__col--right">
+          <view
+            wx:for="{{rightColumn}}"
+            wx:key="id"
+            class="cloth-card tap-scale"
+            data-id="{{item.id}}"
+            bindtap="onItemTap"
+          >
+            <view class="cloth-card__frame">
+              <image class="cloth-card__img" src="{{item.images[0]}}" mode="widthFix" lazy-load />
+              <view
+                class="cloth-card__check {{item.favorite ? 'is-checked' : ''}} tap-scale"
+                data-id="{{item.id}}"
+                catchtap="onToggleFavorite"
+              >
+                <view class="ic-heart">
+                  <view class="ic-heart__l"></view>
+                  <view class="ic-heart__r"></view>
+                </view>
+              </view>
+            </view>
+            <view class="cloth-card__info">
+              <view class="cloth-card__name">{{item.name || item.categoryLabel}}</view>
+              <view class="cloth-card__meta">
+                <text wx:if="{{item.categoryLabel}}" class="cloth-card__tag cloth-card__tag--cat">{{item.categoryLabel}}</text>
+                <text wx:if="{{item.seasonLabel}}" class="cloth-card__tag">{{item.seasonLabel}}</text>
+              </view>
+            </view>
+          </view>
         </view>
       </view>
+
+      <!-- 加载更多 -->
+      <view wx:if="{{!isEmpty && hasMore}}" class="load-more">
+        <view class="load-more__spinner"></view>
+        <text class="load-more__text">加载中...</text>
+      </view>
+      <view wx:if="{{!isEmpty && !hasMore && filteredItems.length > 0}}" class="load-more load-more--end">
+        <text>没有更多了</text>
+      </view>
+
+      <!-- 空状态 -->
+      <view wx:if="{{isEmpty}}" class="empty-state">
+        <view class="empty-state__icon">
+          <view class="ic-hanger-empty">
+            <view class="ic-hanger-empty__rod"></view>
+            <view class="ic-hanger-empty__hook"></view>
+          </view>
+        </view>
+        <view class="empty-state__title">暂无衣物</view>
+        <view class="empty-state__desc">去添加衣物，开始管理你的衣柜</view>
+      </view>
+
+      <view class="safe-bottom"></view>
     </scroll-view>
-
-    <view class="safe-bottom"></view>
-  </scroll-view>
+  </view>
 </view>

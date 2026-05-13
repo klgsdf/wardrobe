@@ -1,0 +1,568 @@
+/* pages/ai-match/ai-match.wxss - AI 智能搭配（焦糖米黄风） */
+
+/* ============ 页面根 ============ */
+.page-root {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FEFAE0 0%, #FFFFFF 60%);
+  box-sizing: border-box;
+}
+
+.nav-pad { width: 100%; }
+
+/* ============ 自定义导航栏 ============ */
+.nav-bar {
+  position: fixed;
+  left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24rpx;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.nav-back {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ic-arrow-left {
+  width: 20rpx;
+  height: 20rpx;
+  border-left: 3rpx solid #4A403A;
+  border-bottom: 3rpx solid #4A403A;
+  transform: rotate(45deg);
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #4A403A;
+  letter-spacing: 0.5rpx;
+}
+
+.nav-placeholder {
+  width: 64rpx;
+}
+
+/* ============ 页面内容区 ============ */
+.page-body {
+  padding: 0 40rpx 40rpx;
+  box-sizing: border-box;
+}
+
+/* ============ AI 搭配师头像 ============ */
+.ai-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.ai-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: #FADADD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ai-avatar__face {
+  position: relative;
+  width: 48rpx;
+  height: 40rpx;
+}
+
+.ai-avatar__eye {
+  position: absolute;
+  top: 8rpx;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: #4A403A;
+}
+
+.ai-avatar__eye--l { left: 8rpx; }
+.ai-avatar__eye--r { right: 8rpx; }
+
+.ai-avatar__mouth {
+  position: absolute;
+  bottom: 4rpx;
+  left: 50%;
+  width: 20rpx;
+  height: 10rpx;
+  margin-left: -10rpx;
+  border-bottom: 2rpx solid #4A403A;
+  border-radius: 0 0 10rpx 10rpx;
+}
+
+.ai-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #4A403A;
+  letter-spacing: 0.3rpx;
+}
+
+/* ============ AI 气泡消息 ============ */
+.ai-bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 20rpx 32rpx;
+  background: #F5F0EB;
+  border-radius: 24rpx;
+  margin-bottom: 40rpx;
+}
+
+.ai-bubble__text {
+  font-size: 30rpx;
+  color: #4A403A;
+  letter-spacing: 0.3rpx;
+  line-height: 1.4;
+}
+
+.ai-bubble__sparkle {
+  font-size: 28rpx;
+}
+
+/* ============ 输入区域 ============ */
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+}
+
+.style-input-wrap {
+  background: #FAF8F5;
+  border: 1rpx solid #E8E0D8;
+  border-radius: 24rpx;
+  padding: 24rpx 28rpx;
+  box-sizing: border-box;
+}
+
+.style-input {
+  width: 100%;
+  min-height: 80rpx;
+  font-size: 30rpx;
+  color: #4A403A;
+  line-height: 1.5;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.style-input__placeholder {
+  font-size: 30rpx;
+  color: #B5ADA8;
+}
+
+.style-input__hint {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #B5ADA8;
+  line-height: 1.6;
+}
+
+/* ============ AI 推荐按钮 ============ */
+.ai-btn-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 8rpx;
+}
+
+.ai-recommend-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 24rpx 80rpx;
+  background: linear-gradient(135deg, #D4A373 0%, #C4936A 100%);
+  border-radius: 9999rpx;
+  box-shadow: 0 8rpx 24rpx rgba(212, 163, 115, 0.30);
+}
+
+.ai-recommend-btn--disabled {
+  opacity: 0.5;
+}
+
+.ai-recommend-btn__sparkle {
+  font-size: 28rpx;
+}
+
+.ai-recommend-btn__text {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #FFFFFF;
+  letter-spacing: 0.5rpx;
+}
+
+/* ============ 快捷选择 ============ */
+.quick-tags {
+  margin-top: 16rpx;
+}
+
+.quick-tags__label {
+  font-size: 26rpx;
+  color: #9C8C84;
+  margin-bottom: 20rpx;
+  letter-spacing: 0.3rpx;
+}
+
+.quick-tags__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.quick-tag {
+  padding: 14rpx 32rpx;
+  border-radius: 9999rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.2s ease;
+}
+
+.quick-tag--active {
+  border-color: #D4A373;
+  box-shadow: 0 4rpx 12rpx rgba(212, 163, 115, 0.20);
+}
+
+.quick-tag__text {
+  font-size: 26rpx;
+  color: #4A403A;
+  letter-spacing: 0.3rpx;
+}
+
+/* ============ 加载状态 ============ */
+.loading-view,
+.streaming-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 0;
+  gap: 24rpx;
+}
+
+.loading-dots,
+.streaming-dots {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.loading-dot,
+.streaming-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background: #D4A373;
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.loading-dot--1,
+.streaming-dot--1 { animation-delay: 0s; }
+.loading-dot--2,
+.streaming-dot--2 { animation-delay: 0.2s; }
+.loading-dot--3,
+.streaming-dot--3 { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.loading-text,
+.streaming-label {
+  font-size: 28rpx;
+  color: #9C8C84;
+  letter-spacing: 0.5rpx;
+}
+
+.loading-icon {
+  margin-top: 16rpx;
+}
+
+.ic-shirt-loading {
+  width: 60rpx;
+  height: 60rpx;
+  position: relative;
+}
+
+.ic-shirt-loading__body {
+  position: absolute;
+  inset: 8rpx;
+  border: 2rpx solid #D4A373;
+  border-radius: 8rpx;
+  opacity: 0.5;
+}
+
+/* ============ 流式输出状态 ============ */
+.streaming-think-wrap,
+.streaming-text-wrap {
+  width: 100%;
+  background: #FAF8F5;
+  border: 1rpx solid #E8E0D8;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-top: 16rpx;
+  box-sizing: border-box;
+}
+
+.streaming-think-label,
+.streaming-text-label {
+  font-size: 22rpx;
+  color: #9C8C84;
+  margin-bottom: 12rpx;
+  letter-spacing: 0.3rpx;
+}
+
+.streaming-think-content,
+.streaming-text-content {
+  font-size: 26rpx;
+  color: #4A403A;
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+.streaming-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  margin-top: 24rpx;
+  padding: 20rpx 32rpx;
+  background: #FFF0F0;
+  border: 1rpx solid #FFD0D0;
+  border-radius: 16rpx;
+}
+
+.streaming-error__text {
+  font-size: 26rpx;
+  color: #D47373;
+  font-weight: 500;
+}
+
+.streaming-error__sub {
+  font-size: 22rpx;
+  color: #B5ADA8;
+}
+
+/* ============ 结果列表 ============ */
+.result-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.outfit-card {
+  background: #FFFFFF;
+  border: 1rpx solid rgba(140, 130, 120, 0.12);
+  border-radius: 24rpx;
+  padding: 28rpx 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+.outfit-card__header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.outfit-card__tag {
+  padding: 8rpx 20rpx;
+  border-radius: 9999rpx;
+}
+
+.outfit-card__tag-text {
+  font-size: 22rpx;
+  font-weight: 500;
+  color: #4A403A;
+  letter-spacing: 0.3rpx;
+}
+
+.outfit-card__name {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #4A403A;
+  letter-spacing: 0.3rpx;
+}
+
+.outfit-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.outfit-card__item {
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+}
+
+.outfit-card__item-label {
+  font-size: 26rpx;
+  color: #9C8C84;
+  flex-shrink: 0;
+}
+
+.outfit-card__item-value {
+  font-size: 26rpx;
+  color: #4A403A;
+}
+
+/* ============ 重新搭配按钮 ============ */
+.recommend-again-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.recommend-again-btn {
+  padding: 18rpx 56rpx;
+  background: #FFFFFF;
+  border: 1rpx solid #E8E0D8;
+  border-radius: 9999rpx;
+}
+
+.recommend-again-btn__text {
+  font-size: 28rpx;
+  color: #9C8C84;
+  letter-spacing: 0.3rpx;
+}
+
+/* ============ 安全区域 ============ */
+.safe-bottom {
+  height: calc(env(safe-area-inset-bottom) + 40rpx);
+}
+
+/* ============ 深色主题覆盖 ============ */
+.page-root.theme-dark {
+  background: linear-gradient(180deg, #1A1816 0%, #242220 60%);
+}
+
+.page-root.theme-dark .nav-title {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .ic-arrow-left {
+  border-color: #E8E0D8;
+}
+
+.page-root.theme-dark .ai-avatar {
+  background: #5A4A4A;
+}
+
+.page-root.theme-dark .ai-avatar__eye,
+.page-root.theme-dark .ai-avatar__mouth {
+  background: #E8E0D8;
+  border-color: #E8E0D8;
+}
+
+.page-root.theme-dark .ai-name {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .ai-bubble {
+  background: #3A3634;
+}
+
+.page-root.theme-dark .ai-bubble__text {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .style-input-wrap {
+  background: #2E2C2A;
+  border-color: #5A5654;
+}
+
+.page-root.theme-dark .style-input {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .style-input__placeholder {
+  color: #6A6460;
+}
+
+.page-root.theme-dark .style-input__hint {
+  color: #6A6460;
+}
+
+.page-root.theme-dark .quick-tags__label {
+  color: #A09890;
+}
+
+.page-root.theme-dark .quick-tag__text {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .loading-text {
+  color: #A09890;
+}
+
+.page-root.theme-dark .outfit-card {
+  background: #2E2C2A;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.page-root.theme-dark .outfit-card__tag-text,
+.page-root.theme-dark .outfit-card__name,
+.page-root.theme-dark .outfit-card__item-value {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .outfit-card__item-label {
+  color: #A09890;
+}
+
+.page-root.theme-dark .recommend-again-btn {
+  background: #2E2C2A;
+  border-color: #5A5654;
+}
+
+.page-root.theme-dark .recommend-again-btn__text {
+  color: #A09890;
+}
+
+/* 深色模式流式输出 */
+.page-root.theme-dark .streaming-think-wrap,
+.page-root.theme-dark .streaming-text-wrap {
+  background: #2E2C2A;
+  border-color: #5A5654;
+}
+
+.page-root.theme-dark .streaming-think-label,
+.page-root.theme-dark .streaming-text-label {
+  color: #A09890;
+}
+
+.page-root.theme-dark .streaming-think-content,
+.page-root.theme-dark .streaming-text-content {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .streaming-error {
+  background: #3A2A2A;
+  border-color: #5A3A3A;
+}
+
+.page-root.theme-dark .streaming-error__text {
+  color: #D4A5A5;
+}
+
+.page-root.theme-dark .streaming-error__sub {
+  color: #A09890;
+}

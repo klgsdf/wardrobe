@@ -1,0 +1,9 @@
+{
+  "name": "ai",
+  "version": "1.0.0",
+  "description": "AI 图像识别云函数 - 腾讯云图像标签",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

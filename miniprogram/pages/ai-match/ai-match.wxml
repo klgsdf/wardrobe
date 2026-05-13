@@ -1,0 +1,173 @@
+<!--pages/ai-match/ai-match.wxml - AI 智能搭配（焦糖米黄风）-->
+<view class="page-root {{isDark ? 'theme-dark' : ''}}">
+
+  <!-- 状态栏占位 -->
+  <view class="nav-pad" style="height: {{navPadHeight}}px;"></view>
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-back tap-scale" bindtap="onBack">
+      <view class="ic-arrow-left"></view>
+    </view>
+    <view class="nav-title">AI智能搭配</view>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <view class="page-body">
+
+    <!-- ===== AI 搭配师头像 ===== -->
+    <view class="ai-header">
+      <view class="ai-avatar">
+        <view class="ai-avatar__face">
+          <view class="ai-avatar__eye ai-avatar__eye--l"></view>
+          <view class="ai-avatar__eye ai-avatar__eye--r"></view>
+          <view class="ai-avatar__mouth"></view>
+        </view>
+      </view>
+      <text class="ai-name">AI搭配师</text>
+    </view>
+
+    <!-- ===== AI 气泡消息 ===== -->
+    <view class="ai-bubble">
+      <text class="ai-bubble__text">{{bubbleText}}</text>
+      <text class="ai-bubble__sparkle">✨</text>
+    </view>
+
+    <!-- ===== 输入状态视图 ===== -->
+    <view wx:if="{{pageState === 'input'}}" class="input-section">
+      <view class="style-input-wrap">
+        <textarea
+          class="style-input"
+          placeholder="输入你想要的风格..."
+          placeholder-class="style-input__placeholder"
+          maxlength="100"
+          bindinput="onInputStyle"
+          value="{{styleInput}}"
+          auto-height
+        />
+        <view class="style-input__hint">如：通勤、约会、运动、休闲、学院、复古...</view>
+      </view>
+
+      <!-- AI 推荐按钮 -->
+      <view class="ai-btn-wrap">
+        <view class="ai-recommend-btn tap-scale {{styleInput ? '' : 'ai-recommend-btn--disabled'}}" bindtap="onAiRecommend">
+          <text class="ai-recommend-btn__sparkle">✨</text>
+          <text class="ai-recommend-btn__text">AI 推荐</text>
+        </view>
+      </view>
+
+      <!-- 快捷选择 -->
+      <view class="quick-tags">
+        <view class="quick-tags__label">快捷选择：</view>
+        <view class="quick-tags__list">
+          <view
+            wx:for="{{quickTags}}"
+            wx:key="key"
+            class="quick-tag tap-scale {{selectedQuickTag === item.key ? 'quick-tag--active' : ''}}"
+            style="background: {{item.bg}};"
+            data-key="{{item.key}}"
+            data-label="{{item.label}}"
+            bindtap="onQuickTagTap"
+          >
+            <text class="quick-tag__text">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 加载状态视图 ===== -->
+    <view wx:if="{{pageState === 'loading'}}" class="loading-view">
+      <view class="loading-dots">
+        <view class="loading-dot loading-dot--1"></view>
+        <view class="loading-dot loading-dot--2"></view>
+        <view class="loading-dot loading-dot--3"></view>
+      </view>
+      <view class="loading-text">AI 正在为你搭配...</view>
+      <view class="loading-icon">
+        <view class="ic-shirt-loading">
+          <view class="ic-shirt-loading__body"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 流式输出状态视图 ===== -->
+    <view wx:if="{{pageState === 'streaming'}}" class="streaming-view">
+      <view class="streaming-dots">
+        <view class="streaming-dot streaming-dot--1"></view>
+        <view class="streaming-dot streaming-dot--2"></view>
+        <view class="streaming-dot streaming-dot--3"></view>
+      </view>
+      <view class="streaming-label">AI 正在思考...</view>
+
+      <!-- 思维链展示（deepseek-r1） -->
+      <view wx:if="{{streamingThink}}" class="streaming-think-wrap">
+        <view class="streaming-think-label">思维链</view>
+        <view class="streaming-think-content">{{streamingThink}}</view>
+      </view>
+
+      <!-- 生成文本展示 -->
+      <view wx:if="{{streamingText}}" class="streaming-text-wrap">
+        <view class="streaming-text-label">生成中</view>
+        <view class="streaming-text-content">{{streamingText}}</view>
+      </view>
+
+      <!-- 错误提示 -->
+      <view wx:if="{{aiError}}" class="streaming-error">
+        <text class="streaming-error__text">{{aiErrorMsg}}</text>
+        <text class="streaming-error__sub">已切换至演示模式</text>
+      </view>
+    </view>
+
+    <!-- ===== 结果状态视图 ===== -->
+    <view wx:if="{{pageState === 'results'}}" class="result-view">
+      <view class="result-list">
+        <view
+          wx:for="{{recommendations}}"
+          wx:key="id"
+          wx:for-index="idx"
+          class="outfit-card tap-scale"
+          data-index="{{idx}}"
+          bindtap="onOutfitTap"
+        >
+          <view class="outfit-card__header">
+            <view class="outfit-card__tag" style="background: {{item.tagBg}};">
+              <text class="outfit-card__tag-text">{{item.tagLabel}}</text>
+            </view>
+            <text class="outfit-card__name">{{item.name}}</text>
+          </view>
+          <view class="outfit-card__body">
+            <view wx:if="{{item.top}}" class="outfit-card__item">
+              <text class="outfit-card__item-label">上装：</text>
+              <text class="outfit-card__item-value">{{item.top}}</text>
+            </view>
+            <view wx:if="{{item.bottom}}" class="outfit-card__item">
+              <text class="outfit-card__item-label">下装：</text>
+              <text class="outfit-card__item-value">{{item.bottom}}</text>
+            </view>
+            <view wx:if="{{item.dress}}" class="outfit-card__item">
+              <text class="outfit-card__item-label">连衣裙：</text>
+              <text class="outfit-card__item-value">{{item.dress}}</text>
+            </view>
+            <view wx:if="{{item.accessory}}" class="outfit-card__item">
+              <text class="outfit-card__item-label">配饰：</text>
+              <text class="outfit-card__item-value">{{item.accessory}}</text>
+            </view>
+            <view wx:if="{{item.shoes}}" class="outfit-card__item">
+              <text class="outfit-card__item-label">鞋履：</text>
+              <text class="outfit-card__item-value">{{item.shoes}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 重新搭配按钮 -->
+      <view class="recommend-again-wrap">
+        <view class="recommend-again-btn tap-scale" bindtap="onRecommendAgain">
+          <text class="recommend-again-btn__text">重新搭配</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="safe-bottom"></view>
+  </view>
+</view>

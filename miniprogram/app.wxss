@@ -1,69 +1,69 @@
-/**app.wxss - Ins 极简风电子衣柜（白·粉·蓝配色）**/
+/**app.wxss - 焦糖米黄风电子衣柜 **/
 
 page {
-  /* ===== Ins 极简风 · 白/粉/蓝配色 ===== */
-  /* 主色：清新功能蓝 */
-  --color-primary: #4A90E2;
-  --color-primary-light: #6BA5E7;
-  --color-primary-deep: #3A7BD5;
-  --color-primary-gradient: linear-gradient(135deg, #5CA0E6, #4A90E2);
+  /* ===== 焦糖米黄风 · 温暖柔和配色 ===== */
+  /* 主色：焦糖色 */
+  --color-primary: #D4A373;
+  --color-primary-light: #E8C4A0;
+  --color-primary-deep: #B88A5E;
+  --color-primary-gradient: linear-gradient(135deg, #E8C4A0, #D4A373);
 
   /* 辅助色：柔和莫兰迪粉 */
-  --color-pink: #F8BBD9;
-  --color-pink-light: #FCE4EC;
-  --color-pink-deep: #F48FB1;
+  --color-pink: #E8B4B4;
+  --color-pink-light: #F5E0E0;
+  --color-pink-deep: #D4A0A0;
 
-  /* 背景：纯净白色 */
-  --bg-start: #FFFFFF;
-  --bg-end: #FFFFFF;
-  --bg-page: #FFFFFF;
+  /* 背景：米黄渐变 */
+  --bg-start: #FEFAE0;
+  --bg-end: #F5F0EB;
+  --bg-page: linear-gradient(180deg, #FEFAE0 0%, #F5F0EB 100%);
 
-  /* 卡片：纯白 + 极淡灰边框，无阴影 */
+  /* 卡片：纯白 + 暖灰边框，柔和阴影 */
   --card-bg: #FFFFFF;
-  --card-border: rgba(0, 0, 0, 0.06);
+  --card-border: rgba(140, 130, 120, 0.10);
   --card-bg-strong: #FFFFFF;
   --card-bg-solid: #FFFFFF;
 
-  /* 表面层级：极简 */
+  /* 表面层级：温暖 */
   --surface-elevated: #FFFFFF;
-  --surface-inner: #F8F9FA;
+  --surface-inner: #FAF8F6;
   --stats-bg: #FFFFFF;
-  --ai-card-bg: #FFF5FA;
-  --ai-card-border: rgba(0, 0, 0, 0.06);
+  --ai-card-bg: linear-gradient(180deg, #E8D5C4 0%, #D4C4B0 100%);
+  --ai-card-border: rgba(212, 163, 115, 0.30);
   --ai-halo: transparent;
 
-  /* 图标：蓝灰线条 */
-  --icon-stroke: #8FA8C8;
-  --icon-stroke-soft: rgba(143, 168, 200, 0.50);
+  /* 图标：暖灰线条 */
+  --icon-stroke: #B5ADA8;
+  --icon-stroke-soft: rgba(181, 173, 168, 0.50);
   --icon-fill: transparent;
 
-  /* 阴影：极简，几乎无阴影 */
-  --shadow-soft: none;
-  --shadow-card: none;
-  --shadow-hover: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
-  --shadow-ios: none;
+  /* 阴影：柔和 */
+  --shadow-soft: 0 4rpx 16rpx rgba(74, 64, 58, 0.06);
+  --shadow-card: 0 4rpx 20rpx rgba(74, 64, 58, 0.08);
+  --shadow-hover: 0 8rpx 24rpx rgba(74, 64, 58, 0.10);
+  --shadow-ios: 0 2rpx 8rpx rgba(74, 64, 58, 0.06);
 
-  /* 文字：深灰/浅灰 */
-  --text-main: #333333;
-  --text-sub: #999999;
-  --text-assist: #BBBBBB;
+  /* 文字：深棕/暖灰 */
+  --text-main: #4A403A;
+  --text-sub: #9C8C84;
+  --text-assist: #B5ADA8;
 
-  --nav-bg: rgba(255, 255, 255, 0.95);
-  --line-soft: rgba(0, 0, 0, 0.06);
-  --line-grid: #F0F2F5;
+  --nav-bg: rgba(254, 250, 224, 0.95);
+  --line-soft: rgba(140, 130, 120, 0.10);
+  --line-grid: #F0ECE8;
 
-  /* ===== 极简场景 Token（白/粉/蓝） ===== */
-  --scene-wall-top: #EDF2FA;
-  --scene-wall-bottom: #E3EBF7;
-  --scene-floor-top: #F5F0F7;
-  --scene-floor-bottom: #EDE8F0;
-  --scene-skirting: rgba(143, 168, 200, 0.20);
-  --glass-panel: #F8FAFC;
-  --glass-edge: rgba(0, 0, 0, 0.06);
-  --glass-outline: rgba(143, 168, 200, 0.30);
+  /* ===== 场景 Token（焦糖米黄风） ===== */
+  --scene-wall-top: #F5EDE0;
+  --scene-wall-bottom: #EDE5D8;
+  --scene-floor-top: #F0EAE0;
+  --scene-floor-bottom: #E8E2D8;
+  --scene-skirting: rgba(181, 173, 168, 0.25);
+  --glass-panel: #FAF8F6;
+  --glass-edge: rgba(140, 130, 120, 0.10);
+  --glass-outline: rgba(181, 173, 168, 0.35);
   --led-glow: transparent;
   --led-line: transparent;
-  --bridge-top: #EDF2FA;
+  --bridge-top: #F5EDE0;
 
   /* 圆角：极简小圆角 */
   --radius-xs: 8rpx;
@@ -73,9 +73,68 @@ page {
   --radius-card-lg: 20rpx;
   --radius-btn: 9999rpx;
 
+  /* ===== Outfit 页设计系统（参考图：莫兰迪低饱和配色） ===== */
+  /* 背景：顶部奶油白渐变，整体温暖柔和 */
+  --outfit-bg-top: #F5F0EB;
+  --outfit-bg-mid: #F9F6F2;
+  --outfit-bg-bottom: #FFFFFF;
+
+  /* 侧边栏分类图标 tile 背景（莫兰迪色） */
+  --outfit-tile-all:       #F0E8E4;
+  --outfit-tile-top:       #E8EDF0;
+  --outfit-tile-dress:     #F0E4E8;
+  --outfit-tile-bottom:    #EDE8E0;
+  --outfit-tile-shoes:     #E8E4F0;
+  --outfit-tile-outer:     #E4EDE8;
+  --outfit-tile-accessory: #F0EBE0;
+
+  /* 激活态：统一使用暖灰/深棕 */
+  --outfit-active-stroke: #8A7A72;
+  --outfit-active-bg:     #E8E0D8;
+
+  /* 心形收藏 */
+  --outfit-heart-off: #C8C0BC;
+  --outfit-heart-on:  #D4A5A5;
+
+  /* 搜索栏 */
+  --outfit-search-bg: #F2EFEC;
+  --outfit-search-stroke: #B5ADA8;
+
+  /* 季节标签背景（莫兰迪低饱和） */
+  --outfit-tag-all:    #E8E4E0;
+  --outfit-tag-spring: #E8D8D0;
+  --outfit-tag-summer: #D0D8D0;
+  --outfit-tag-autumn: #E0D8C8;
+  --outfit-tag-winter: #D8D0D8;
+  --outfit-tag-new:    #D0D0D8;
+  /* 季节标签文字 */
+  --outfit-tag-all-text:    #7A726C;
+  --outfit-tag-spring-text: #9A7A6C;
+  --outfit-tag-summer-text: #6C7A6C;
+  --outfit-tag-autumn-text: #8A7A5C;
+  --outfit-tag-winter-text: #7A6C7A;
+  --outfit-tag-new-text:    #6C6C7A;
+
+  /* 卡片：统一奶油白底 + 极细暖灰边框 */
+  --outfit-card-bg: #FAF8F6;
+  --outfit-card-border: rgba(140, 130, 120, 0.12);
+  --outfit-card-title: #4A403A;
+  --outfit-card-tag-bg: rgba(240, 235, 230, 0.8);
+  --outfit-card-tag-text: #8A8078;
+
+  /* TabBar 配色 */
+  --tabbar-bg: #FFFFFF;
+  --tabbar-stroke: #B5ADA8;
+  --tabbar-active: #8A7A72;
+  --tabbar-label: #B5ADA8;
+  --tabbar-label-active: #4A403A;
+  --tabbar-add-bg: #FFFFFF;
+  --tabbar-add-stroke: #C8C0BC;
+  --tabbar-add-text: #8A7A72;
+
   background: var(--bg-page);
   min-height: 100vh;
-  /* 极简无衬线细字体 */
+  /* 温暖无衬线字体 */
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "HarmonyOS Sans SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
   color: var(--text-main);
   font-size: 28rpx;
@@ -88,69 +147,119 @@ page {
 .font-serif { font-family: inherit; font-weight: 600; letter-spacing: 1rpx; }
 .font-sans  { font-family: inherit; }
 
-/* ===== 深色主题（白/粉/蓝 暗色模式） ===== */
+/* ===== 深色主题（焦糖米黄 暗色模式） ===== */
 .theme-dark {
-  /* 背景：深灰，非纯黑 */
-  --bg-start: #1A1A1A;
-  --bg-end:   #1A1A1A;
-  --bg-page:  #1A1A1A;
+  /* 背景：深棕灰，非纯黑 */
+  --bg-start: #2A2624;
+  --bg-end:   #242220;
+  --bg-page:  linear-gradient(180deg, #2A2624 0%, #242220 100%);
 
-  /* 主色：暗色下 muted 蓝 */
-  --color-primary:       #5A9FE8;
-  --color-primary-light: #7AB8FF;
-  --color-primary-deep:  #4A8BD6;
-  --color-primary-gradient: linear-gradient(135deg, #6BA5E7, #5A9FE8);
+  /* 主色：暗色下 muted 焦糖 */
+  --color-primary:       #C8A880;
+  --color-primary-light: #D4B890;
+  --color-primary-deep:  #B89870;
+  --color-primary-gradient: linear-gradient(135deg, #D4B890, #C8A880);
 
   /* 辅助色：暗色下 muted 粉 */
-  --color-pink: #C48BA8;
-  --color-pink-light: #A87B94;
-  --color-pink-deep: #D48AA8;
+  --color-pink: #B89090;
+  --color-pink-light: #A08080;
+  --color-pink-deep: #C89898;
 
-  /* 卡片：深灰 */
-  --card-bg:          #242424;
-  --card-bg-strong:   #2A2A2A;
-  --card-bg-solid:    #1E1E1E;
+  /* 卡片：深灰棕 */
+  --card-bg:          #2E2C2A;
+  --card-bg-strong:   #363432;
+  --card-bg-solid:    #282624;
   --card-border:      rgba(255, 255, 255, 0.06);
 
-  --surface-elevated: #242424;
-  --surface-inner:    #2A2A2A;
-  --stats-bg:         #242424;
-  --ai-card-bg:       #2A2028;
-  --ai-card-border:   rgba(255, 255, 255, 0.06);
+  --surface-elevated: #2E2C2A;
+  --surface-inner:    #363432;
+  --stats-bg:         #2E2C2A;
+  --ai-card-bg:       linear-gradient(180deg, #3A3634 0%, #2E2C2A 100%);
+  --ai-card-border:   rgba(200, 168, 128, 0.20);
   --ai-halo:          transparent;
 
-  /* 图标：浅灰 */
-  --icon-stroke:      #888888;
-  --icon-stroke-soft: rgba(136, 136, 136, 0.50);
+  /* 图标：浅暖灰 */
+  --icon-stroke:      #A09890;
+  --icon-stroke-soft: rgba(160, 152, 144, 0.50);
   --icon-fill:        transparent;
 
-  /* 阴影：极简 */
-  --shadow-soft:  none;
-  --shadow-card:  none;
-  --shadow-hover: 0 8rpx 24rpx rgba(0, 0, 0, 0.20);
-  --shadow-ios: none;
+  /* 阴影：柔和 */
+  --shadow-soft:  0 4rpx 16rpx rgba(0, 0, 0, 0.20);
+  --shadow-card:  0 4rpx 20rpx rgba(0, 0, 0, 0.24);
+  --shadow-hover: 0 8rpx 24rpx rgba(0, 0, 0, 0.28);
+  --shadow-ios: 0 2rpx 8rpx rgba(0, 0, 0, 0.20);
 
-  /* 文字：浅灰 */
-  --text-main:   #E8E8E8;
-  --text-sub:    #888888;
-  --text-assist: #666666;
+  /* 文字：浅米色 */
+  --text-main:   #E8E0D8;
+  --text-sub:    #A09890;
+  --text-assist: #6A6460;
 
-  --nav-bg:   rgba(26, 26, 26, 0.95);
+  --nav-bg:   rgba(42, 38, 36, 0.95);
   --line-soft: rgba(255, 255, 255, 0.06);
   --line-grid: rgba(255, 255, 255, 0.04);
 
-  /* 场景盒 - 深色极简（粉蓝暗调） */
-  --scene-wall-top:    #20242E;
-  --scene-wall-bottom: #1A1E28;
-  --scene-floor-top:   #1E1A1E;
-  --scene-floor-bottom:#1A161A;
-  --scene-skirting:    rgba(100, 130, 180, 0.15);
-  --glass-panel:       #262A34;
+  /* ===== Outfit 深色模式（莫兰迪暗调） ===== */
+  --outfit-bg-top: #2A2624;
+  --outfit-bg-mid: #242220;
+  --outfit-bg-bottom: #1A1816;
+
+  --outfit-tile-all:       #3A3634;
+  --outfit-tile-top:       #343638;
+  --outfit-tile-dress:     #383234;
+  --outfit-tile-bottom:    #363430;
+  --outfit-tile-shoes:     #343438;
+  --outfit-tile-outer:     #323834;
+  --outfit-tile-accessory: #383630;
+
+  --outfit-active-stroke: #B0A8A0;
+  --outfit-active-bg:     #4A4644;
+
+  --outfit-heart-off: #5A5654;
+  --outfit-heart-on:  #B09090;
+
+  --outfit-search-bg: #2E2C2A;
+  --outfit-search-stroke: #6A6460;
+
+  --outfit-tag-all:    #3A3836;
+  --outfit-tag-spring: #3A322E;
+  --outfit-tag-summer: #2E342E;
+  --outfit-tag-autumn: #36322A;
+  --outfit-tag-winter: #342E34;
+  --outfit-tag-new:    #2E2E34;
+  --outfit-tag-all-text:    #B0A8A0;
+  --outfit-tag-spring-text: #C0A898;
+  --outfit-tag-summer-text: #98A898;
+  --outfit-tag-autumn-text: #B0A080;
+  --outfit-tag-winter-text: #A898A8;
+  --outfit-tag-new-text:    #9898A8;
+
+  --outfit-card-bg: #2E2C2A;
+  --outfit-card-border: rgba(255, 255, 255, 0.06);
+  --outfit-card-title: #E8E0D8;
+  --outfit-card-tag-bg: rgba(60, 56, 52, 0.8);
+  --outfit-card-tag-text: #A09890;
+
+  --tabbar-bg: #242220;
+  --tabbar-stroke: #6A6460;
+  --tabbar-active: #C8C0B8;
+  --tabbar-label: #6A6460;
+  --tabbar-label-active: #E8E0D8;
+  --tabbar-add-bg: #2E2C2A;
+  --tabbar-add-stroke: #5A5654;
+  --tabbar-add-text: #C8C0B8;
+
+  /* 场景盒 - 深色（焦糖暗调） */
+  --scene-wall-top:    #2E2A24;
+  --scene-wall-bottom: #262220;
+  --scene-floor-top:   #2A2620;
+  --scene-floor-bottom:#221E1A;
+  --scene-skirting:    rgba(160, 152, 144, 0.15);
+  --glass-panel:       #363230;
   --glass-edge:        rgba(255, 255, 255, 0.06);
-  --glass-outline:     rgba(100, 130, 180, 0.20);
+  --glass-outline:     rgba(160, 152, 144, 0.20);
   --led-glow:          transparent;
   --led-line:          transparent;
-  --bridge-top:        #20242E;
+  --bridge-top:        #2E2A24;
 
   background: var(--bg-page);
   color: var(--text-main);

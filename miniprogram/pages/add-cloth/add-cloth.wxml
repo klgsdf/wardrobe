@@ -1,0 +1,432 @@
+<!--pages/add-cloth/add-cloth.wxml - 添加衣物页面-->
+<view class="page-root {{isDark ? 'theme-dark' : ''}}">
+
+  <!-- 状态栏 + 自定义导航栏占位 -->
+  <view class="nav-pad" style="height: {{navPadHeight}}px;"></view>
+  <view class="nav-bar" style="height: {{navPadHeight}}px;">
+    <view class="nav-bar__left tap-scale" bindtap="onBack">
+      <view class="ic-back">
+        <view class="ic-back__line"></view>
+        <view class="ic-back__arrow"></view>
+      </view>
+      <text class="nav-bar__back-text">返回</text>
+    </view>
+    <view class="nav-bar__title">添加衣物</view>
+    <view class="nav-bar__right">
+      <view class="icon-btn tap-scale" bindtap="onToggleTheme">
+        <view wx:if="{{isDark}}" class="ic ic-sun">
+          <view class="ic-sun__core"></view>
+        </view>
+        <view wx:else class="ic ic-moon">
+          <view class="ic-moon__shape"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page-body">
+
+    <!-- ===== 图片上传区 ===== -->
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">图片</text>
+        <text class="section-sub">{{images.length}}/{{maxImages}}</text>
+      </view>
+      <view class="image-grid">
+        <!-- 已上传图片缩略图 -->
+        <view wx:for="{{images}}" wx:key="*this" class="image-item">
+          <image class="image-item__img" src="{{item.url}}" mode="aspectFill" bindtap="onPreviewImage" data-index="{{index}}" lazy-load />
+          <view class="image-item__remove tap-scale" bindtap="onRemoveImage" data-index="{{index}}">
+            <view class="ic-close-sm">
+              <view class="ic-close-sm__l1"></view>
+              <view class="ic-close-sm__l2"></view>
+            </view>
+          </view>
+        </view>
+        <!-- 添加按钮 -->
+        <view wx:if="{{images.length < maxImages}}" class="image-add tap-scale" bindtap="onChooseImage">
+          <view class="image-add__plus-h"></view>
+          <view class="image-add__plus-v"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== AI 识别区 ===== -->
+    <view class="section-card ai-card" wx:if="{{images.length > 0}}">
+      <view class="ai-header">
+        <view class="ai-title-row">
+          <view class="ic-sparkle-sm">
+            <view class="ic-sparkle-sm__big"></view>
+            <view class="ic-sparkle-sm__small"></view>
+          </view>
+          <text class="ai-title">AI 智能识别</text>
+        </view>
+        <!-- 自动识别开关 -->
+        <view class="ai-auto-row tap-scale" bindtap="onToggleAutoAi">
+          <text class="ai-auto-label">自动识别</text>
+          <view class="ai-switch {{autoAiEnabled ? 'is-on' : ''}}">
+            <view class="ai-switch__knob"></view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 识别按钮 / 状态 -->
+      <view wx:if="{{!aiRecognizing && !aiResult}}" class="ai-btn tap-scale" bindtap="onAiRecognize">
+        <text class="ai-btn__text">点击识别衣物标签</text>
+      </view>
+      <view wx:if="{{aiRecognizing}}" class="ai-loading">
+        <view class="ai-loading__spinner"></view>
+        <text class="ai-loading__text">AI 识别中...</text>
+      </view>
+      <view wx:if="{{aiResult}}" class="ai-result">
+        <text class="ai-result__text">已识别并填充标签，可手动调整</text>
+        <view class="ai-result__clear tap-scale" bindtap="onClearAiResult">
+          <text>清除</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 标签编辑区 ===== -->
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">标签</text>
+        <text class="section-sub">{{selectedTagSummary || '未选择标签'}}</text>
+      </view>
+
+      <!-- 已选标签摘要展示 -->
+      <view wx:if="{{hasSelectedTags}}" class="tag-summary">
+        <view wx:if="{{tags.category}}" class="tag-summary__item">
+          <text class="tag-summary__label">类别</text>
+          <text class="tag-summary__value">{{categoryMap[tags.category]}}</text>
+        </view>
+        <view wx:if="{{tags.color.length > 0}}" class="tag-summary__item">
+          <text class="tag-summary__label">颜色</text>
+          <view class="tag-summary__dots">
+            <view wx:for="{{tags.color}}" wx:key="*this" class="tag-summary__dot" style="background: {{colorHexMap[item] || item}}; {{item === 'white' ? 'border: 1rpx solid rgba(0,0,0,0.15);' : ''}}"></view>
+          </view>
+        </view>
+        <view wx:if="{{tags.season.length > 0}}" class="tag-summary__item">
+          <text class="tag-summary__label">季节</text>
+          <text class="tag-summary__value">{{tagPreviews.season}}</text>
+        </view>
+        <view wx:if="{{tags.style.length > 0}}" class="tag-summary__item">
+          <text class="tag-summary__label">风格</text>
+          <text class="tag-summary__value">{{tagPreviews.style}}</text>
+        </view>
+        <view wx:if="{{tags.material.length > 0}}" class="tag-summary__item">
+          <text class="tag-summary__label">材质</text>
+          <text class="tag-summary__value">{{tagPreviews.material}}</text>
+        </view>
+        <view wx:if="{{tags.occasion.length > 0}}" class="tag-summary__item">
+          <text class="tag-summary__label">场合</text>
+          <text class="tag-summary__value">{{tagPreviews.occasion}}</text>
+        </view>
+      </view>
+
+      <!-- 类别折叠面板 -->
+      <view class="tag-panel {{expandedPanels.category ? 'is-expanded' : ''}}">
+        <view class="tag-panel__header tap-scale" data-panel="category" bindtap="onTogglePanel">
+          <view class="tag-panel__left">
+            <text class="tag-panel__title">类别</text>
+            <text wx:if="{{!tags.category}}" class="tag-required">*</text>
+          </view>
+          <view class="tag-panel__right">
+            <text wx:if="{{tags.category}}" class="tag-panel__preview">{{categoryMap[tags.category]}}</text>
+            <text wx:else class="tag-panel__placeholder">请选择</text>
+            <view class="tag-panel__arrow">
+              <view class="ic-arrow {{expandedPanels.category ? 'is-up' : ''}}"></view>
+            </view>
+          </view>
+        </view>
+        <view class="tag-panel__body" wx:if="{{expandedPanels.category}}">
+          <view class="tag-group__items">
+            <view wx:for="{{categoryOptions}}" wx:key="key"
+                  class="tag-chip tap-scale {{tags.category === item.key ? 'is-active' : ''}}"
+                  data-key="{{item.key}}" bindtap="onSelectCategory">
+              <text class="tag-chip__icon">{{item.icon}}</text>
+              <text class="tag-chip__text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 颜色折叠面板 -->
+      <view class="tag-panel {{expandedPanels.color ? 'is-expanded' : ''}}">
+        <view class="tag-panel__header tap-scale" data-panel="color" bindtap="onTogglePanel">
+          <view class="tag-panel__left">
+            <text class="tag-panel__title">颜色</text>
+          </view>
+          <view class="tag-panel__right">
+            <view wx:if="{{tags.color.length > 0}}" class="tag-panel__dots">
+              <view wx:for="{{tags.color}}" wx:key="*this" class="tag-panel__dot" style="background: {{colorHexMap[item] || item}}; {{item === 'white' ? 'border: 1rpx solid rgba(0,0,0,0.15);' : ''}}"></view>
+            </view>
+            <text wx:else class="tag-panel__placeholder">请选择</text>
+            <view class="tag-panel__arrow">
+              <view class="ic-arrow {{expandedPanels.color ? 'is-up' : ''}}"></view>
+            </view>
+          </view>
+        </view>
+        <view class="tag-panel__body" wx:if="{{expandedPanels.color}}">
+          <view class="tag-group__items">
+            <view wx:for="{{colorOptions}}" wx:key="key"
+                  class="color-chip tap-scale {{tags.color.indexOf(item.key) >= 0 ? 'is-active' : ''}}"
+                  data-key="{{item.key}}" bindtap="onToggleColor">
+              <view class="color-chip__dot" style="background: {{item.hex}}; {{item.key === 'white' ? 'border: 1rpx solid rgba(0,0,0,0.15);' : ''}}"></view>
+              <text class="color-chip__text">{{item.label}}</text>
+            </view>
+          </view>
+          <!-- 自定义颜色 -->
+          <view class="custom-input-row">
+            <input class="custom-input" placeholder="自定义颜色" placeholder-class="custom-input__placeholder"
+                   value="{{customColor}}" bindinput="onCustomColorInput" maxlength="10" />
+            <view class="custom-input__btn tap-scale" bindtap="onAddCustomColor">添加</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 季节折叠面板 -->
+      <view class="tag-panel {{expandedPanels.season ? 'is-expanded' : ''}}">
+        <view class="tag-panel__header tap-scale" data-panel="season" bindtap="onTogglePanel">
+          <view class="tag-panel__left">
+            <text class="tag-panel__title">季节</text>
+          </view>
+          <view class="tag-panel__right">
+            <text wx:if="{{tags.season.length > 0}}" class="tag-panel__preview">{{tagPreviews.season}}</text>
+            <text wx:else class="tag-panel__placeholder">请选择</text>
+            <view class="tag-panel__arrow">
+              <view class="ic-arrow {{expandedPanels.season ? 'is-up' : ''}}"></view>
+            </view>
+          </view>
+        </view>
+        <view class="tag-panel__body" wx:if="{{expandedPanels.season}}">
+          <view class="tag-group__items">
+            <view wx:for="{{seasonOptions}}" wx:key="key"
+                  class="tag-chip tap-scale {{tags.season.indexOf(item.key) >= 0 ? 'is-active' : ''}}"
+                  data-key="{{item.key}}" bindtap="onToggleSeason">
+              <text class="tag-chip__text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 风格折叠面板 -->
+      <view class="tag-panel {{expandedPanels.style ? 'is-expanded' : ''}}">
+        <view class="tag-panel__header tap-scale" data-panel="style" bindtap="onTogglePanel">
+          <view class="tag-panel__left">
+            <text class="tag-panel__title">风格</text>
+          </view>
+          <view class="tag-panel__right">
+            <text wx:if="{{tags.style.length > 0}}" class="tag-panel__preview">{{tagPreviews.style}}</text>
+            <text wx:else class="tag-panel__placeholder">请选择</text>
+            <view class="tag-panel__arrow">
+              <view class="ic-arrow {{expandedPanels.style ? 'is-up' : ''}}"></view>
+            </view>
+          </view>
+        </view>
+        <view class="tag-panel__body" wx:if="{{expandedPanels.style}}">
+          <view class="tag-group__items">
+            <view wx:for="{{styleOptions}}" wx:key="key"
+                  class="tag-chip tap-scale {{tags.style.indexOf(item.key) >= 0 ? 'is-active' : ''}}"
+                  data-key="{{item.key}}" bindtap="onToggleStyle">
+              <text class="tag-chip__text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 材质折叠面板 -->
+      <view class="tag-panel {{expandedPanels.material ? 'is-expanded' : ''}}">
+        <view class="tag-panel__header tap-scale" data-panel="material" bindtap="onTogglePanel">
+          <view class="tag-panel__left">
+            <text class="tag-panel__title">材质</text>
+          </view>
+          <view class="tag-panel__right">
+            <text wx:if="{{tags.material.length > 0}}" class="tag-panel__preview">{{tagPreviews.material}}</text>
+            <text wx:else class="tag-panel__placeholder">请选择</text>
+            <view class="tag-panel__arrow">
+              <view class="ic-arrow {{expandedPanels.material ? 'is-up' : ''}}"></view>
+            </view>
+          </view>
+        </view>
+        <view class="tag-panel__body" wx:if="{{expandedPanels.material}}">
+          <view class="tag-group__items">
+            <view wx:for="{{materialOptions}}" wx:key="key"
+                  class="tag-chip tap-scale {{tags.material.indexOf(item.key) >= 0 ? 'is-active' : ''}}"
+                  data-key="{{item.key}}" bindtap="onToggleMaterial">
+              <text class="tag-chip__text">{{item.label}}</text>
+            </view>
+          </view>
+          <!-- 自定义材质 -->
+          <view class="custom-input-row">
+            <input class="custom-input" placeholder="自定义材质" placeholder-class="custom-input__placeholder"
+                   value="{{customMaterial}}" bindinput="onCustomMaterialInput" maxlength="10" />
+            <view class="custom-input__btn tap-scale" bindtap="onAddCustomMaterial">添加</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 场合折叠面板 -->
+      <view class="tag-panel {{expandedPanels.occasion ? 'is-expanded' : ''}}">
+        <view class="tag-panel__header tap-scale" data-panel="occasion" bindtap="onTogglePanel">
+          <view class="tag-panel__left">
+            <text class="tag-panel__title">场合</text>
+          </view>
+          <view class="tag-panel__right">
+            <text wx:if="{{tags.occasion.length > 0}}" class="tag-panel__preview">{{tagPreviews.occasion}}</text>
+            <text wx:else class="tag-panel__placeholder">请选择</text>
+            <view class="tag-panel__arrow">
+              <view class="ic-arrow {{expandedPanels.occasion ? 'is-up' : ''}}"></view>
+            </view>
+          </view>
+        </view>
+        <view class="tag-panel__body" wx:if="{{expandedPanels.occasion}}">
+          <view class="tag-group__items">
+            <view wx:for="{{occasionOptions}}" wx:key="key"
+                  class="tag-chip tap-scale {{tags.occasion.indexOf(item.key) >= 0 ? 'is-active' : ''}}"
+                  data-key="{{item.key}}" bindtap="onToggleOccasion">
+              <text class="tag-chip__text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 备注 ===== -->
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">备注</text>
+      </view>
+      <textarea class="note-textarea" placeholder="添加备注信息（如品牌、购买时间、尺码等）"
+                placeholder-class="note-textarea__placeholder"
+                value="{{note}}" bindinput="onNoteInput" maxlength="200" />
+    </view>
+
+    <!-- ===== 保存按钮 ===== -->
+    <view class="save-bar">
+      <view class="save-btn tap-scale {{saving ? 'is-saving' : ''}}" bindtap="onSave">
+        <view wx:if="{{saving}}" class="save-btn__spinner"></view>
+        <text wx:else>保存衣物</text>
+      </view>
+    </view>
+
+    <view class="safe-bottom"></view>
+  </view>
+
+  <!-- ===== 存放选择弹窗 ===== -->
+  <view wx:if="{{showStorePicker}}" class="overlay" bindtap="onStorePickerClose">
+    <view class="store-sheet" catchtap="onStorePickerPreventBubble">
+      <!-- 标题栏 -->
+      <view class="store-sheet__header">
+        <view wx:if="{{storePickerStep === 'zone'}}" class="store-sheet__back tap-scale" bindtap="onStorePickerBack">
+          <view class="ic-back">
+            <view class="ic-back__line"></view>
+            <view class="ic-back__arrow"></view>
+          </view>
+        </view>
+        <text class="store-sheet__title">{{storePickerStep === 'wardrobe' ? '选择存放衣柜' : storePickerSelectedWardrobe.name}}</text>
+        <view class="store-sheet__spacer"></view>
+        <view class="store-sheet__close tap-scale" bindtap="onStorePickerClose">
+          <view class="ic-close-sm">
+            <view class="ic-close-sm__l1"></view>
+            <view class="ic-close-sm__l2"></view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 步骤指示 -->
+      <view class="store-sheet__steps">
+        <view class="step-dot {{storePickerStep === 'wardrobe' ? 'is-active' : ''}}"></view>
+        <view class="step-line"></view>
+        <view class="step-dot {{storePickerStep === 'zone' ? 'is-active' : ''}}"></view>
+      </view>
+
+      <!-- 衣柜列表 -->
+      <view wx:if="{{storePickerStep === 'wardrobe'}}" class="store-list">
+        <view wx:for="{{storePickerWardrobes}}" wx:key="id"
+              class="store-wardrobe tap-scale"
+              data-id="{{item.id}}"
+              bindtap="onStorePickerSelectWardrobe">
+          <view class="store-wardrobe__icon">
+            <view wx:if="{{item.type === 'closet'}}" class="ic-wardrobe-mini">
+              <view class="ic-wardrobe-mini__box"></view>
+              <view class="ic-wardrobe-mini__line"></view>
+            </view>
+            <view wx:elif="{{item.type === 'drawer'}}" class="ic-drawer-mini">
+              <view class="ic-drawer-mini__box"></view>
+              <view class="ic-drawer-mini__knob"></view>
+            </view>
+            <view wx:elif="{{item.type === 'shoe-rack'}}" class="ic-shoe-mini">
+              <view class="ic-shoe-mini__frame"></view>
+              <view class="ic-shoe-mini__line"></view>
+            </view>
+            <view wx:elif="{{item.type === 'shelf'}}" class="ic-shelf-mini">
+              <view class="ic-shelf-mini__frame"></view>
+              <view class="ic-shelf-mini__line"></view>
+            </view>
+            <view wx:elif="{{item.type === 'seasonal'}}" class="ic-box-mini">
+              <view class="ic-box-mini__body"></view>
+              <view class="ic-box-mini__lid"></view>
+            </view>
+          </view>
+          <view class="store-wardrobe__info">
+            <view class="store-wardrobe__name">{{item.name}}</view>
+            <view class="store-wardrobe__meta">{{item.zones.length}} 个分区 · {{item.itemCount || 0}} 件衣物</view>
+          </view>
+          <view class="store-wardrobe__arrow">
+            <view class="ic-arrow-right">
+              <view class="ic-arrow-right__line"></view>
+              <view class="ic-arrow-right__head"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 分区列表 -->
+      <view wx:if="{{storePickerStep === 'zone'}}" class="store-list">
+        <view wx:for="{{storePickerZones}}" wx:key="id"
+              class="store-zone tap-scale"
+              data-id="{{item.id}}"
+              bindtap="onStorePickerSelectZone">
+          <view class="store-zone__icon store-zone__icon--{{item.type}}">
+            <view wx:if="{{item.type === 'shelf'}}" class="ic-zone-shelf">
+              <view class="ic-zone-shelf__frame"></view>
+              <view class="ic-zone-shelf__line"></view>
+            </view>
+            <view wx:elif="{{item.type === 'hanger'}}" class="ic-zone-hanger">
+              <view class="ic-zone-hanger__rod"></view>
+              <view class="ic-zone-hanger__hook"></view>
+            </view>
+            <view wx:elif="{{item.type === 'drawer'}}" class="ic-zone-drawer">
+              <view class="ic-zone-drawer__box"></view>
+              <view class="ic-zone-drawer__knob"></view>
+            </view>
+            <view wx:elif="{{item.type === 'box'}}" class="ic-zone-box">
+              <view class="ic-zone-box__body"></view>
+              <view class="ic-zone-box__lid"></view>
+            </view>
+            <view wx:elif="{{item.type === 'shoe'}}" class="ic-zone-shoe">
+              <view class="ic-zone-shoe__frame"></view>
+              <view class="ic-zone-shoe__line ic-zone-shoe__line--1"></view>
+              <view class="ic-zone-shoe__line ic-zone-shoe__line--2"></view>
+            </view>
+          </view>
+          <view class="store-zone__info">
+            <view class="store-zone__name">{{item.name}}</view>
+            <view class="store-zone__meta">{{item.type === 'shelf' ? '隔板层' : item.type === 'hanger' ? '挂衣区' : item.type === 'drawer' ? '抽屉' : item.type === 'box' ? '收纳盒' : '鞋区'}} · {{item.count || 0}} 件</view>
+          </view>
+          <view class="store-zone__check">
+            <view class="ic-check">
+              <view class="ic-check__line1"></view>
+              <view class="ic-check__line2"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 跳过按钮 -->
+      <view wx:if="{{storePickerStep === 'wardrobe'}}" class="store-sheet__skip tap-scale" bindtap="onStorePickerSkip">
+        <text>暂不存放，仅保存衣物</text>
+      </view>
+    </view>
+  </view>
+</view>

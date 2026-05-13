@@ -1,543 +1,713 @@
-/* pages/outfit/outfit.wxss - 智能搭配推荐页 */
+/* pages/outfit/outfit.wxss - 参考图风格：莫兰迪低饱和 + 扁平细线 */
 
-/* ===== 根容器：承载主题切换 ===== */
+/* ============ 根容器 ============ */
 .page-root {
+  position: relative;
   width: 100%;
   min-height: 100vh;
-  background: var(--bg-page);
-  transition: background 0.4s ease;
+  background: var(--outfit-bg-bottom);
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-/* ===== 自定义磨砂导航栏 ===== */
+/* 顶部渐变装饰背景层（奶油白渐变） */
+.page-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 600rpx;
+  background: linear-gradient(180deg, var(--outfit-bg-top) 0%, var(--outfit-bg-mid) 60%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-root.theme-dark .page-bg {
+  background: linear-gradient(180deg, var(--outfit-bg-top) 0%, var(--outfit-bg-mid) 60%, rgba(26, 26, 26, 0) 100%);
+}
+
+/* ============ 自定义导航栏 ============ */
 .nav-bar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 99;
-  background: var(--nav-bg);
-  backdrop-filter: blur(30rpx);
-  -webkit-backdrop-filter: blur(30rpx);
-  border-bottom: 1rpx solid var(--card-border);
-}
-
-.nav-bar__row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 24rpx;
-}
-
-.nav-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: var(--text-main);
-  letter-spacing: 2rpx;
-}
-
-.nav-btn {
-  width: 64rpx;
-  height: 64rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--card-bg);
-  border: 1rpx solid var(--card-border);
-  border-radius: 50%;
-  box-shadow: var(--shadow-soft);
-}
-
-.nav-btn__icon {
-  font-size: 30rpx;
-  line-height: 1;
-}
-
-/* ===== 滚动容器 ===== */
-.scroll-wrap {
+  justify-content: flex-start;
+  padding: 0 32rpx;
+  z-index: 100;
+  background: transparent;
   box-sizing: border-box;
-  padding: 0 32rpx 40rpx;
-  height: 100vh;
 }
 
-/* ===== A. AI 推荐主横幅 Hero ===== */
-.hero {
-  position: relative;
-  margin-top: 24rpx;
-  padding: 36rpx 32rpx;
-  border-radius: 32rpx;
-  background: linear-gradient(135deg, #7BA3C9 0%, #5B8DB8 100%);
-  box-shadow: 0 16rpx 48rpx rgba(91, 141, 184, 0.30);
-  overflow: hidden;
-  min-height: 280rpx;
-}
-
-/* 装饰光晕 */
-.hero__halo {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.18);
-  filter: blur(10rpx);
-  pointer-events: none;
-}
-.hero__halo--1 { width: 160rpx; height: 160rpx; top: -40rpx; right: -20rpx; }
-.hero__halo--2 { width: 120rpx; height: 120rpx; top: 60rpx;  right: 80rpx;  opacity: 0.6; }
-.hero__halo--3 { width: 80rpx;  height: 80rpx;  bottom: 20rpx; right: 40rpx; opacity: 0.4; }
-
-.hero__content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 14rpx;
-}
-
-.hero__tag {
-  display: inline-flex;
-  align-self: flex-start;
-  padding: 6rpx 18rpx;
-  font-size: 20rpx;
-  letter-spacing: 3rpx;
-  color: #FFFFFF;
-  background: rgba(255, 255, 255, 0.22);
-  border-radius: 20rpx;
-  font-weight: 500;
-}
-
-.hero__title {
+.nav-bar__title {
   font-size: 40rpx;
   font-weight: 700;
-  color: #FFFFFF;
-  letter-spacing: 2rpx;
-  line-height: 1.3;
-  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.12);
+  color: #4A403A;
+  letter-spacing: 0.5rpx;
+  line-height: 1.2;
+  font-family: -apple-system, "SF Pro Display", "PingFang SC", sans-serif;
 }
 
-.hero__sub {
-  font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.82);
-  line-height: 1.5;
+.page-root.theme-dark .nav-bar__title {
+  color: #E8E0D8;
 }
 
-.hero__btn {
-  display: inline-flex;
-  align-self: flex-start;
-  align-items: center;
-  gap: 8rpx;
-  margin-top: 8rpx;
-  padding: 16rpx 32rpx;
-  background: #FFFFFF;
-  color: #5B8DB8;
-  font-size: 26rpx;
-  font-weight: 600;
-  border-radius: 40rpx;
-  box-shadow: 0 6rpx 18rpx rgba(0, 0, 0, 0.12);
-}
-.hero__btn-arrow {
-  font-size: 28rpx;
-  line-height: 1;
-  margin-top: -2rpx;
-}
-
-.hero__emoji {
-  position: absolute;
-  top: 28rpx;
-  right: 28rpx;
-  z-index: 3;
-  font-size: 72rpx;
-  line-height: 1;
-  filter: drop-shadow(0 4rpx 12rpx rgba(0, 0, 0, 0.18));
-}
-
-/* ===== B. 天气适配条 ===== */
-.weather {
+/* ============ 主布局：侧边栏 + 内容区 ============ */
+.main-layout {
+  position: relative;
+  z-index: 1;
   display: flex;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  padding-left: 16rpx;
+  padding-right: 12rpx;
+}
+
+/* ============ 左侧图标栏 ============ */
+.sidebar {
+  width: 96rpx;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20rpx;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 180rpx);
+  box-sizing: border-box;
+}
+
+.sidebar__menu {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 20rpx;
-  margin-top: 20rpx;
-  padding: 20rpx 28rpx;
-  border-radius: 28rpx;
+  width: 100%;
 }
 
-.weather__icon {
-  font-size: 52rpx;
-  line-height: 1;
-}
-
-.weather__info {
-  flex: 1;
-  min-width: 0;
-}
-
-.weather__line1 {
-  font-size: 26rpx;
-  font-weight: 500;
-  color: var(--text-main);
-  letter-spacing: 1rpx;
-}
-
-.weather__line2 {
-  margin-top: 4rpx;
-  font-size: 22rpx;
-}
-
-.weather__arrow {
-  font-size: 36rpx;
-  font-weight: 300;
-}
-
-/* ===== C. 今日推荐搭配 Outfit Card ===== */
-.outfit-card {
-  margin-top: 24rpx;
-  padding: 28rpx;
-  border-radius: 32rpx;
-}
-
-.outfit-card__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20rpx;
-}
-
-.outfit-card__tag {
-  display: inline-flex;
-  padding: 6rpx 18rpx;
-  background: rgba(91, 141, 184, 0.12);
-  color: var(--color-primary);
-  font-size: 20rpx;
-  font-weight: 600;
-  letter-spacing: 2rpx;
-  border-radius: 16rpx;
-}
-
-.outfit-card__match {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 4rpx;
-  padding: 8rpx 18rpx;
-  background: linear-gradient(135deg, #7BA3C9, #5B8DB8);
-  border-radius: 24rpx;
-  box-shadow: 0 4rpx 12rpx rgba(91, 141, 184, 0.24);
-}
-.outfit-card__match-num {
-  font-size: 26rpx;
-  font-weight: 700;
-  color: #FFFFFF;
-  letter-spacing: 1rpx;
-}
-.outfit-card__match-text {
-  font-size: 20rpx;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-/* 服饰网格：左右两列 */
-.outfit-card__grid {
-  display: flex;
-  gap: 16rpx;
-  height: 540rpx;
-}
-
-.outfit-card__col {
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-}
-.outfit-card__col--left  { flex: 1.6; }
-.outfit-card__col--right { flex: 1; }
-
-.outfit-slot {
+/* 图标 tile */
+.sidebar__item {
   position: relative;
+  width: 72rpx;
+  height: 72rpx;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8rpx;
-  border-radius: 24rpx;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.18));
-  border: 1rpx solid var(--card-border);
-}
-.theme-dark .outfit-slot {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border-radius: 18rpx;
+  box-sizing: border-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.outfit-slot--lg { flex: 2; }
-.outfit-slot--md { flex: 1.2; }
-.outfit-slot--sm { flex: 1; }
+/* 7 类莫兰迪背景 */
+.sidebar__item--all       { background: var(--outfit-tile-all); }
+.sidebar__item--top       { background: var(--outfit-tile-top); }
+.sidebar__item--dress     { background: var(--outfit-tile-dress); }
+.sidebar__item--bottom    { background: var(--outfit-tile-bottom); }
+.sidebar__item--shoes     { background: var(--outfit-tile-shoes); }
+.sidebar__item--outer     { background: var(--outfit-tile-outer); }
+.sidebar__item--accessory { background: var(--outfit-tile-accessory); }
 
-.outfit-slot__icon {
-  font-size: 72rpx;
-  line-height: 1;
-  filter: drop-shadow(0 4rpx 8rpx rgba(91, 141, 184, 0.20));
-}
-.outfit-slot--md .outfit-slot__icon { font-size: 60rpx; }
-.outfit-slot--sm .outfit-slot__icon { font-size: 48rpx; }
-
-.outfit-slot__label {
-  font-size: 20rpx;
-  letter-spacing: 1rpx;
+/* 激活态：暖灰描边 */
+.sidebar__item.is-active {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 2.5rpx var(--outfit-active-stroke);
 }
 
-.outfit-card__info {
-  margin-top: 20rpx;
-}
-
-.outfit-card__title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: var(--text-main);
-  letter-spacing: 2rpx;
-}
-
-.outfit-card__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
-  margin-top: 16rpx;
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 8rpx 18rpx;
-  font-size: 20rpx;
-  color: var(--color-primary);
-  background: rgba(91, 141, 184, 0.10);
-  border-radius: 16rpx;
-  letter-spacing: 1rpx;
-}
-
-/* ===== D. 反馈互动条 ===== */
-.feedback {
+.sidebar__icon {
+  width: 40rpx;
+  height: 40rpx;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  position: relative;
+}
+
+/* 底部搜索入口 */
+.sidebar__foot {
   margin-top: 24rpx;
-  padding: 24rpx 16rpx;
-  border-radius: 32rpx;
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 }
 
-.fb-btn {
+.page-root.theme-dark .sidebar__foot {
+  background: #2E2C2A;
+}
+
+/* ============ 右侧内容区 ============ */
+.content {
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+  margin-left: 12rpx;
+  background: #FFFFFF;
+  border-radius: 28rpx 28rpx 0 0;
+  padding: 16rpx 16rpx 200rpx;
+}
+
+.page-root.theme-dark .content {
+  background: #242220;
+}
+
+/* 内容头部 */
+.content__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #FFFFFF;
+  padding: 8rpx 4rpx 12rpx;
+  border-radius: 28rpx 28rpx 0 0;
+}
+
+.page-root.theme-dark .content__header {
+  background: #242220;
+}
+
+/* ============ 搜索栏 ============ */
+.search-bar {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  padding: 14rpx 20rpx;
+  background: var(--outfit-search-bg);
+  border-radius: 9999rpx;
+  box-sizing: border-box;
+}
+
+.search-bar__input {
+  flex: 1;
+  font-size: 26rpx;
+  color: var(--text-main);
+  height: 32rpx;
+  min-height: 32rpx;
+  line-height: 32rpx;
+  font-weight: 400;
+}
+
+.search-bar__placeholder {
+  font-size: 26rpx;
+  color: #B5ADA8;
+  font-weight: 400;
+}
+
+.page-root.theme-dark .search-bar__placeholder {
+  color: #6A6460;
+}
+
+.search-bar__clear {
+  width: 28rpx;
+  height: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 50%;
+}
+
+/* ============ 横向季节标签 ============ */
+.type-scroll {
+  margin-top: 16rpx;
+  white-space: nowrap;
+}
+
+.type-list {
+  display: inline-flex;
   align-items: center;
   gap: 10rpx;
+  padding: 4rpx 2rpx;
 }
 
-.fb-btn__circle {
-  width: 88rpx;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.48);
-  border: 1rpx solid var(--card-border);
-  border-radius: 50%;
-  transition: all 0.2s ease;
-}
-.theme-dark .fb-btn__circle {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.fb-btn__circle--primary {
-  background: linear-gradient(135deg, #7BA3C9, #5B8DB8);
-  border-color: transparent;
-  box-shadow: 0 6rpx 18rpx rgba(91, 141, 184, 0.32);
-}
-
-.fb-btn__icon {
-  font-size: 40rpx;
-  line-height: 1;
-}
-
-.fb-btn__label {
-  font-size: 22rpx;
-  color: var(--text-sub);
-  letter-spacing: 1rpx;
-}
-
-.fb-btn.is-liked .fb-btn__circle {
-  background: rgba(246, 173, 85, 0.18);
-  border-color: #F6AD55;
-  box-shadow: 0 6rpx 16rpx rgba(246, 173, 85, 0.24);
-}
-.fb-btn.is-saved .fb-btn__circle {
-  background: rgba(246, 173, 85, 0.18);
-  border-color: #F6AD55;
-}
-.fb-btn.is-liked .fb-btn__label,
-.fb-btn.is-saved .fb-btn__label {
-  color: #F6AD55;
-  font-weight: 600;
-}
-
-/* ===== E. 风格标签横滑 ===== */
-.section-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-top: 36rpx;
-  margin-bottom: 16rpx;
-  padding: 0 8rpx;
-}
-
-.section-head__title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: var(--text-main);
-  letter-spacing: 2rpx;
-}
-
-.section-head__more {
-  font-size: 22rpx;
-}
-
-.style-scroll {
-  white-space: nowrap;
-  padding: 4rpx 0;
-}
-
-.style-chip {
+.type-tag {
   display: inline-flex;
   align-items: center;
-  height: 60rpx;
-  padding: 0 28rpx;
-  margin-right: 16rpx;
-  font-size: 24rpx;
-  color: var(--text-main);
-  background: var(--card-bg);
-  border: 1rpx solid var(--card-border);
-  border-radius: 30rpx;
-  box-shadow: var(--shadow-soft);
-  letter-spacing: 1rpx;
-}
-.style-chip:last-child { margin-right: 0; }
-
-.style-chip.is-active {
-  background: linear-gradient(135deg, #7BA3C9, #5B8DB8);
-  color: #FFFFFF;
-  border-color: transparent;
-  font-weight: 600;
-  box-shadow: 0 6rpx 16rpx rgba(91, 141, 184, 0.28);
+  padding: 10rpx 24rpx;
+  border-radius: 9999rpx;
+  transition: transform 0.15s ease;
 }
 
-/* ===== F. 更多推荐（双列） ===== */
-.picks-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20rpx;
-}
-
-.pick-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--card-bg);
-  border: 1rpx solid var(--card-border);
-  border-radius: 28rpx;
-  box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(20rpx);
-  -webkit-backdrop-filter: blur(20rpx);
-  overflow: hidden;
-}
-
-.pick-card__cover {
-  position: relative;
-  height: 240rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pick-card__emoji {
-  font-size: 96rpx;
-  line-height: 1;
-  filter: drop-shadow(0 6rpx 12rpx rgba(0, 0, 0, 0.12));
-}
-
-.pick-card__heart {
-  position: absolute;
-  top: 12rpx;
-  right: 12rpx;
-  width: 52rpx;
-  height: 52rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.82);
-  border-radius: 26rpx;
-  font-size: 26rpx;
-  backdrop-filter: blur(10rpx);
-  -webkit-backdrop-filter: blur(10rpx);
-}
-.pick-card__heart.is-liked {
-  background: rgba(246, 173, 85, 0.22);
-}
-
-.pick-card__info {
-  padding: 16rpx 20rpx 20rpx;
-}
-
-.pick-card__title {
-  font-size: 26rpx;
-  font-weight: 600;
-  color: var(--text-main);
-  letter-spacing: 1rpx;
-}
-
-.pick-card__match {
-  margin-top: 6rpx;
-  font-size: 20rpx;
-  font-weight: 600;
-}
-
-/* ===== G. 最近搭配（横滑） ===== */
-.recent-scroll {
-  white-space: nowrap;
-  padding: 4rpx 0;
-}
-
-.recent-card {
-  display: inline-flex;
-  flex-direction: column;
-  width: 260rpx;
-  margin-right: 20rpx;
-  background: var(--card-bg);
-  border: 1rpx solid var(--card-border);
-  border-radius: 24rpx;
-  box-shadow: var(--shadow-soft);
-  overflow: hidden;
-}
-.recent-card:last-child { margin-right: 0; }
-
-.recent-card__cover {
-  height: 180rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.recent-card__emoji {
-  font-size: 72rpx;
-  line-height: 1;
-  filter: drop-shadow(0 4rpx 8rpx rgba(0, 0, 0, 0.12));
-}
-
-.recent-card__info {
-  padding: 14rpx 18rpx 18rpx;
-}
-
-.recent-card__date {
-  font-size: 20rpx;
-  letter-spacing: 1rpx;
-}
-
-.recent-card__title {
-  margin-top: 4rpx;
+.type-tag__text {
   font-size: 24rpx;
   font-weight: 500;
-  color: var(--text-main);
+  letter-spacing: 0.2rpx;
+  line-height: 1.2;
 }
 
-/* 底部安全区 */
+/* 莫兰迪色映射 */
+.type-tag--all    { background: var(--outfit-tag-all); }
+.type-tag--all    .type-tag__text { color: var(--outfit-tag-all-text); }
+.type-tag--spring { background: var(--outfit-tag-spring); }
+.type-tag--spring .type-tag__text { color: var(--outfit-tag-spring-text); }
+.type-tag--summer { background: var(--outfit-tag-summer); }
+.type-tag--summer .type-tag__text { color: var(--outfit-tag-summer-text); }
+.type-tag--autumn { background: var(--outfit-tag-autumn); }
+.type-tag--autumn .type-tag__text { color: var(--outfit-tag-autumn-text); }
+.type-tag--winter { background: var(--outfit-tag-winter); }
+.type-tag--winter .type-tag__text { color: var(--outfit-tag-winter-text); }
+.type-tag--new    { background: var(--outfit-tag-new); }
+.type-tag--new    .type-tag__text { color: var(--outfit-tag-new-text); }
+
+/* 激活态 */
+.type-tag.is-active {
+  transform: translateY(-1rpx) scale(1.02);
+  box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.08);
+}
+
+.type-tag.is-active .type-tag__text {
+  font-weight: 700;
+}
+
+/* ============ 双列瀑布流 ============ */
+.waterfall {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14rpx;
+  margin-top: 16rpx;
+  padding: 4rpx 2rpx 20rpx;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.waterfall__col {
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  max-width: calc((100% - 14rpx) / 2);
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+  box-sizing: border-box;
+}
+
+/* ============ 衣物卡片（参考图风格：奶油白底 + 极细边框） ============ */
+.cloth-card {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  padding: 12rpx 12rpx 14rpx;
+  background: var(--outfit-card-bg);
+  border: 1rpx solid var(--outfit-card-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cloth-card:active {
+  transform: translateY(1rpx) scale(0.99);
+}
+
+/* 内层画框 */
+.cloth-card__frame {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: 14rpx;
+  padding: 12rpx;
+  overflow: hidden;
+  border: 1rpx solid rgba(140, 130, 120, 0.08);
+}
+
+.page-root.theme-dark .cloth-card__frame {
+  background: #2E2C2A;
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+.cloth-card__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10rpx;
+  background: transparent;
+}
+
+/* 心形收藏（右上细线风格） */
+.cloth-card__check {
+  position: absolute;
+  top: 10rpx;
+  right: 10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.page-root.theme-dark .cloth-card__check {
+  background: rgba(50, 48, 46, 0.9);
+}
+
+.cloth-card__check.is-checked {
+  background: #FFFFFF;
+}
+
+/* 卡片底部信息 */
+.cloth-card__info {
+  padding: 10rpx 4rpx 2rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.cloth-card__name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--outfit-card-title);
+  letter-spacing: 0.2rpx;
+  line-height: 1.3;
+}
+
+.cloth-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6rpx;
+}
+
+.cloth-card__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3rpx 12rpx;
+  background: var(--outfit-card-tag-bg);
+  border-radius: 9999rpx;
+  font-size: 20rpx;
+  color: var(--outfit-card-tag-text);
+  font-weight: 500;
+}
+
+.cloth-card__tag--cat {
+  background: rgba(240, 235, 230, 0.95);
+  color: #6A6058;
+  font-weight: 600;
+}
+
+.page-root.theme-dark .cloth-card__tag--cat {
+  background: rgba(60, 56, 52, 0.95);
+  color: #C8C0B8;
+}
+
+/* ============ 加载更多 ============ */
+.load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  padding: 28rpx 0;
+}
+
+.load-more__spinner {
+  width: 22rpx;
+  height: 22rpx;
+  border: 2rpx solid rgba(140, 130, 120, 0.25);
+  border-top-color: var(--outfit-active-stroke);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.load-more__text {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  font-weight: 400;
+}
+
+.load-more--end {
+  font-size: 22rpx;
+  color: var(--text-assist);
+  letter-spacing: 0.2rpx;
+  font-weight: 400;
+}
+
+/* ============ 空状态 ============ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0 60rpx;
+}
+
+.empty-state__icon {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+  opacity: 0.4;
+}
+
+.empty-state__title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text-sub);
+  letter-spacing: 0.2rpx;
+}
+
+.empty-state__desc {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: var(--text-assist);
+  letter-spacing: 0.2rpx;
+  font-weight: 400;
+}
+
+/* ============ 安全区 ============ */
 .safe-bottom {
   height: calc(env(safe-area-inset-bottom) + 40rpx);
 }
+
+/* ============ 图标库 ============ */
+
+/* 搜索小图标 */
+.ic-search-sm { position: relative; width: 28rpx; height: 28rpx; }
+.ic-search-sm__circle {
+  position: absolute; top: 1rpx; left: 1rpx;
+  width: 18rpx; height: 18rpx;
+  border: 2rpx solid var(--outfit-search-stroke);
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.ic-search-sm__handle {
+  position: absolute; bottom: 2rpx; right: 2rpx;
+  width: 8rpx; height: 2rpx;
+  background: var(--outfit-search-stroke);
+  border-radius: 1rpx;
+  transform: rotate(45deg);
+}
+
+/* 搜索大图标 */
+.ic-search-lg { position: relative; width: 34rpx; height: 34rpx; }
+.ic-search-lg__circle {
+  position: absolute; top: 1rpx; left: 1rpx;
+  width: 20rpx; height: 20rpx;
+  border: 2.5rpx solid #8A8078;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.ic-search-lg__handle {
+  position: absolute; bottom: 3rpx; right: 3rpx;
+  width: 10rpx; height: 2.5rpx;
+  background: #8A8078;
+  border-radius: 1.25rpx;
+  transform: rotate(45deg);
+}
+
+/* 关闭（超小） */
+.ic-close-xs { position: relative; width: 14rpx; height: 14rpx; }
+.ic-close-xs__l1,
+.ic-close-xs__l2 {
+  position: absolute; top: 50%; left: 50%;
+  width: 12rpx; height: 2rpx;
+  background: #8A8078;
+  border-radius: 1rpx;
+}
+.ic-close-xs__l1 { transform: translate(-50%, -50%) rotate(45deg); }
+.ic-close-xs__l2 { transform: translate(-50%, -50%) rotate(-45deg); }
+
+/* 空状态衣架 */
+.ic-hanger-empty { position: relative; width: 40rpx; height: 40rpx; }
+.ic-hanger-empty__rod {
+  position: absolute; top: 16rpx; left: 0; right: 0;
+  height: 2rpx; background: var(--text-assist); border-radius: 1rpx;
+}
+.ic-hanger-empty__hook {
+  position: absolute; top: 3rpx; left: 50%;
+  width: 12rpx; height: 14rpx; margin-left: -6rpx;
+  border: 2rpx solid var(--text-assist); border-bottom: none;
+  border-radius: 6rpx 6rpx 0 0; box-sizing: border-box;
+}
+
+/* ============ 心形收藏图标（细线风格） ============ */
+.ic-heart {
+  position: relative;
+  width: 22rpx;
+  height: 20rpx;
+}
+.ic-heart__l,
+.ic-heart__r {
+  position: absolute;
+  top: 0;
+  width: 12rpx;
+  height: 18rpx;
+  background: transparent;
+  border: 2rpx solid var(--outfit-heart-off);
+  border-radius: 6rpx 6rpx 0 0;
+  border-bottom: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+.ic-heart__l {
+  left: 3rpx;
+  transform: rotate(-45deg);
+  transform-origin: 100% 100%;
+}
+.ic-heart__r {
+  right: 3rpx;
+  transform: rotate(45deg);
+  transform-origin: 0% 100%;
+}
+
+.cloth-card__check.is-checked .ic-heart__l,
+.cloth-card__check.is-checked .ic-heart__r {
+  background: var(--outfit-heart-on);
+  border-color: var(--outfit-heart-on);
+}
+
+/* ============ 侧边栏分类图标（细线风格） ============ */
+
+/* 全部（四宫格） */
+.ic-sidebar-all { position: relative; width: 32rpx; height: 32rpx; }
+.ic-sidebar-all__dot {
+  position: absolute;
+  width: 12rpx; height: 12rpx;
+  border-radius: 3rpx;
+  box-sizing: border-box;
+}
+.ic-sidebar-all__dot--1 { top: 1rpx; left: 1rpx; background: #C8A8A0; }
+.ic-sidebar-all__dot--2 { top: 1rpx; right: 1rpx; background: #A0B8C8; }
+.ic-sidebar-all__dot--3 { bottom: 1rpx; left: 1rpx; background: #A0B8C8; }
+.ic-sidebar-all__dot--4 { bottom: 1rpx; right: 1rpx; background: #C8A8A0; }
+
+/* 上装 T 恤（细线） */
+.ic-sidebar-top { position: relative; width: 36rpx; height: 32rpx; }
+.ic-sidebar-top__body {
+  position: absolute; bottom: 0; left: 50%;
+  width: 24rpx; height: 22rpx;
+  margin-left: -12rpx;
+  border: 2rpx solid #8A8078; border-top: none;
+  border-radius: 0 0 3rpx 3rpx;
+  box-sizing: border-box;
+}
+.ic-sidebar-top__sleeve-l,
+.ic-sidebar-top__sleeve-r {
+  position: absolute; top: 3rpx;
+  width: 9rpx; height: 12rpx;
+  border: 2rpx solid #8A8078;
+  box-sizing: border-box;
+}
+.ic-sidebar-top__sleeve-l { left: 1rpx;  border-right: none; border-bottom: none; border-radius: 3rpx 0 0 0; }
+.ic-sidebar-top__sleeve-r { right: 1rpx; border-left:  none; border-bottom: none; border-radius: 0 3rpx 0 0; }
+.ic-sidebar-top__neck {
+  position: absolute; top: 0; left: 50%;
+  width: 10rpx; height: 4rpx;
+  margin-left: -5rpx;
+  border: 2rpx solid #8A8078; border-top: none;
+  border-radius: 0 0 5rpx 5rpx;
+  box-sizing: border-box;
+}
+
+/* 连衣裙（细线） */
+.ic-sidebar-dress { position: relative; width: 34rpx; height: 36rpx; }
+.ic-sidebar-dress__body {
+  position: absolute; bottom: 0; left: 50%;
+  width: 28rpx; height: 30rpx;
+  margin-left: -14rpx;
+  border: 2rpx solid #8A8078; border-top: none;
+  border-radius: 0 0 4rpx 4rpx;
+  box-sizing: border-box;
+  clip-path: polygon(25% 0, 75% 0, 100% 100%, 0 100%);
+}
+.ic-sidebar-dress__strap-l,
+.ic-sidebar-dress__strap-r {
+  position: absolute; top: 0;
+  width: 2rpx; height: 8rpx;
+  background: #8A8078;
+  border-radius: 1rpx;
+}
+.ic-sidebar-dress__strap-l { left: 10rpx; transform: rotate(-15deg); }
+.ic-sidebar-dress__strap-r { right: 10rpx; transform: rotate(15deg); }
+
+/* 下装（细线梯形） */
+.ic-sidebar-bottom { position: relative; width: 32rpx; height: 36rpx; }
+.ic-sidebar-bottom__body {
+  position: absolute; bottom: 0; left: 50%;
+  width: 26rpx; height: 30rpx;
+  margin-left: -13rpx;
+  border: 2rpx solid #8A8078; border-top: none;
+  border-radius: 0 0 3rpx 3rpx;
+  box-sizing: border-box;
+  clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+}
+.ic-sidebar-bottom__split {
+  position: absolute; top: 4rpx; bottom: 0; left: 50%;
+  width: 1.5rpx; margin-left: -0.75rpx;
+  background: #B5ADA8;
+}
+
+/* 鞋靴（细线） */
+.ic-sidebar-shoes { position: relative; width: 36rpx; height: 28rpx; }
+.ic-sidebar-shoes__body {
+  position: absolute; bottom: 5rpx; left: 50%;
+  width: 28rpx; height: 14rpx;
+  margin-left: -14rpx;
+  border: 2rpx solid #8A8078; border-bottom: none;
+  border-radius: 8rpx 8rpx 0 0;
+  box-sizing: border-box;
+}
+.ic-sidebar-shoes__sole {
+  position: absolute; bottom: 2rpx; left: 50%;
+  width: 32rpx; height: 3rpx;
+  margin-left: -16rpx;
+  background: #8A8078;
+  border-radius: 2rpx;
+}
+
+/* 外套（细线） */
+.ic-sidebar-outer { position: relative; width: 36rpx; height: 38rpx; }
+.ic-sidebar-outer__body {
+  position: absolute; bottom: 0; left: 50%;
+  width: 28rpx; height: 32rpx;
+  margin-left: -14rpx;
+  border: 2rpx solid #8A8078; border-top: none;
+  border-radius: 0 0 4rpx 4rpx;
+  box-sizing: border-box;
+}
+.ic-sidebar-outer__collar {
+  position: absolute; top: 1rpx; left: 50%;
+  width: 16rpx; height: 6rpx;
+  margin-left: -8rpx;
+  border: 2rpx solid #8A8078; border-bottom: none;
+  border-radius: 8rpx 8rpx 0 0;
+  box-sizing: border-box;
+}
+
+/* 配饰（圆镜细线） */
+.ic-sidebar-acc { position: relative; width: 32rpx; height: 34rpx; }
+.ic-sidebar-acc__ring {
+  position: absolute; top: 3rpx; left: 50%;
+  width: 18rpx; height: 18rpx;
+  margin-left: -9rpx;
+  border: 2.5rpx solid #8A8078;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.ic-sidebar-acc__dot {
+  position: absolute; bottom: 2rpx; left: 50%;
+  width: 3rpx; height: 8rpx;
+  margin-left: -1.5rpx;
+  background: #8A8078;
+  border-radius: 1.5rpx;
+}
+
+/* ============ 点击反馈 ============ */
+.tap-scale { transition: transform 0.15s ease; }
+.tap-scale:active { transform: scale(0.96); }
+.sidebar__item.is-active.tap-scale:active { transform: scale(1.03); }

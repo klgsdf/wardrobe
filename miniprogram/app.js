@@ -10,29 +10,25 @@ App({
   },
 
   onLaunch() {
-    // 系统信息
+    // 系统信息（使用新 API 替代废弃的 getSystemInfoSync）
     try {
-      const sys = wx.getSystemInfoSync();
+      var sys = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
       this.globalData.systemInfo = sys;
     } catch (e) {
-      console.warn('getSystemInfoSync 失败', e);
+      console.warn('获取系统信息失败', e);
     }
 
-    // 云开发初始化（仅在配置了有效 envId 时才执行，避免空 env 导致 Error: timeout）
+    // 云开发初始化
     if (!wx.cloud) {
       console.warn('当前基础库不支持云能力（需 2.2.3+）');
       return;
     }
-    if (!this.globalData.env) {
-      // envList.js 未配置环境 ID，跳过云初始化，业务页面可正常运行
-      console.info('[云开发] 未配置 envId，已跳过 wx.cloud.init（如需云能力请在 miniprogram/envList.js 填入 envId）');
-      return;
-    }
     try {
       wx.cloud.init({
-        env: this.globalData.env,
+        env: 'klgsdf-d4grlh1dd0a94f055',
         traceUser: true,
       });
+      console.info('[云开发] 初始化成功，环境ID: klgsdf-d4grlh1dd0a94f055');
     } catch (e) {
       console.warn('wx.cloud.init 失败', e);
     }

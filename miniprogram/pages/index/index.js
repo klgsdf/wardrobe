@@ -2,6 +2,8 @@
 const THEME_KEY = 'wardrobe_theme';
 const NAME_KEY  = 'wardrobe_name';
 const LAYOUT_KEY = 'wardrobe_layout';
+const WEATHER_KEY = 'wardrobe_weather_cache';
+const { commonApi } = require('../../utils/api.js');
 
 const DEFAULT_LAYOUT = {
   topShelf: 'with-light',   // plain / with-light / divided
@@ -49,6 +51,40 @@ Page({
       unused: 12,
     },
 
+    // 收藏的搭配数据
+    favorites: [
+      {
+        id: 1,
+        title: '温柔通勤风',
+        tag: '通勤',
+        tagBg: 'rgba(212, 163, 115, 0.15)',
+        tagColor: '#D4A373',
+        bgColor: '#F0E8E0',
+        icon: '\uD83D\uDCBC',
+        date: '5月12日收藏',
+      },
+      {
+        id: 2,
+        title: '法式约会风',
+        tag: '约会',
+        tagBg: 'rgba(232, 180, 180, 0.20)',
+        tagColor: '#C88888',
+        bgColor: '#F5E0E0',
+        icon: '\uD83C\uDF77',
+        date: '5月8日收藏',
+      },
+      {
+        id: 3,
+        title: '元气运动风',
+        tag: '运动',
+        tagBg: 'rgba(168, 188, 168, 0.20)',
+        tagColor: '#6C8A6C',
+        bgColor: '#E0E8E0',
+        icon: '\uD83C\uDFC3',
+        date: '4月28日收藏',
+      },
+    ],
+
     // 衣柜 DIY 布局（驱动主卡线条衣柜渲染）
     layout: DEFAULT_LAYOUT,
 
@@ -58,7 +94,7 @@ Page({
   },
 
   onLoad() {
-    const sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
+    const sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : (wx.getSystemInfoSync ? wx.getSystemInfoSync() : { statusBarHeight: 44, windowWidth: 375 });
     const menuBtn = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null;
     const statusBarHeight = sysInfo.statusBarHeight || 44;
     const windowWidth    = sysInfo.windowWidth    || 375;
@@ -71,6 +107,8 @@ Page({
     const theme = wx.getStorageSync(THEME_KEY) || 'light';
     const storedName = wx.getStorageSync(NAME_KEY);
     const storedLayout = wx.getStorageSync(LAYOUT_KEY);
+    // 先尝试读取缓存天气，避免界面空白
+    const cachedWeather = wx.getStorageSync(WEATHER_KEY);
     this.setData({
       statusBarHeight,
       navPadHeight,
@@ -81,7 +119,49 @@ Page({
       greeting: buildGreeting(),
       wardrobeName: storedName || this.data.wardrobeName,
       layout: Object.assign({}, DEFAULT_LAYOUT, storedLayout || {}),
+      weather: cachedWeather || this.data.weather,
     });
+    // 异步获取真实天气
+    this.fetchRealWeather();
+  },
+
+  /* ========== 天气 ========== */
+
+  // 获取定位并拉取真实天气
+  fetchRealWeather() {
+    const self = this;
+    wx.getLocation({
+      type: 'gcj02',
+      success(res) {
+        self._loadWeather(res.latitude, res.longitude);
+      },
+      fail(err) {
+        console.warn('[fetchRealWeather] 定位失败:', err);
+        const cached = wx.getStorageSync(WEATHER_KEY);
+        if (!cached) {
+          wx.showToast({ title: '定位失败，显示默认天气', icon: 'none', duration: 1500 });
+        }
+      },
+    });
+  },
+
+  // 调用云函数获取天气并缓存
+  async _loadWeather(lat, lon) {
+    try {
+      const data = await commonApi.getWeather(lat, lon);
+      if (data) {
+        const weather = {
+          type: data.type || 'sunny',
+          desc: data.desc || '晴',
+          temp: data.temp || '--℃',
+          city: data.city || '当前位置',
+        };
+        wx.setStorageSync(WEATHER_KEY, weather);
+        this.setData({ weather });
+      }
+    } catch (err) {
+      console.warn('[_loadWeather] 获取天气失败:', err);
+    }
   },
 
   onShow() {
@@ -157,10 +237,23 @@ Page({
     wx.showToast({ title: '已根据天气推荐穿搭', icon: 'none' });
   },
 
-  // 右卡：AI 推荐
+  // 右卡：AI 智能搭配
   onAiRecommend() {
     wx.vibrateShort({ type: 'medium' });
-    wx.switchTab({ url: '/pages/outfit/outfit' });
+    wx.navigateTo({ url: '/pages/ai-match/ai-match' });
+  },
+
+  // 查看全部收藏
+  onViewAllFavorites() {
+    wx.vibrateShort({ type: 'light' });
+    wx.showToast({ title: '查看全部收藏', icon: 'none' });
+  },
+
+  // 点击收藏卡片
+  onFavoriteTap(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.vibrateShort({ type: 'light' });
+    wx.showToast({ title: '查看搭配详情', icon: 'none' });
   },
 
   onShareAppMessage() {

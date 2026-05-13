@@ -1,0 +1,450 @@
+/* pages/ai-match/detail.wxss - 搭配详情（焦糖米黄风） */
+
+/* ============ 页面根 ============ */
+.page-root {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FEFAE0 0%, #FFFFFF 60%);
+  box-sizing: border-box;
+}
+
+.nav-pad { width: 100%; }
+
+/* ============ 自定义导航栏 ============ */
+.nav-bar {
+  position: fixed;
+  left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24rpx;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.nav-back {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ic-arrow-left {
+  width: 20rpx;
+  height: 20rpx;
+  border-left: 3rpx solid #4A403A;
+  border-bottom: 3rpx solid #4A403A;
+  transform: rotate(45deg);
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #4A403A;
+  letter-spacing: 0.5rpx;
+}
+
+.nav-placeholder {
+  width: 64rpx;
+}
+
+/* ============ 页面内容区 ============ */
+.page-body {
+  padding: 0 40rpx 40rpx;
+  box-sizing: border-box;
+}
+
+/* ============ 详情视图 ============ */
+.detail-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+/* ============ 头部卡片 ============ */
+.detail-header {
+  background: #E8DDD4;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-top: 24rpx;
+}
+
+.detail-header__title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #4A403A;
+  letter-spacing: 0.5rpx;
+  margin-bottom: 8rpx;
+}
+
+.detail-header__sub {
+  font-size: 24rpx;
+  color: #9C8C84;
+  letter-spacing: 0.3rpx;
+}
+
+/* ============ 单品列表 ============ */
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.item-section {
+  background: #FFFFFF;
+  border: 1rpx solid rgba(140, 130, 120, 0.12);
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.item-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.item-icon__text {
+  font-size: 32rpx;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.item-info__category {
+  font-size: 22rpx;
+  color: #9C8C84;
+  letter-spacing: 0.3rpx;
+}
+
+.item-info__name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #4A403A;
+  letter-spacing: 0.3rpx;
+}
+
+/* ============ 匹配推荐横向滚动 ============ */
+.match-scroll-wrap {
+  margin-top: 20rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid rgba(140, 130, 120, 0.08);
+}
+
+.match-scroll-label {
+  font-size: 22rpx;
+  color: #9C8C84;
+  letter-spacing: 0.3rpx;
+  margin-bottom: 12rpx;
+}
+
+.match-scroll {
+  width: 100%;
+}
+
+.match-scroll-inner {
+  display: flex;
+  flex-direction: row;
+  gap: 16rpx;
+  padding-right: 28rpx;
+}
+
+.match-card {
+  flex-shrink: 0;
+  width: 180rpx;
+  background: #FAF8F5;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.match-card__img-wrap {
+  width: 180rpx;
+  height: 180rpx;
+  background: #F0EBE5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match-card__img {
+  width: 100%;
+  height: 100%;
+}
+
+.match-card__img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match-card__img-placeholder-text {
+  font-size: 48rpx;
+}
+
+.match-card__info {
+  padding: 12rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.match-card__name {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #4A403A;
+  letter-spacing: 0.3rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.match-card__score-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.match-card__score-bar {
+  flex: 1;
+  height: 6rpx;
+  background: #E8DDD4;
+  border-radius: 3rpx;
+  overflow: hidden;
+}
+
+.match-card__score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #D4A373 0%, #C4936A 100%);
+  border-radius: 3rpx;
+  transition: width 0.3s ease;
+}
+
+.match-card__score-text {
+  font-size: 20rpx;
+  color: #D4A373;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* ============ 无匹配提示 ============ */
+.match-empty {
+  margin-top: 16rpx;
+  padding: 20rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match-empty__text {
+  font-size: 24rpx;
+  color: #B5ADA8;
+  letter-spacing: 0.3rpx;
+}
+
+/* ============ 保存按钮 ============ */
+.save-btn-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 40rpx;
+  margin-bottom: 24rpx;
+}
+
+.save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 26rpx 100rpx;
+  background: linear-gradient(135deg, #D4A373 0%, #C4936A 100%);
+  border-radius: 9999rpx;
+  box-shadow: 0 8rpx 24rpx rgba(212, 163, 115, 0.30);
+}
+
+.save-btn__icon {
+  font-size: 28rpx;
+}
+
+.save-btn__text {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #FFFFFF;
+  letter-spacing: 0.5rpx;
+}
+
+/* ============ 成功视图 ============ */
+.success-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+.success-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24rpx;
+  width: 100%;
+  padding: 80rpx 40rpx;
+  background: linear-gradient(180deg, #E8DDD4 0%, #D4C4B0 100%);
+  border-radius: 48rpx;
+  box-sizing: border-box;
+}
+
+.success-icon {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+.success-check {
+  width: 48rpx;
+  height: 28rpx;
+  border-left: 6rpx solid #8FBC8F;
+  border-bottom: 6rpx solid #8FBC8F;
+  transform: rotate(-45deg);
+  margin-top: -8rpx;
+}
+
+.success-title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #4A403A;
+  letter-spacing: 0.5rpx;
+}
+
+.success-sub {
+  font-size: 28rpx;
+  color: #9C8C84;
+  letter-spacing: 0.3rpx;
+}
+
+.success-desc {
+  font-size: 26rpx;
+  color: #9C8C84;
+  letter-spacing: 0.3rpx;
+}
+
+.success-btn {
+  margin-top: 16rpx;
+  padding: 22rpx 80rpx;
+  background: #FFFFFF;
+  border-radius: 9999rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.success-btn__text {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #4A403A;
+  letter-spacing: 0.5rpx;
+}
+
+/* ============ 安全区域 ============ */
+.safe-bottom {
+  height: calc(env(safe-area-inset-bottom) + 40rpx);
+}
+
+/* ============ 深色主题覆盖 ============ */
+.page-root.theme-dark {
+  background: linear-gradient(180deg, #1A1816 0%, #242220 60%);
+}
+
+.page-root.theme-dark .nav-title {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .ic-arrow-left {
+  border-color: #E8E0D8;
+}
+
+.page-root.theme-dark .detail-header {
+  background: #4A403A;
+}
+
+.page-root.theme-dark .detail-header__title {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .detail-header__sub {
+  color: #B5ADA8;
+}
+
+.page-root.theme-dark .item-section {
+  background: #2E2C2A;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.page-root.theme-dark .item-info__category {
+  color: #A09890;
+}
+
+.page-root.theme-dark .item-info__name {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .match-card {
+  background: #3A3634;
+}
+
+.page-root.theme-dark .match-card__img-wrap {
+  background: #4A403A;
+}
+
+.page-root.theme-dark .match-card__name {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .match-card__score-bar {
+  background: #4A403A;
+}
+
+.page-root.theme-dark .match-empty__text {
+  color: #6A6058;
+}
+
+.page-root.theme-dark .success-card {
+  background: linear-gradient(180deg, #4A403A 0%, #3A3634 100%);
+}
+
+.page-root.theme-dark .success-title {
+  color: #E8E0D8;
+}
+
+.page-root.theme-dark .success-sub,
+.page-root.theme-dark .success-desc {
+  color: #B5ADA8;
+}
+
+.page-root.theme-dark .success-btn {
+  background: #2E2C2A;
+}
+
+.page-root.theme-dark .success-btn__text {
+  color: #E8E0D8;
+}

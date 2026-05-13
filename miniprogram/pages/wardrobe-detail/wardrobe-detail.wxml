@@ -1,0 +1,173 @@
+<!--pages/wardrobe-detail/wardrobe-detail.wxml - 衣柜详情页（分区管理）-->
+<view class="page-root {{isDark ? 'theme-dark' : ''}}">
+
+  <!-- 自定义顶栏 -->
+  <view class="nav-pad" style="height: {{navPadHeight}}px;"></view>
+  <view class="detail-header" style="top: {{statusBarHeight + 4}}px;">
+    <view class="detail-header__back tap-scale" bindtap="onBack">
+      <view class="ic-back">
+        <view class="ic-back__line"></view>
+        <view class="ic-back__head"></view>
+      </view>
+    </view>
+    <view class="detail-header__title">{{wardrobe.name}}</view>
+    <view class="detail-header__spacer"></view>
+    <view class="icon-btn tap-scale" bindtap="onToggleTheme">
+      <view wx:if="{{isDark}}" class="ic ic-sun">
+        <view class="ic-sun__core"></view>
+      </view>
+      <view wx:else class="ic ic-moon">
+        <view class="ic-moon__shape"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 分区管理视图 ===== -->
+  <view wx:if="{{wardrobe}}" class="zones-view">
+    <!-- 衣柜信息卡 -->
+    <view class="wardrobe-info">
+      <view class="wardrobe-info__row">
+        <view class="wardrobe-info__label">类型</view>
+        <view class="wardrobe-info__value">{{wardrobe.type === 'closet' ? '衣柜' : wardrobe.type === 'drawer' ? '抽屉柜' : wardrobe.type === 'shoe-rack' ? '鞋柜' : wardrobe.type === 'shelf' ? '置物架' : '换季收纳'}}</view>
+      </view>
+      <view class="wardrobe-info__row">
+        <view class="wardrobe-info__label">描述</view>
+        <view class="wardrobe-info__value">{{wardrobe.desc}}</view>
+      </view>
+      <view class="wardrobe-info__row">
+        <view class="wardrobe-info__label">分区数</view>
+        <view class="wardrobe-info__value">{{wardrobe.zones.length}} 个</view>
+      </view>
+      <view class="wardrobe-info__row">
+        <view class="wardrobe-info__label">衣物数</view>
+        <view class="wardrobe-info__value">{{wardrobe.itemCount}} 件</view>
+      </view>
+    </view>
+
+    <!-- 添加分区按钮 -->
+    <view class="add-zone-bar tap-scale" bindtap="onShowAddZone">
+      <view class="add-zone-bar__plus">
+        <view class="add-zone-bar__plus-h"></view>
+        <view class="add-zone-bar__plus-v"></view>
+      </view>
+      <text class="add-zone-bar__text">添加分区</text>
+    </view>
+
+    <!-- 分区列表 -->
+    <view class="zone-list">
+      <view wx:for="{{wardrobe.zones}}" wx:key="id"
+            class="zone-item tap-scale"
+            data-id="{{item.id}}"
+            bindtap="onZoneTap"
+            bindlongpress="onZoneLongPress">
+        <view class="zone-item__icon zone-item__icon--{{item.type}}">
+          <view wx:if="{{item.type === 'shelf'}}" class="ic-zone-shelf">
+            <view class="ic-zone-shelf__frame"></view>
+            <view class="ic-zone-shelf__line"></view>
+          </view>
+          <view wx:elif="{{item.type === 'hanger'}}" class="ic-zone-hanger">
+            <view class="ic-zone-hanger__rod"></view>
+            <view class="ic-zone-hanger__hook"></view>
+          </view>
+          <view wx:elif="{{item.type === 'drawer'}}" class="ic-zone-drawer">
+            <view class="ic-zone-drawer__box"></view>
+            <view class="ic-zone-drawer__knob"></view>
+          </view>
+          <view wx:elif="{{item.type === 'box'}}" class="ic-zone-box">
+            <view class="ic-zone-box__body"></view>
+            <view class="ic-zone-box__lid"></view>
+          </view>
+          <view wx:elif="{{item.type === 'shoe'}}" class="ic-zone-shoe">
+            <view class="ic-zone-shoe__frame"></view>
+            <view class="ic-zone-shoe__line ic-zone-shoe__line--1"></view>
+            <view class="ic-zone-shoe__line ic-zone-shoe__line--2"></view>
+          </view>
+        </view>
+        <view class="zone-item__info">
+          <view class="zone-item__name">{{item.name}}</view>
+          <view class="zone-item__meta">{{item.type === 'shelf' ? '隔板层' : item.type === 'hanger' ? '挂衣区' : item.type === 'drawer' ? '抽屉' : item.type === 'box' ? '收纳盒' : '鞋区'}} · {{item.count}} 件</view>
+        </view>
+        <view class="zone-item__badge">{{item.count}}</view>
+      </view>
+
+      <!-- 空分区状态 -->
+      <view wx:if="{{wardrobe.zones.length === 0}}" class="empty-zone">
+        <view class="empty-zone__text">暂无分区，点击上方添加</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 添加分区弹窗 ===== -->
+  <view wx:if="{{showAddZone}}" class="overlay" bindtap="onHideAddZone">
+    <view class="add-sheet" catchtap="">
+      <view class="add-sheet__header">
+        <text class="add-sheet__title">添加分区</text>
+        <view class="add-sheet__spacer"></view>
+        <view class="add-sheet__close tap-scale" bindtap="onHideAddZone">
+          <view class="ic-close">
+            <view class="ic-close__line ic-close__line--1"></view>
+            <view class="ic-close__line ic-close__line--2"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="add-sheet__section">
+        <view class="add-sheet__label">分区类型</view>
+        <view class="type-grid">
+          <view wx:for="{{zoneTypes}}" wx:key="type"
+                class="type-chip tap-scale {{addZoneForm.type === item.type ? 'is-active' : ''}}"
+                data-type="{{item.type}}" bindtap="onAddZoneTypeSelect">
+            <view class="type-chip__dot"></view>
+            <text class="type-chip__text">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="add-sheet__section">
+        <view class="add-sheet__label">分区名称</view>
+        <input class="add-sheet__input"
+               placeholder="例如：上层隔板、挂衣区"
+               placeholder-class="add-sheet__placeholder"
+               value="{{addZoneForm.name}}"
+               bindinput="onAddZoneNameInput"
+               maxlength="20" />
+      </view>
+
+      <view class="add-sheet__btn tap-scale" bindtap="onConfirmAddZone">
+        <text>确认添加</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 重命名分区弹窗 ===== -->
+  <view wx:if="{{showRenameZone}}" class="overlay" bindtap="onHideRenameZone">
+    <view class="add-sheet" catchtap="">
+      <view class="add-sheet__header">
+        <text class="add-sheet__title">重命名分区</text>
+        <view class="add-sheet__spacer"></view>
+        <view class="add-sheet__close tap-scale" bindtap="onHideRenameZone">
+          <view class="ic-close">
+            <view class="ic-close__line ic-close__line--1"></view>
+            <view class="ic-close__line ic-close__line--2"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="add-sheet__section">
+        <view class="add-sheet__label">分区名称</view>
+        <input class="add-sheet__input"
+               placeholder="输入新名称"
+               placeholder-class="add-sheet__placeholder"
+               value="{{renameZoneForm.name}}"
+               bindinput="onRenameZoneNameInput"
+               maxlength="20" />
+      </view>
+
+      <view class="add-sheet__btn tap-scale" bindtap="onConfirmRenameZone">
+        <text>确认修改</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

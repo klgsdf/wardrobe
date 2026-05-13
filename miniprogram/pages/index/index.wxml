@@ -1,10 +1,7 @@
-<!--pages/index/index.wxml - 首页（iOS 15 设计系统 · 焦糖米黄风）-->
+<!--pages/index/index.wxml - 首页（焦糖米黄风 · 参考图布局）-->
 <view class="page-root {{isDark ? 'theme-dark' : ''}}">
 
-  <!-- 状态栏 + 胶囊按钮占位 -->
-  <view class="nav-pad" style="height: {{navPadHeight}}px;"></view>
-
-  <!-- iOS 风格导航栏：左侧衣柜名字 + 右侧日夜切换 -->
+  <!-- 导航栏：左侧衣柜名字 + 右侧日夜切换 -->
   <view class="nav-actions"
         style="top: {{menuBtnTop}}px; height: {{menuBtnHeight}}px; right: {{navActionsRight}}px;">
     <view class="wardrobe-name tap-scale" bindtap="onEditName"
@@ -22,118 +19,56 @@
         <view class="ic-moon__shape"></view>
       </view>
     </view>
+    <view class="icon-btn icon-btn--more tap-scale"
+          style="width: {{menuBtnHeight}}px; height: {{menuBtnHeight}}px;">
+      <view class="ic-more">
+        <view class="ic-more__dot"></view>
+        <view class="ic-more__dot"></view>
+        <view class="ic-more__dot"></view>
+      </view>
+    </view>
   </view>
 
   <view class="page-body">
+    <!-- 状态栏 + 导航栏占位 -->
+    <view class="nav-pad" style="height: {{navPadHeight}}px; width: 100%;"></view>
 
-    <!-- ===== iOS 风格大卡片：衣柜场景盒 ===== -->
-    <view class="wardrobe-card tap-scale" bindtap="onEnterWardrobe">
-      <!-- 场景：墙 + 地板 + 踢脚线 -->
-      <view class="scene">
-        <view class="scene__wall"></view>
-        <view class="scene__floor"></view>
-        <view class="scene__skirting"></view>
-        <view class="scene__light-halo"></view>
-      </view>
-
-      <!-- 左右装饰性功能图标条（参考图侧边浮动图标） -->
-      <view class="closet-side closet-side--l">
-        <view class="closet-side__dot"></view>
-        <view class="closet-side__dot"></view>
-        <view class="closet-side__dot"></view>
-        <view class="closet-side__dot"></view>
-      </view>
-      <view class="closet-side closet-side--r">
-        <view class="closet-side__dot"></view>
-        <view class="closet-side__dot"></view>
-        <view class="closet-side__dot"></view>
-        <view class="closet-side__dot"></view>
-      </view>
-
-      <!-- 悬浮玻璃衣柜 -->
-      <view class="closet-art">
-        <view class="closet-art__shadow"></view>
-        <view class="closet-art__frame">
-
-          <!-- 顶部 LED 灯带 -->
-          <view wx:if="{{layout.lighting !== 'off'}}" class="closet-art__led led--{{layout.lighting}}"></view>
-
-          <!-- 上层隔板 + 折叠被物 -->
-          <view class="closet-art__shelf closet-art__shelf--top"></view>
-          <view class="closet-art__folds">
-            <view class="fold fold--a"></view>
-            <view class="fold fold--b"></view>
-            <view class="fold fold--c"></view>
-          </view>
-
-          <!-- 中层隔板 -->
-          <view class="closet-art__shelf closet-art__shelf--mid"></view>
-
-          <!-- 左半柜体：挂衣区（根据 hanger 切换） -->
-          <view class="closet-art__left">
-            <view class="hang-rod hang-rod--{{layout.hanger}}"></view>
-            <view wx:if="{{layout.hanger === 'double'}}" class="hang-rod hang-rod--lower"></view>
-            <view class="closet-art__hang">
-              <view class="ic-shirt">
-                <view class="ic-shirt__hanger"></view>
-                <view class="ic-shirt__body"></view>
-                <view class="ic-shirt__collar-l"></view>
-                <view class="ic-shirt__collar-r"></view>
-                <view class="ic-shirt__tie"></view>
-              </view>
-              <view class="ic-dress">
-                <view class="ic-dress__hanger"></view>
-                <view class="ic-dress__body"></view>
-              </view>
-              <view class="ic-coat">
-                <view class="ic-coat__hanger"></view>
-                <view class="ic-coat__body"></view>
-                <view class="ic-coat__lapel-l"></view>
-                <view class="ic-coat__lapel-r"></view>
-                <view class="ic-coat__belt"></view>
-              </view>
-            </view>
-          </view>
-
-          <!-- 右半柜体：推拉门（根据 doors 切换样式） -->
-          <view class="closet-art__right door--{{layout.doors}}">
-            <view class="door-panel door-panel--l">
-              <view wx:if="{{layout.doors === 'sliding'}}" class="door-dots">
-                <view wx:for="{{dots20}}" wx:key="*this" class="door-dots__dot"></view>
-              </view>
-              <view wx:if="{{layout.doors === 'louver'}}" class="door-louvers">
-                <view wx:for="{{bars8}}" wx:key="*this" class="door-louvers__bar"></view>
-              </view>
-              <view wx:if="{{layout.doors === 'swing'}}" class="door-swing"></view>
-              <view wx:if="{{layout.doors === 'mirror'}}" class="door-mirror"></view>
-            </view>
-            <view class="door-handle"></view>
-          </view>
-
-          <!-- 底部抽屉组（数量根据 drawers） -->
-          <view class="closet-art__drawers drawers--{{layout.drawers}}">
-            <view class="drawer"><view class="drawer__notch"></view></view>
-            <view class="drawer"><view class="drawer__notch"></view></view>
-            <view wx:if="{{layout.drawers >= 3}}" class="drawer"><view class="drawer__notch"></view></view>
-            <view wx:if="{{layout.drawers >= 4}}" class="drawer"><view class="drawer__notch"></view></view>
-          </view>
-
-          <!-- 玻璃高光 -->
-          <view class="closet-art__gloss"></view>
+    <!-- ===== 收藏的搭配 ===== -->
+    <view class="section-header">
+      <view class="section-header__left">
+        <view class="ic-heart">
+          <view class="ic-heart__shape"></view>
         </view>
+        <text class="section-header__title">收藏的搭配</text>
       </view>
-
-      <!-- 右下角DIY提示 -->
-      <view class="closet-tip">
-        <view class="closet-tip__dot"></view>
-        <text class="closet-tip__text">点击进入 DIY</text>
+      <view class="section-header__right tap-scale" bindtap="onViewAllFavorites">
+        <text class="section-header__link">查看全部</text>
+        <view class="ic-chevron-right"></view>
       </view>
     </view>
 
-    <!-- 过渡渐变桥：主卡 → 副卡区 -->
-    <view class="bridge"></view>
+    <!-- 横向滚动收藏卡片 -->
+    <scroll-view class="fav-scroll" scroll-x="true" show-scrollbar="false">
+      <view class="fav-list">
+        <view wx:for="{{favorites}}" wx:key="id" class="fav-card tap-scale" bindtap="onFavoriteTap" data-id="{{item.id}}">
+          <view class="fav-card__top" style="background: {{item.bgColor}};">
+            <view class="fav-card__icon">{{item.icon}}</view>
+            <view class="fav-card__heart">
+              <view class="ic-heart--small">
+                <view class="ic-heart__shape"></view>
+              </view>
+            </view>
+          </view>
+          <view class="fav-card__body">
+            <text class="fav-card__title">{{item.title}}</text>
+            <view class="fav-card__tag" style="background: {{item.tagBg}}; color: {{item.tagColor}};">{{item.tag}}</view>
+            <text class="fav-card__date">{{item.date}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
 
-    <!-- ===== iOS 风格统计条（Table View 风格） ===== -->
+    <!-- ===== 统计条 ===== -->
     <view class="stats-row">
       <view class="stats-cell">
         <view class="stats-cell__num">{{stats.total}}</view>
@@ -151,29 +86,29 @@
       </view>
     </view>
 
-    <!-- ===== iOS 风格双列 Widget：左 欢迎+天气  右 AI 推荐 ===== -->
+    <!-- ===== 双列 Widget：左 天气  右 AI 推荐 ===== -->
     <view class="duo-grid">
       <view class="duo-cell duo-cell--welcome tap-scale" bindtap="onWeatherTap">
         <view class="duo-cell__row">
-          <view class="ic ic-sun ic-sun--sm">
-            <view class="ic-sun__core"></view>
-          </view>
+          <!-- 天气图标根据 type 动态切换 -->
+          <view wx:if="{{weather.type === 'sunny'}}" class="ic ic-sun ic-sun--sm"><view class="ic-sun__core"></view></view>
+          <view wx:elif="{{weather.type === 'night'}}" class="ic ic-moon ic-moon--sm"><view class="ic-moon__shape"></view></view>
+          <view wx:elif="{{weather.type === 'cloudy'}}" class="ic ic-cloud ic-cloud--sm"><view class="ic-cloud__body"></view><view class="ic-cloud__base"></view></view>
+          <view wx:elif="{{weather.type === 'rainy'}}" class="ic ic-rain ic-rain--sm"><view class="ic-rain__cloud"></view><view class="ic-rain__drop ic-rain__drop--1"></view><view class="ic-rain__drop ic-rain__drop--2"></view><view class="ic-rain__drop ic-rain__drop--3"></view></view>
+          <view wx:elif="{{weather.type === 'snowy'}}" class="ic ic-snow ic-snow--sm"><view class="ic-snow__cloud"></view><view class="ic-snow__flake ic-snow__flake--1"></view><view class="ic-snow__flake ic-snow__flake--2"></view><view class="ic-snow__flake ic-snow__flake--3"></view></view>
           <text class="duo-cell__temp">{{weather.temp}}</text>
         </view>
-        <view class="duo-cell__title">{{greeting}}，{{nickName}}</view>
+        <view class="duo-cell__greeting">{{greeting}}，</view>
+        <view class="duo-cell__name">{{nickName}}</view>
         <view class="duo-cell__sub">{{weather.city}} · {{weather.desc}}</view>
       </view>
 
       <view class="duo-cell duo-cell--ai tap-scale" bindtap="onAiRecommend">
-        <view class="duo-cell__ai-halo"></view>
-        <view class="ic ic-sparkle">
-          <view class="ic-sparkle__big"></view>
-          <view class="ic-sparkle__small"></view>
-        </view>
-        <view class="duo-cell__ai-title">AI 推荐</view>
-        <view class="duo-cell__ai-sub">为你搭配今日穿搭</view>
-        <view class="duo-cell__ai-arrow">
-          <view class="ic ic-arrow-right"></view>
+        <view class="duo-cell__ai-bg"></view>
+        <view class="duo-cell__ai-content">
+          <view class="duo-cell__ai-title">AI 智能搭配</view>
+          <view class="duo-cell__ai-sub">你的私人穿搭顾问</view>
+          <view class="duo-cell__ai-btn">开始搭配</view>
         </view>
       </view>
     </view>

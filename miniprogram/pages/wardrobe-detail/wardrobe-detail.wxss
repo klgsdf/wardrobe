@@ -1,0 +1,366 @@
+/* pages/wardrobe-detail/wardrobe-detail.wxss - 衣柜详情页（分区管理） */
+
+.page-root {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-page);
+  box-sizing: border-box;
+}
+
+.nav-pad { width: 100%; }
+
+/* ============ 顶栏 ============ */
+.detail-header {
+  position: fixed;
+  left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+  z-index: 100;
+  height: 44px;
+  background: var(--bg-page);
+}
+
+.detail-header__back {
+  width: 48rpx; height: 48rpx;
+  display: flex; align-items: center; justify-content: center;
+}
+.ic-back { position: relative; width: 20rpx; height: 20rpx; }
+.ic-back__line {
+  position: absolute; top: 50%; left: 0;
+  width: 16rpx; height: 2rpx;
+  background: var(--text-main);
+  margin-top: -1rpx; border-radius: 1rpx;
+}
+.ic-back__head {
+  position: absolute; top: 50%; left: 2rpx;
+  width: 8rpx; height: 8rpx;
+  border-left: 2rpx solid var(--text-main);
+  border-bottom: 2rpx solid var(--text-main);
+  transform: rotate(45deg);
+  margin-top: -4rpx;
+}
+
+.detail-header__title {
+  margin-left: 12rpx;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 400rpx;
+}
+
+.detail-header__spacer { flex: 1; }
+
+.icon-btn {
+  width: 48rpx; height: 48rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+}
+
+/* ============ 分区管理视图 ============ */
+.zones-view {
+  padding: 20rpx 32rpx;
+}
+
+/* 衣柜信息卡 */
+.wardrobe-info {
+  padding: 24rpx;
+  background: var(--card-bg);
+  border: 1rpx solid var(--card-border);
+  border-radius: var(--radius-card);
+}
+.wardrobe-info__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8rpx 0;
+}
+.wardrobe-info__row + .wardrobe-info__row {
+  border-top: 1rpx solid var(--line-soft);
+}
+.wardrobe-info__label {
+  font-size: 24rpx;
+  color: var(--text-sub);
+  letter-spacing: 0.3rpx;
+}
+.wardrobe-info__value {
+  font-size: 26rpx;
+  color: var(--text-main);
+  font-weight: 500;
+  letter-spacing: 0.3rpx;
+}
+
+/* 添加分区按钮 */
+.add-zone-bar {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 20rpx;
+  padding: 20rpx 24rpx;
+  background: transparent;
+  border: 2rpx dashed var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+.add-zone-bar__plus {
+  position: relative;
+  width: 36rpx; height: 36rpx;
+}
+.add-zone-bar__plus-h,
+.add-zone-bar__plus-v {
+  position: absolute;
+  top: 50%; left: 50%;
+  background: var(--color-primary);
+  border-radius: 2rpx;
+  transform: translate(-50%, -50%);
+}
+.add-zone-bar__plus-h { width: 20rpx; height: 2rpx; }
+.add-zone-bar__plus-v { width: 2rpx; height: 20rpx; }
+.add-zone-bar__text {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--color-primary);
+  letter-spacing: 0.5rpx;
+}
+
+/* 分区列表 */
+.zone-list {
+  margin-top: 16rpx;
+}
+
+.zone-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 24rpx 20rpx;
+  margin-bottom: 12rpx;
+  background: var(--card-bg);
+  border: 1rpx solid var(--card-border);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+/* 分区类型图标 */
+.zone-item__icon {
+  width: 72rpx; height: 72rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-inner);
+  border: 1rpx solid var(--card-border);
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+}
+
+/* 隔板层图标 */
+.ic-zone-shelf { position: relative; width: 32rpx; height: 36rpx; }
+.ic-zone-shelf__frame {
+  position: absolute; inset: 0;
+  border: 2rpx solid var(--icon-stroke);
+  border-radius: 3rpx; box-sizing: border-box;
+}
+.ic-zone-shelf__line {
+  position: absolute; left: 4rpx; right: 4rpx; top: 50%;
+  height: 2rpx; background: var(--icon-stroke);
+}
+
+/* 挂衣区图标 */
+.ic-zone-hanger { position: relative; width: 36rpx; height: 36rpx; }
+.ic-zone-hanger__rod {
+  position: absolute; top: 8rpx; left: 2rpx; right: 2rpx;
+  height: 2rpx; background: var(--icon-stroke);
+  border-radius: 1rpx;
+}
+.ic-zone-hanger__hook {
+  position: absolute; top: 2rpx; left: 50%;
+  width: 12rpx; height: 8rpx;
+  margin-left: -6rpx;
+  border: 2rpx solid var(--icon-stroke);
+  border-bottom: none;
+  border-radius: 6rpx 6rpx 0 0;
+  box-sizing: border-box;
+}
+
+/* 抽屉图标 */
+.ic-zone-drawer { position: relative; width: 36rpx; height: 32rpx; }
+.ic-zone-drawer__box {
+  position: absolute; inset: 0;
+  border: 2rpx solid var(--icon-stroke);
+  border-radius: 3rpx; box-sizing: border-box;
+}
+.ic-zone-drawer__knob {
+  position: absolute; top: 50%; left: 50%;
+  width: 12rpx; height: 3rpx;
+  margin-left: -6rpx; margin-top: -1.5rpx;
+  background: var(--icon-stroke);
+  border-radius: 2rpx;
+}
+
+/* 收纳盒图标 */
+.ic-zone-box { position: relative; width: 36rpx; height: 32rpx; }
+.ic-zone-box__body {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 24rpx;
+  border: 2rpx solid var(--icon-stroke);
+  border-radius: 0 0 3rpx 3rpx; box-sizing: border-box;
+}
+.ic-zone-box__lid {
+  position: absolute; top: 0; left: -2rpx; right: -2rpx; height: 10rpx;
+  border: 2rpx solid var(--icon-stroke);
+  border-radius: 3rpx 3rpx 0 0; box-sizing: border-box;
+}
+
+/* 鞋区图标 */
+.ic-zone-shoe { position: relative; width: 36rpx; height: 36rpx; }
+.ic-zone-shoe__frame {
+  position: absolute; inset: 0;
+  border: 2rpx solid var(--icon-stroke);
+  border-radius: 3rpx; box-sizing: border-box;
+}
+.ic-zone-shoe__line {
+  position: absolute; left: 4rpx; right: 4rpx;
+  height: 2rpx; background: var(--icon-stroke);
+}
+.ic-zone-shoe__line--1 { top: 35%; }
+.ic-zone-shoe__line--2 { top: 65%; }
+
+.zone-item__info {
+  flex: 1; min-width: 0;
+}
+.zone-item__name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 0.3rpx;
+}
+.zone-item__meta {
+  margin-top: 4rpx;
+  font-size: 22rpx;
+  color: var(--text-sub);
+  letter-spacing: 0.3rpx;
+}
+
+.zone-item__badge {
+  min-width: 40rpx; height: 40rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-inner);
+  border: 1rpx solid var(--card-border);
+  border-radius: 50%;
+  font-size: 22rpx;
+  color: var(--text-sub);
+  font-weight: 500;
+  padding: 0 4rpx;
+}
+
+.empty-zone {
+  padding: 48rpx 0;
+  text-align: center;
+}
+.empty-zone__text {
+  font-size: 26rpx;
+  color: var(--text-assist);
+  letter-spacing: 0.5rpx;
+}
+
+/* ============ 太阳/月亮图标 ============ */
+.ic { position: relative; display: inline-block; vertical-align: middle; }
+.ic-sun { width: 32rpx; height: 32rpx; display: inline-flex; align-items: center; justify-content: center; }
+.ic-sun__core {
+  width: 12rpx; height: 12rpx; border-radius: 50%;
+  border: 2rpx solid var(--icon-stroke); background: transparent;
+  box-sizing: border-box;
+  box-shadow:
+     0 -12rpx 0 -5rpx var(--icon-stroke), 0 12rpx 0 -5rpx var(--icon-stroke),
+    -12rpx 0 0 -5rpx var(--icon-stroke), 12rpx 0 0 -5rpx var(--icon-stroke),
+    -8rpx -8rpx 0 -6rpx var(--icon-stroke), 8rpx -8rpx 0 -6rpx var(--icon-stroke),
+    -8rpx 8rpx 0 -6rpx var(--icon-stroke), 8rpx 8rpx 0 -6rpx var(--icon-stroke);
+}
+.ic-moon { width: 32rpx; height: 32rpx; position: relative; display: inline-block; }
+.ic-moon__shape {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: var(--icon-stroke); overflow: hidden;
+}
+.ic-moon__shape::after {
+  content: ''; position: absolute; top: -4rpx; right: -10rpx;
+  width: 26rpx; height: 26rpx; border-radius: 50%;
+  background: var(--surface-elevated);
+}
+.page-root.theme-dark .ic-moon__shape::after { background: var(--bg-start); }
+
+/* ============ 弹窗（添加/重命名共用） ============ */
+.overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.45);
+  display: flex; align-items: flex-end;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.add-sheet {
+  width: 100%; max-height: 85vh;
+  padding: 32rpx 32rpx calc(env(safe-area-inset-bottom) + 32rpx);
+  background: var(--surface-elevated);
+  border-top-left-radius: var(--radius-card-lg);
+  border-top-right-radius: var(--radius-card-lg);
+  box-sizing: border-box;
+  animation: slideUp 0.28s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.add-sheet__header { display: flex; align-items: center; margin-bottom: 32rpx; }
+.add-sheet__title { font-size: 34rpx; font-weight: 700; color: var(--text-main); letter-spacing: 1rpx; }
+.add-sheet__spacer { flex: 1; }
+.add-sheet__close { width: 48rpx; height: 48rpx; display: flex; align-items: center; justify-content: center; }
+.ic-close { position: relative; width: 24rpx; height: 24rpx; }
+.ic-close__line {
+  position: absolute; top: 50%; left: 50%;
+  width: 24rpx; height: 2rpx; background: var(--text-sub); border-radius: 1rpx;
+}
+.ic-close__line--1 { transform: translate(-50%,-50%) rotate(45deg); }
+.ic-close__line--2 { transform: translate(-50%,-50%) rotate(-45deg); }
+
+.add-sheet__section { margin-bottom: 28rpx; }
+.add-sheet__label { font-size: 24rpx; font-weight: 500; color: var(--text-sub); letter-spacing: 0.5rpx; margin-bottom: 16rpx; }
+
+.type-grid { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.type-chip {
+  display: flex; align-items: center; gap: 10rpx;
+  padding: 14rpx 24rpx;
+  background: var(--surface-inner);
+  border: 2rpx solid var(--card-border);
+  border-radius: var(--radius-btn);
+  transition: all 0.2s ease;
+}
+.type-chip.is-active { border-color: var(--color-primary); background: rgba(74,144,226,0.08); }
+.type-chip__dot {
+  width: 12rpx; height: 12rpx; border-radius: 50%;
+  background: var(--text-assist); transition: background 0.2s ease;
+}
+.type-chip.is-active .type-chip__dot { background: var(--color-primary); }
+.type-chip__text { font-size: 26rpx; font-weight: 500; color: var(--text-main); letter-spacing: 0.5rpx; }
+
+.add-sheet__input {
+  width: 100%; padding: 20rpx 24rpx;
+  background: var(--surface-inner);
+  border: 2rpx solid var(--card-border);
+  border-radius: var(--radius-sm);
+  font-size: 28rpx; color: var(--text-main);
+  letter-spacing: 0.5rpx; box-sizing: border-box;
+}
+.add-sheet__placeholder { color: var(--text-assist); font-size: 28rpx; }
+
+.add-sheet__btn {
+  display: flex; align-items: center; justify-content: center;
+  padding: 24rpx 0; margin-top: 12rpx;
+  background: var(--color-primary);
+  border-radius: var(--radius-btn);
+  font-size: 30rpx; font-weight: 600; color: #FFFFFF;
+  letter-spacing: 1rpx;
+  box-shadow: 0 8rpx 16rpx -4rpx rgba(74,144,226,0.35);
+}
+
+.safe-bottom { height: calc(env(safe-area-inset-bottom) + 120rpx); }
+.tap-scale { transition: transform 0.15s ease; }
+.tap-scale:active { transform: scale(0.97); }
+
+

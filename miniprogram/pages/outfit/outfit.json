@@ -1,7 +1,7 @@
 {
-  "navigationBarTitleText": "智能搭配",
+  "navigationBarTitleText": "我的衣服",
   "navigationStyle": "custom",
-  "backgroundColor": "#F0F4F8",
+  "backgroundColor": "#FFFFFF",
   "backgroundTextStyle": "dark",
   "enablePullDownRefresh": true,
   "usingComponents": {}
