@@ -81,9 +81,12 @@ Page({
 
     // 衣柜类型选项
     typeOptions: WARDROBE_TYPES,
+
+    // 选择模式（从 add-favorite 进入）
+    selectMode: false,
   },
 
-  onLoad: function () {
+  onLoad: function (options) {
     var sysInfo = wx.getWindowInfo ? wx.getWindowInfo() : (wx.getSystemInfoSync ? wx.getSystemInfoSync() : { statusBarHeight: 44 });
     var menuBtn = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null;
     var statusBarHeight = sysInfo.statusBarHeight || 44;
@@ -113,6 +116,10 @@ Page({
     }
     // 每次显示时重新加载列表（从详情页返回可能数据变了）
     this._loadWardrobes();
+
+    // 检查是否从 add-favorite 进入选择模式
+    var selectModeSource = wx.getStorageSync('__wardrobe_select_mode');
+    this.setData({ selectMode: !!selectModeSource });
   },
 
   // 加载衣柜列表
@@ -229,15 +236,24 @@ Page({
     return '衣柜';
   },
 
-  // ===== 点击衣柜条目 → 进入详情 =====
+  // ===== 点击衣柜条目 =====
   onWardrobeTap: function (e) {
     var id = e.currentTarget.dataset.id;
     wx.vibrateShort({ type: 'light' });
-    wx.navigateTo({ url: '/pages/wardrobe-detail/wardrobe-detail?id=' + id });
+    if (this.data.selectMode) {
+      // 选择模式：跳转到分区列表
+      wx.navigateTo({
+        url: '/pages/wardrobe-detail/wardrobe-detail?id=' + id + '&from=add-favorite',
+      });
+    } else {
+      // 正常模式：进入详情
+      wx.navigateTo({ url: '/pages/wardrobe-detail/wardrobe-detail?id=' + id });
+    }
   },
 
   // ===== 长按衣柜条目 → 删除 =====
   onWardrobeLongPress: function (e) {
+    if (this.data.selectMode) return;
     var id = e.currentTarget.dataset.id;
     var self = this;
     var wardrobe = null;

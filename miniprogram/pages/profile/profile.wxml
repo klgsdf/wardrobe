@@ -1,6 +1,95 @@
-<!-- pages/profile/profile.wxml - 占位页 -->
-<view class="placeholder">
-  <view class="placeholder__emoji">👤</view>
-  <view class="placeholder__title">我的</view>
-  <view class="placeholder__desc">敬请期待</view>
+<!--pages/profile/profile.wxml - 收藏页面-->
+<view class="page-root {{isDark ? 'theme-dark' : ''}}">
+
+  <!-- 状态栏 + 自定义导航栏占位 -->
+  <view class="nav-pad" style="height: {{navPadHeight}}px;"></view>
+  <view class="nav-bar" style="height: {{navPadHeight}}px;">
+    <view class="nav-bar__left">
+      <text class="nav-bar__title">我的收藏</text>
+    </view>
+    <view class="nav-bar__right">
+      <view class="icon-btn tap-scale" bindtap="onToggleTheme">
+        <view wx:if="{{isDark}}" class="ic ic-sun">
+          <view class="ic-sun__core"></view>
+        </view>
+        <view wx:else class="ic ic-moon">
+          <view class="ic-moon__shape"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page-body">
+
+    <!-- 筛选标签 -->
+    <view class="filter-bar">
+      <view wx:for="{{filterTags}}" wx:key="key"
+            class="filter-chip tap-scale {{selectedFilter === item.key ? 'is-active' : ''}}"
+            data-key="{{item.key}}" bindtap="onFilterTap">
+        <text>{{item.label}}</text>
+      </view>
+      <view class="filter-count">共{{filteredFavorites.length}}件</view>
+    </view>
+
+    <!-- 收藏列表 -->
+    <view class="fav-grid" wx:if="{{!isEmpty}}">
+      <view wx:for="{{filteredFavorites}}" wx:key="id"
+            class="fav-card tap-scale"
+            data-id="{{item.id}}"
+            bindtap="onFavoriteTap">
+
+        <!-- 卡片顶部：背景色 + 图标 + 收藏心形 -->
+        <view class="fav-card__visual" style="background: {{item.bgColor}};">
+          <view class="fav-card__icon">{{item.icon}}</view>
+          <!-- 取消收藏按钮 -->
+          <view class="fav-card__heart tap-scale" catchtap="onToggleFavorite" data-id="{{item.id}}">
+            <view class="ic-heart-filled">
+              <view class="ic-heart-filled__left"></view>
+              <view class="ic-heart-filled__right"></view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 卡片信息 -->
+        <view class="fav-card__info">
+          <view class="fav-card__title">{{item.title}}</view>
+          <view class="fav-card__meta">
+            <view class="fav-card__tag" style="background: {{item.tagBg}}; color: {{item.tagColor}};">
+              <text>{{item.tag}}</text>
+            </view>
+            <text class="fav-card__count">{{item.itemCount}}件单品</text>
+          </view>
+          <view class="fav-card__date">{{item.date}}</view>
+        </view>
+      </view>
+
+      <!-- 添加新收藏卡片 -->
+      <view class="fav-card fav-card--add tap-scale" bindtap="onAddFavorite">
+        <view class="fav-card__add-inner">
+          <view class="fav-card__add-plus">
+            <view class="add-plus__h"></view>
+            <view class="add-plus__v"></view>
+          </view>
+          <text class="fav-card__add-text">添加新收藏</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{isEmpty}}" class="empty-state">
+      <view class="empty-state__icon">
+        <view class="ic-heart-outline">
+          <view class="ic-heart-outline__left"></view>
+          <view class="ic-heart-outline__right"></view>
+        </view>
+      </view>
+      <view class="empty-state__title">还没有收藏</view>
+      <view class="empty-state__desc">去衣服页收藏喜欢的衣物吧</view>
+      <view class="empty-state__btn tap-scale" bindtap="onAddFavorite">
+        <text>去浏览衣物</text>
+      </view>
+    </view>
+
+    <view class="safe-bottom"></view>
+  </view>
 </view>

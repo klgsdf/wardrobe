@@ -59,7 +59,7 @@ Page({
 
     // 图片相关
     images: [],
-    maxImages: 5,
+    maxImages: 1,
 
     // 标签数据
     tags: {
@@ -192,15 +192,15 @@ Page({
   _chooseMedia: function (sourceType, count) {
     var self = this;
     wx.chooseMedia({
-      count: count,
+      count: 1,
       mediaType: ['image'],
       sourceType: sourceType,
       success: function (res) {
         var newImages = res.tempFiles.map(function (f) {
           return { url: f.tempFilePath, status: 'local' };
         });
-        var images = self.data.images.concat(newImages);
-        self.setData({ images: images });
+        // 单张模式：直接替换，而非追加
+        self.setData({ images: newImages });
         // 自动 AI 识别（取第一张新图）
         if (self.data.autoAiEnabled && newImages.length > 0) {
           self._triggerAiRecognize(newImages[0].url);

@@ -30,7 +30,7 @@
     <view class="section-card">
       <view class="section-header">
         <text class="section-title">图片</text>
-        <text class="section-sub">{{images.length}}/{{maxImages}}</text>
+        <text class="section-sub">{{images.length > 0 ? '已添加' : '未添加'}}</text>
       </view>
       <view class="image-grid">
         <!-- 已上传图片缩略图 -->
@@ -43,8 +43,8 @@
             </view>
           </view>
         </view>
-        <!-- 添加按钮 -->
-        <view wx:if="{{images.length < maxImages}}" class="image-add tap-scale" bindtap="onChooseImage">
+        <!-- 添加按钮：无图片时显示 -->
+        <view wx:if="{{images.length === 0}}" class="image-add tap-scale" bindtap="onChooseImage">
           <view class="image-add__plus-h"></view>
           <view class="image-add__plus-v"></view>
         </view>

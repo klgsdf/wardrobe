@@ -10,7 +10,7 @@
         <view class="ic-back__head"></view>
       </view>
     </view>
-    <view class="detail-header__title">{{wardrobe.name}}</view>
+    <view class="detail-header__title">{{selectMode ? '选择分区' : wardrobe.name}}</view>
     <view class="detail-header__spacer"></view>
     <view class="icon-btn tap-scale" bindtap="onToggleTheme">
       <view wx:if="{{isDark}}" class="ic ic-sun">
@@ -45,7 +45,7 @@
     </view>
 
     <!-- 添加分区按钮 -->
-    <view class="add-zone-bar tap-scale" bindtap="onShowAddZone">
+    <view wx:if="{{!selectMode}}" class="add-zone-bar tap-scale" bindtap="onShowAddZone">
       <view class="add-zone-bar__plus">
         <view class="add-zone-bar__plus-h"></view>
         <view class="add-zone-bar__plus-v"></view>
@@ -87,7 +87,13 @@
           <view class="zone-item__name">{{item.name}}</view>
           <view class="zone-item__meta">{{item.type === 'shelf' ? '隔板层' : item.type === 'hanger' ? '挂衣区' : item.type === 'drawer' ? '抽屉' : item.type === 'box' ? '收纳盒' : '鞋区'}} · {{item.count}} 件</view>
         </view>
-        <view class="zone-item__badge">{{item.count}}</view>
+        <view class="zone-item__badge" wx:if="{{!selectMode}}">{{item.count}}</view>
+        <view class="zone-item__select-indicator" wx:if="{{selectMode}}">
+          <view class="ic-chevron-right">
+            <view class="ic-chevron__line"></view>
+            <view class="ic-chevron__head"></view>
+          </view>
+        </view>
       </view>
 
       <!-- 空分区状态 -->

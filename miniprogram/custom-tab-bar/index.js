@@ -43,14 +43,12 @@ Component({
       wx.vibrateShort({ type: 'medium' });
       const self = this;
       wx.showActionSheet({
-        itemList: ['拍照添加', '从相册选择', '手动录入'],
+        itemList: ['拍照添加', '从相册选择'],
         success: function (res) {
           if (res.tapIndex === 0) {
             self.chooseWithCamera();
           } else if (res.tapIndex === 1) {
             self.chooseFromAlbum();
-          } else if (res.tapIndex === 2) {
-            wx.navigateTo({ url: '/pages/add-cloth/add-cloth' });
           }
         },
       });

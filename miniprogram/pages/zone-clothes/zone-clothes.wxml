@@ -11,9 +11,9 @@
       </view>
       <text class="nav-bar__back-text">返回</text>
     </view>
-    <view class="nav-bar__title">{{zoneName}}</view>
+    <view class="nav-bar__title">{{selectMode ? '选择衣物' : zoneName}}</view>
     <view class="nav-bar__right">
-      <view class="icon-btn tap-scale" bindtap="onToggleTheme">
+      <view wx:if="{{!selectMode}}" class="icon-btn tap-scale" bindtap="onToggleTheme">
         <view wx:if="{{isDark}}" class="ic ic-sun">
           <view class="ic-sun__core"></view>
         </view>
@@ -37,10 +37,18 @@
       <!-- 左列 -->
       <view class="waterfall__col">
         <view wx:for="{{leftColumn}}" wx:key="id"
-              class="cloth-card tap-scale"
+              class="cloth-card tap-scale {{selectMode && item.isSelected ? 'is-selected' : ''}}"
               data-id="{{item.id}}"
               bindtap="onItemTap">
-          <image class="cloth-card__img" src="{{item.images[0]}}" mode="aspectFill" lazy-load />
+          <view class="cloth-card__img-wrap">
+            <image class="cloth-card__img" src="{{item.images[0]}}" mode="aspectFill" lazy-load />
+            <view wx:if="{{selectMode && item.isSelected}}" class="cloth-card__check">
+              <view class="ic-check">
+                <view class="ic-check__line1"></view>
+                <view class="ic-check__line2"></view>
+              </view>
+            </view>
+          </view>
           <view class="cloth-card__info">
             <!-- 颜色标签 -->
             <view wx:if="{{item.colorHexes.length > 0}}" class="cloth-card__colors">
@@ -62,10 +70,18 @@
       <!-- 右列 -->
       <view class="waterfall__col">
         <view wx:for="{{rightColumn}}" wx:key="id"
-              class="cloth-card tap-scale"
+              class="cloth-card tap-scale {{selectMode && item.isSelected ? 'is-selected' : ''}}"
               data-id="{{item.id}}"
               bindtap="onItemTap">
-          <image class="cloth-card__img" src="{{item.images[0]}}" mode="aspectFill" lazy-load />
+          <view class="cloth-card__img-wrap">
+            <image class="cloth-card__img" src="{{item.images[0]}}" mode="aspectFill" lazy-load />
+            <view wx:if="{{selectMode && item.isSelected}}" class="cloth-card__check">
+              <view class="ic-check">
+                <view class="ic-check__line1"></view>
+                <view class="ic-check__line2"></view>
+              </view>
+            </view>
+          </view>
           <view class="cloth-card__info">
             <!-- 颜色标签 -->
             <view wx:if="{{item.colorHexes.length > 0}}" class="cloth-card__colors">
@@ -102,10 +118,21 @@
           <view class="ic-hanger-empty__hook"></view>
         </view>
       </view>
-      <view class="empty-state__title">该分区暂无衣物</view>
-      <view class="empty-state__desc">去「添加衣物」页面添加并存放至此</view>
+      <view class="empty-state__title">{{selectMode ? '该分区暂无衣物' : '该分区暂无衣物'}}</view>
+      <view class="empty-state__desc">{{selectMode ? '请选择其他分区' : '去「添加衣物」页面添加并存放至此'}}</view>
     </view>
 
     <view class="safe-bottom"></view>
   </scroll-view>
+
+  <!-- 选择模式底部操作栏 -->
+  <view wx:if="{{selectMode}}" class="bottom-action-bar">
+    <view class="bottom-action-bar__inner">
+      <text class="bottom-action-bar__count">已选 {{selectedIds.length}} 件</text>
+      <view class="bottom-action-bar__btn tap-scale {{selectedIds.length === 0 ? 'is-disabled' : ''}}" bindtap="onConfirmSelect">
+        <text>完成</text>
+      </view>
+    </view>
+    <view class="safe-bottom"></view>
+  </view>
 </view>

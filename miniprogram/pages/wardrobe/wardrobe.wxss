@@ -286,6 +286,32 @@
   align-items: center;
   justify-content: center;
 }
+
+/* 选择模式指示器 */
+.wardrobe-item__select-indicator {
+  flex-shrink: 0;
+  width: 32rpx;
+  height: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ic-chevron-right { position: relative; width: 20rpx; height: 20rpx; }
+.ic-chevron__line {
+  position: absolute; top: 50%; left: 2rpx;
+  width: 14rpx; height: 2.5rpx;
+  background: var(--text-assist); border-radius: 1rpx;
+  transform: translateY(-50%);
+}
+.ic-chevron__head {
+  position: absolute; top: 50%; right: 2rpx;
+  width: 8rpx; height: 8rpx;
+  border-top: 2.5rpx solid var(--text-assist);
+  border-right: 2.5rpx solid var(--text-assist);
+  transform: translateY(-50%) rotate(45deg);
+}
+
 .ic-arrow {
   position: relative;
   width: 16rpx;
@@ -369,6 +395,10 @@
   border-top-right-radius: var(--radius-card-lg);
   box-sizing: border-box;
   animation: slideUp 0.28s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
 }
 @keyframes slideUp {
   from { transform: translateY(100%); }
@@ -402,14 +432,15 @@
 .ic-close__line--2 { transform: translate(-50%, -50%) rotate(-45deg); }
 
 .add-sheet__section {
-  margin-bottom: 28rpx;
+  margin-bottom: 32rpx;
+  flex-shrink: 0;
 }
 .add-sheet__label {
-  font-size: 24rpx;
+  font-size: 26rpx;
   font-weight: 500;
   color: var(--text-sub);
   letter-spacing: 0.5rpx;
-  margin-bottom: 16rpx;
+  margin-bottom: 20rpx;
 }
 
 /* 类型选择网格 */
@@ -451,7 +482,8 @@
 /* 输入框 */
 .add-sheet__input {
   width: 100%;
-  padding: 20rpx 24rpx;
+  height: 88rpx;
+  padding: 0 24rpx;
   background: var(--surface-inner);
   border: 2rpx solid var(--card-border);
   border-radius: var(--radius-sm);
@@ -459,10 +491,12 @@
   color: var(--text-main);
   letter-spacing: 0.5rpx;
   box-sizing: border-box;
+  line-height: 84rpx;
 }
 .add-sheet__placeholder {
   color: var(--text-assist);
   font-size: 28rpx;
+  line-height: 84rpx;
 }
 
 /* 确认按钮 */
@@ -479,6 +513,7 @@
   color: #FFFFFF;
   letter-spacing: 1rpx;
   box-shadow: 0 8rpx 16rpx -4rpx rgba(74, 144, 226, 0.35);
+  flex-shrink: 0;
 }
 
 /* ============ 太阳/月亮图标（复用首页样式） ============ */

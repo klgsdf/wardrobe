@@ -40,6 +40,8 @@ Page({
       name: '',
     },
 
+    // 选择模式（从 add-favorite 进入）
+    selectMode: false,
   },
 
   onLoad: function (options) {
@@ -47,12 +49,14 @@ Page({
     var statusBarHeight = sysInfo.statusBarHeight || 44;
     var navPadHeight = statusBarHeight + 44;
     var theme = wx.getStorageSync(THEME_KEY) || 'light';
+    var selectMode = options && options.from === 'add-favorite';
 
     this.setData({
       statusBarHeight: statusBarHeight,
       navPadHeight: navPadHeight,
       isDark: theme === 'dark',
       wardrobeId: options.id || '',
+      selectMode: selectMode,
     });
 
     this._loadWardrobe();
@@ -138,7 +142,7 @@ Page({
     wx.showToast({ title: '已添加分区', icon: 'none', duration: 1000 });
   },
 
-  // ===== 点击分区：跳转到衣物瀑布流页面 =====
+  // ===== 点击分区 =====
   onZoneTap: function (e) {
     var zoneId = e.currentTarget.dataset.id;
     var zone = null;
@@ -149,13 +153,22 @@ Page({
     if (!zone) return;
 
     wx.vibrateShort({ type: 'light' });
-    wx.navigateTo({
-      url: '/pages/zone-clothes/zone-clothes?wardrobeId=' + this.data.wardrobeId + '&zoneId=' + zoneId + '&zoneName=' + encodeURIComponent(zone.name),
-    });
+    if (this.data.selectMode) {
+      // 选择模式：跳转到衣物列表
+      wx.navigateTo({
+        url: '/pages/zone-clothes/zone-clothes?wardrobeId=' + this.data.wardrobeId + '&zoneId=' + zoneId + '&zoneName=' + encodeURIComponent(zone.name) + '&from=add-favorite',
+      });
+    } else {
+      // 正常模式：跳转到衣物瀑布流页面
+      wx.navigateTo({
+        url: '/pages/zone-clothes/zone-clothes?wardrobeId=' + this.data.wardrobeId + '&zoneId=' + zoneId + '&zoneName=' + encodeURIComponent(zone.name),
+      });
+    }
   },
 
   // ===== 长按分区：操作菜单 =====
   onZoneLongPress: function (e) {
+    if (this.data.selectMode) return;
     var zoneId = e.currentTarget.dataset.id;
     var self = this;
     var zone = null;

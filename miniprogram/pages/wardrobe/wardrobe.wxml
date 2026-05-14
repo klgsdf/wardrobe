@@ -5,7 +5,7 @@
   <view class="nav-pad" style="height: {{navPadHeight}}px;"></view>
   <view class="nav-bar"
         style="top: {{menuBtnTop}}px; height: {{menuBtnHeight}}px;">
-    <view class="nav-bar__title">我的衣柜</view>
+    <view class="nav-bar__title">{{selectMode ? '选择衣柜' : '我的衣柜'}}</view>
     <view class="nav-bar__spacer"></view>
     <view class="icon-btn tap-scale" bindtap="onToggleTheme"
           style="width: {{menuBtnHeight}}px; height: {{menuBtnHeight}}px;">
@@ -37,7 +37,7 @@
   </view>
 
   <!-- 添加按钮（条状设计） -->
-  <view class="add-bar tap-scale" bindtap="onShowAddSheet">
+  <view wx:if="{{!selectMode}}" class="add-bar tap-scale" bindtap="onShowAddSheet">
     <view class="add-bar__icon">
       <view class="add-bar__plus-h"></view>
       <view class="add-bar__plus-v"></view>
@@ -94,11 +94,17 @@
         </view>
       </view>
 
-      <!-- 右侧箭头 -->
-      <view class="wardrobe-item__arrow">
+      <!-- 右侧箭头 / 选择指示 -->
+      <view class="wardrobe-item__arrow" wx:if="{{!selectMode}}">
         <view class="ic-arrow">
           <view class="ic-arrow__line"></view>
           <view class="ic-arrow__head"></view>
+        </view>
+      </view>
+      <view class="wardrobe-item__select-indicator" wx:if="{{selectMode}}">
+        <view class="ic-chevron-right">
+          <view class="ic-chevron__line"></view>
+          <view class="ic-chevron__head"></view>
         </view>
       </view>
     </view>

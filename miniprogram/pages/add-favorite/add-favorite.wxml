@@ -1,0 +1,131 @@
+<!--pages/add-favorite/add-favorite.wxml - 添加收藏页面-->
+<view class="page-root {{isDark ? 'theme-dark' : ''}}">
+
+  <!-- 状态栏 + 自定义导航栏占位 -->
+  <view class="nav-pad" style="height: {{navPadHeight}}px;"></view>
+  <view class="nav-bar" style="height: {{navPadHeight}}px;">
+    <view class="nav-bar__left tap-scale" bindtap="onBack">
+      <view class="ic-back">
+        <view class="ic-back__line"></view>
+        <view class="ic-back__arrow"></view>
+      </view>
+    </view>
+    <view class="nav-bar__title">添加收藏</view>
+    <view class="nav-bar__right">
+      <view class="icon-btn tap-scale" bindtap="onToggleTheme">
+        <view wx:if="{{isDark}}" class="ic ic-sun">
+          <view class="ic-sun__core"></view>
+        </view>
+        <view wx:else class="ic ic-moon">
+          <view class="ic-moon__shape"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page-body">
+
+    <!-- ===== 搭配照片 ===== -->
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">搭配照片</text>
+        <text class="section-sub">最多{{maxImages}}张</text>
+      </view>
+      <view class="image-grid">
+        <!-- 已上传照片 -->
+        <view wx:for="{{images}}" wx:key="*this" class="image-item">
+          <image class="image-item__img" src="{{item.url}}" mode="aspectFill" lazy-load />
+          <view class="image-item__remove tap-scale" bindtap="onRemoveImage" data-index="{{index}}">
+            <view class="ic-close-sm">
+              <view class="ic-close-sm__l1"></view>
+              <view class="ic-close-sm__l2"></view>
+            </view>
+          </view>
+        </view>
+        <!-- 添加按钮 -->
+        <view wx:if="{{images.length < maxImages}}" class="image-add tap-scale" bindtap="onChooseImage">
+          <view class="image-add__icon">
+            <view class="ic-camera">
+              <view class="ic-camera__body"></view>
+              <view class="ic-camera__lens"></view>
+            </view>
+          </view>
+          <text class="image-add__text">添加照片</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 搭配名称 ===== -->
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">搭配名称</text>
+      </view>
+      <input class="name-input"
+             placeholder="请输入搭配名称"
+             placeholder-class="name-input__placeholder"
+             value="{{name}}"
+             bindinput="onNameInput"
+             maxlength="20" />
+    </view>
+
+    <!-- ===== 搭配标签 ===== -->
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">搭配标签</text>
+      </view>
+      <view class="tag-grid">
+        <view wx:for="{{styleTags}}" wx:key="key"
+              class="tag-chip tap-scale {{selectedTag === item.key ? 'is-active' : ''}}"
+              data-key="{{item.key}}" bindtap="onTagSelect">
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 关联单品 ===== -->
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">关联单品</text>
+        <text class="section-sub" wx:if="{{linkedItems.length > 0}}">已选{{linkedItems.length}}件</text>
+      </view>
+
+      <!-- 已选单品列表 -->
+      <view class="linked-list" wx:if="{{linkedItems.length > 0}}">
+        <view wx:for="{{linkedItems}}" wx:key="id" class="linked-item">
+          <view class="linked-item__icon">
+            <text class="linked-item__icon-text">{{item.icon}}</text>
+          </view>
+          <view class="linked-item__info">
+            <text class="linked-item__category">{{item.category}}</text>
+            <text class="linked-item__name">{{item.name}}</text>
+          </view>
+          <view class="linked-item__remove tap-scale" bindtap="onRemoveLinkedItem" data-index="{{index}}">
+            <view class="ic-close-sm">
+              <view class="ic-close-sm__l1"></view>
+              <view class="ic-close-sm__l2"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 添加单品按钮 -->
+      <view class="add-item-bar tap-scale" bindtap="onShowItemPicker">
+        <view class="add-item-bar__plus">
+          <view class="add-plus__h"></view>
+          <view class="add-plus__v"></view>
+        </view>
+        <text class="add-item-bar__text">添加单品</text>
+      </view>
+    </view>
+
+    <!-- ===== 保存按钮 ===== -->
+    <view class="save-bar">
+      <view class="save-btn tap-scale" bindtap="onSave">
+        <text>保存收藏</text>
+      </view>
+    </view>
+
+    <view class="safe-bottom"></view>
+  </view>
+
+</view>

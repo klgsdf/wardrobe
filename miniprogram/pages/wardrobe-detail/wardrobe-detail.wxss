@@ -252,6 +252,28 @@
   padding: 0 4rpx;
 }
 
+/* 选择模式指示器 */
+.zone-item__select-indicator {
+  width: 40rpx; height: 40rpx;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.ic-chevron-right { position: relative; width: 20rpx; height: 20rpx; }
+.ic-chevron__line {
+  position: absolute; top: 50%; left: 2rpx;
+  width: 14rpx; height: 2.5rpx;
+  background: var(--text-assist); border-radius: 1rpx;
+  transform: translateY(-50%);
+}
+.ic-chevron__head {
+  position: absolute; top: 50%; right: 2rpx;
+  width: 8rpx; height: 8rpx;
+  border-top: 2.5rpx solid var(--text-assist);
+  border-right: 2.5rpx solid var(--text-assist);
+  transform: translateY(-50%) rotate(45deg);
+}
+
 .empty-zone {
   padding: 48rpx 0;
   text-align: center;

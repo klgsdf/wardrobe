@@ -53,6 +53,12 @@ Page({
     categoryMap: categoryMap,
     seasonMap: seasonMap,
     colorHexMap: colorHexMap,
+
+    // 选择模式（从 add-favorite 进入）
+    selectMode: false,
+
+    // 多选状态
+    selectedIds: [],
   },
 
   onLoad: function (options) {
@@ -60,6 +66,7 @@ Page({
     var statusBarHeight = sysInfo.statusBarHeight || 44;
     var navPadHeight = statusBarHeight + 44;
     var theme = wx.getStorageSync(THEME_KEY) || 'light';
+    var selectMode = options && options.from === 'add-favorite';
 
     this.setData({
       statusBarHeight: statusBarHeight,
@@ -68,6 +75,7 @@ Page({
       wardrobeId: options.wardrobeId || '',
       zoneId: options.zoneId || '',
       zoneName: options.zoneName ? decodeURIComponent(options.zoneName) : '分区衣物',
+      selectMode: selectMode,
     });
 
     this._loadItems();
@@ -111,6 +119,10 @@ Page({
       if (zoneItems.length > 0) {
         self._loadMore();
       }
+      // 选择模式下预计算选中标记
+      if (self.data.selectMode) {
+        self._updateSelectedFlags();
+      }
     });
   },
 
@@ -147,6 +159,25 @@ Page({
     };
   },
 
+  // 预计算每个 item 的选中状态（WXML 不支持 indexOf）
+  _updateSelectedFlags: function () {
+    var selectedIds = this.data.selectedIds;
+    var leftColumn = this.data.leftColumn;
+    var rightColumn = this.data.rightColumn;
+
+    for (var i = 0; i < leftColumn.length; i++) {
+      leftColumn[i].isSelected = selectedIds.indexOf(leftColumn[i].id) >= 0;
+    }
+    for (var i = 0; i < rightColumn.length; i++) {
+      rightColumn[i].isSelected = selectedIds.indexOf(rightColumn[i].id) >= 0;
+    }
+
+    this.setData({
+      leftColumn: leftColumn,
+      rightColumn: rightColumn,
+    });
+  },
+
   // ===== 瀑布流分页加载 =====
   _loadMore: function () {
     var self = this;
@@ -181,6 +212,11 @@ Page({
         pageIndex: nextPageIndex,
         hasMore: hasMore,
         loading: false,
+      }, function () {
+        // 选择模式下预计算选中标记
+        if (self.data.selectMode) {
+          self._updateSelectedFlags();
+        }
       });
     }, 200);
   },
@@ -194,8 +230,57 @@ Page({
   onItemTap: function (e) {
     var itemId = e.currentTarget.dataset.id;
     wx.vibrateShort({ type: 'light' });
-    // 后续可扩展为跳转到衣物详情页
-    wx.showToast({ title: '衣物详情开发中', icon: 'none' });
+
+    if (this.data.selectMode) {
+      // 选择模式：切换选中状态
+      var selectedIds = this.data.selectedIds.slice();
+      var idx = selectedIds.indexOf(itemId);
+      if (idx >= 0) {
+        selectedIds.splice(idx, 1);
+      } else {
+        selectedIds.push(itemId);
+      }
+      this.setData({ selectedIds: selectedIds }, function () {
+        // 预计算选中标记（WXML 不支持 indexOf）
+        this._updateSelectedFlags();
+      });
+    } else {
+      // 正常模式：后续可扩展为跳转到衣物详情页
+      wx.showToast({ title: '衣物详情开发中', icon: 'none' });
+    }
+  },
+
+  // ===== 确认选择并返回 =====
+  onConfirmSelect: function () {
+    var self = this;
+    var selectedIds = this.data.selectedIds;
+    if (selectedIds.length === 0) {
+      wx.showToast({ title: '请选择至少一件衣物', icon: 'none' });
+      return;
+    }
+
+    // 从 allItems 中找出选中的完整数据
+    var allItems = this.data.allItems;
+    var selectedItems = [];
+    for (var i = 0; i < selectedIds.length; i++) {
+      for (var j = 0; j < allItems.length; j++) {
+        if (allItems[j].id === selectedIds[i]) {
+          selectedItems.push(allItems[j]);
+          break;
+        }
+      }
+    }
+
+    // 将数据写入 storage，供 add-favorite 的 onShow 读取
+    wx.setStorageSync('__add_favorite_selected_items', selectedItems);
+    // 清除选择模式标记
+    wx.removeStorageSync('__wardrobe_select_mode');
+
+    wx.vibrateShort({ type: 'medium' });
+    // 使用 reLaunch 直接回到 add-favorite 页面（因 wardrobe 是 TabBar 页面，navigateBack 层数不确定）
+    wx.reLaunch({
+      url: '/pages/add-favorite/add-favorite',
+    });
   },
 
   // ===== 返回 =====

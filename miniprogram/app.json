@@ -8,7 +8,8 @@
     "pages/zone-clothes/zone-clothes",
     "pages/add-cloth/add-cloth",
     "pages/ai-match/ai-match",
-    "pages/ai-match/detail"
+    "pages/ai-match/detail",
+    "pages/add-favorite/add-favorite"
   ],
   "window": {
     "backgroundColor": "#FEFAE0",
@@ -38,7 +39,7 @@
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "个人"
+        "text": "收藏"
       }
     ]
   },

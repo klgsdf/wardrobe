@@ -190,24 +190,20 @@
 .tab-item.is-active .ic-tee__sleeve-r,
 .tab-item.is-active .ic-tee__neck { border-color: var(--tb-active); }
 
-/* ============ 头像（个人） ============ */
-.ic-person { position: relative; width: 36rpx; height: 40rpx; }
-.ic-person__head {
-  position: absolute; top: 0; left: 50%;
-  width: 18rpx; height: 18rpx;
+/* ============ 心形（收藏） ============ */
+.ic-heart { position: relative; width: 40rpx; height: 40rpx; }
+.ic-heart__left,
+.ic-heart__right {
+  position: absolute; top: 4rpx;
+  width: 20rpx; height: 32rpx;
   border: 2rpx solid var(--tb-stroke);
-  border-radius: 50%;
-  transform: translateX(-50%); box-sizing: border-box;
+  border-radius: 20rpx 20rpx 0 0;
+  box-sizing: border-box;
 }
-.ic-person__body {
-  position: absolute; bottom: 0; left: 50%;
-  width: 32rpx; height: 20rpx;
-  border: 2rpx solid var(--tb-stroke); border-bottom: none;
-  border-radius: 16rpx 16rpx 0 0;
-  transform: translateX(-50%); box-sizing: border-box;
-}
-.tab-item.is-active .ic-person__head,
-.tab-item.is-active .ic-person__body { border-color: var(--tb-active); }
+.ic-heart__left { left: 2rpx; transform: rotate(-45deg); transform-origin: 100% 100%; }
+.ic-heart__right { right: 2rpx; transform: rotate(45deg); transform-origin: 0 100%; }
+.tab-item.is-active .ic-heart__left,
+.tab-item.is-active .ic-heart__right { border-color: var(--tb-active); }
 
 /* ============ 中央 Add 细线按钮 ============ */
 .tabbar__add {

@@ -52,16 +52,16 @@
       <view class="tabbar-label">衣服</view>
     </view>
 
-    <!-- 个人 -->
+    <!-- 收藏 -->
     <view class="tab-item tap-scale {{selected === 3 ? 'is-active' : ''}}"
           data-index="3" data-path="/pages/profile/profile" bindtap="switchTab">
       <view class="tab-item__icon">
-        <view class="ic-person">
-          <view class="ic-person__head"></view>
-          <view class="ic-person__body"></view>
+        <view class="ic-heart">
+          <view class="ic-heart__left"></view>
+          <view class="ic-heart__right"></view>
         </view>
       </view>
-      <view class="tabbar-label">个人</view>
+      <view class="tabbar-label">收藏</view>
     </view>
 
   </view>
